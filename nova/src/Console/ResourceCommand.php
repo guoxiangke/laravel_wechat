@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ResourceCommand extends GeneratorCommand
@@ -46,7 +46,8 @@ class ResourceCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -55,7 +56,7 @@ class ResourceCommand extends GeneratorCommand
 
         if (is_null($model)) {
             $model = $this->laravel->getNamespace().$this->argument('name');
-        } elseif (! Str::startsWith($model, [
+        } elseif (!Str::startsWith($model, [
             $this->laravel->getNamespace(), '\\',
         ])) {
             $model = $this->laravel->getNamespace().$model;
@@ -79,7 +80,8 @@ class ResourceCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

@@ -2,13 +2,13 @@
 
 namespace App\Jobs;
 
-use EasyWeChat;
 use App\Services\Wechat;
+use EasyWeChat;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class WechatCustomMessagsQueue implements ShouldQueue
 {
@@ -44,14 +44,14 @@ class WechatCustomMessagsQueue implements ShouldQueue
                 //send tpl message!!
                 $app = EasyWeChat::officialAccount();
                 $result = $app->template_message->send([
-                    'touser' => $openId,
+                    'touser'      => $openId,
                     'template_id' => 'EdpJ4iNy0k-HcfdUi3Q8t5v5e3B0gZB27gN0_Yauv6I',
-                    'url' => 'http://sj.jidujiao.com/John_43_1.html',
-                    'data' => [
-                        'first' => '回复任意数字激活您的账户',
+                    'url'         => 'http://sj.jidujiao.com/John_43_1.html',
+                    'data'        => [
+                        'first'    => '回复任意数字激活您的账户',
                         'keyword1' => '欢迎关注我们,点击阅读在线圣经.',
                         'keyword2' => '2019-02-16',
-                        'remark' => ['神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生。', '#173177'],
+                        'remark'   => ['神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生。', '#173177'],
                     ],
                 ]);
                 $user->subscribe = 0;

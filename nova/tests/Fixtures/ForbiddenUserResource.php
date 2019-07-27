@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
+use Laravel\Nova\Resource;
 
 class ForbiddenUserResource extends Resource
 {
@@ -17,7 +17,8 @@ class ForbiddenUserResource extends Resource
     /**
      * Determine if the resource should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public static function authorizedToViewAny(Request $request)
@@ -38,18 +39,20 @@ class ForbiddenUserResource extends Resource
     /**
      * Get the lenses available on the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)
     {
-        return [new UserLens];
+        return [new UserLens()];
     }
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)

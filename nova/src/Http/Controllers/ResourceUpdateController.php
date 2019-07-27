@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Http\Requests\UpdateResourceRequest;
@@ -13,7 +13,8 @@ class ResourceUpdateController extends Controller
     /**
      * Create a new resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
+     * @param \Laravel\Nova\Http\Requests\UpdateResourceRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function handle(UpdateResourceRequest $request)
@@ -43,7 +44,7 @@ class ResourceUpdateController extends Controller
         });
 
         return response()->json([
-            'id' => $model->getKey(),
+            'id'       => $model->getKey(),
             'resource' => $model->attributesToArray(),
             'redirect' => $resource::redirectAfterUpdate($request, $request->newResourceWith($model)),
         ]);
@@ -52,15 +53,16 @@ class ResourceUpdateController extends Controller
     /**
      * Determine if the model has been updated since it was retrieved.
      *
-     * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\UpdateResourceRequest $request
+     * @param \Illuminate\Database\Eloquent\Model               $model
+     *
      * @return bool
      */
     protected function modelHasBeenUpdatedSinceRetrieval(UpdateResourceRequest $request, $model)
     {
         $column = $model->getUpdatedAtColumn();
 
-        if (! $model->{$column}) {
+        if (!$model->{$column}) {
             return false;
         }
 

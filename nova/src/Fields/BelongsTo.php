@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Fields;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Laravel\Nova\TrashedStatus;
-use Laravel\Nova\Rules\Relatable;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
+use Laravel\Nova\Rules\Relatable;
+use Laravel\Nova\TrashedStatus;
 
 class BelongsTo extends Field
 {
@@ -95,9 +95,10 @@ class BelongsTo extends Field
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  string|null  $resource
+     * @param string      $name
+     * @param string|null $attribute
+     * @param string|null $resource
+     *
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -114,7 +115,8 @@ class BelongsTo extends Field
     /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorize(Request $request)
@@ -129,19 +131,21 @@ class BelongsTo extends Field
      *
      * Ex: Is this a "user" belongs to field in a blog post list being shown on the "user" detail page.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function isNotRedundant(Request $request)
     {
-        return ! $request instanceof ResourceIndexRequest || ! $this->isReverseRelation($request);
+        return !$request instanceof ResourceIndexRequest || !$this->isReverseRelation($request);
     }
 
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed       $resource
+     * @param string|null $attribute
+     *
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -152,7 +156,7 @@ class BelongsTo extends Field
             $value = $resource->getRelation($this->attribute);
         }
 
-        if (! $value) {
+        if (!$value) {
             $value = $resource->{$this->attribute}()->withoutGlobalScopes()->getResults();
         }
 
@@ -171,8 +175,9 @@ class BelongsTo extends Field
     /**
      * Resolve the field's value for display.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed       $resource
+     * @param string|null $attribute
+     *
      * @return void
      */
     public function resolveForDisplay($resource, $attribute = null)
@@ -183,7 +188,8 @@ class BelongsTo extends Field
     /**
      * Get the validation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function getRules(NovaRequest $request)
@@ -203,8 +209,9 @@ class BelongsTo extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  object  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param object                                  $model
+     *
      * @return void
      */
     public function fill(NovaRequest $request, $model)
@@ -225,10 +232,11 @@ class BelongsTo extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $requestAttribute
+     * @param object                                  $model
+     * @param string                                  $attribute
+     *
      * @return mixed
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -251,8 +259,9 @@ class BelongsTo extends Field
     /**
      * Build an associatable query for the field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  bool  $withTrashed
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param bool                                    $withTrashed
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function buildAssociatableQuery(NovaRequest $request, $withTrashed = false)
@@ -276,8 +285,9 @@ class BelongsTo extends Field
     /**
      * Get the associatable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return array
      */
     protected function associatableQueryCallable(NovaRequest $request, $model)
@@ -290,8 +300,9 @@ class BelongsTo extends Field
     /**
      * Get the associatable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return string
      */
     protected function associatableQueryMethod(NovaRequest $request, $model)
@@ -306,23 +317,25 @@ class BelongsTo extends Field
     /**
      * Format the given associatable resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param mixed                                   $resource
+     *
      * @return array
      */
     public function formatAssociatableResource(NovaRequest $request, $resource)
     {
         return array_filter([
-            'avatar' => $resource->resolveAvatarUrl($request),
+            'avatar'  => $resource->resolveAvatarUrl($request),
             'display' => $this->formatDisplayValue($resource),
-            'value' => $resource->getKey(),
+            'value'   => $resource->getKey(),
         ]);
     }
 
     /**
      * Specify if the relationship should be searchable.
      *
-     * @param  bool  $value
+     * @param bool $value
+     *
      * @return $this
      */
     public function searchable($value = true)
@@ -335,7 +348,8 @@ class BelongsTo extends Field
     /**
      * Specify if the related resource can be viewed.
      *
-     * @param  bool  $value
+     * @param bool $value
+     *
      * @return $this
      */
     public function viewable($value = true)
@@ -348,7 +362,8 @@ class BelongsTo extends Field
     /**
      * Specify a callback that should be run when the field is filled.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
+     *
      * @return $this
      */
     public function filled($callback)
@@ -361,7 +376,8 @@ class BelongsTo extends Field
     /**
      * Set the attribute name of the inverse of the relationship.
      *
-     * @param  string  $inverse
+     * @param string $inverse
+     *
      * @return $this
      */
     public function inverse($inverse)
@@ -391,14 +407,14 @@ class BelongsTo extends Field
     public function meta()
     {
         return array_merge([
-            'resourceName' => $this->resourceName,
-            'label' => forward_static_call([$this->resourceClass, 'label']),
-            'singularLabel' => $this->singularLabel ?? $this->name ?? forward_static_call([$this->resourceClass, 'singularLabel']),
+            'resourceName'          => $this->resourceName,
+            'label'                 => forward_static_call([$this->resourceClass, 'label']),
+            'singularLabel'         => $this->singularLabel ?? $this->name ?? forward_static_call([$this->resourceClass, 'singularLabel']),
             'belongsToRelationship' => $this->belongsToRelationship,
-            'belongsToId' => $this->belongsToId,
-            'searchable' => $this->searchable,
-            'viewable' => $this->viewable,
-            'reverse' => $this->isReverseRelation(app(NovaRequest::class)),
+            'belongsToId'           => $this->belongsToId,
+            'searchable'            => $this->searchable,
+            'viewable'              => $this->viewable,
+            'reverse'               => $this->isReverseRelation(app(NovaRequest::class)),
         ], $this->meta);
     }
 }

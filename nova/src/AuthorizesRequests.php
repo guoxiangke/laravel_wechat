@@ -14,20 +14,22 @@ trait AuthorizesRequests
     /**
      * Register the Nova authentication callback.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
+     *
      * @return static
      */
     public static function auth($callback)
     {
         static::$authUsing = $callback;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Determine if the given request can access the Nova dashboard.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public static function check($request)

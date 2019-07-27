@@ -3,12 +3,12 @@
 namespace Laravel\Nova;
 
 use Illuminate\Support\Carbon;
-use Laravel\Nova\Tools\Dashboard;
-use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Tools\ResourceManager;
 use Laravel\Nova\Actions\ActionResource;
+use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Tools\Dashboard;
+use Laravel\Nova\Tools\ResourceManager;
 
 class NovaServiceProvider extends ServiceProvider
 {
@@ -101,10 +101,10 @@ class NovaServiceProvider extends ServiceProvider
     protected function routeConfiguration()
     {
         return [
-            'namespace' => 'Laravel\Nova\Http\Controllers',
-            'domain' => config('nova.domain', null),
-            'as' => 'nova.api.',
-            'prefix' => 'nova-api',
+            'namespace'  => 'Laravel\Nova\Http\Controllers',
+            'domain'     => config('nova.domain', null),
+            'as'         => 'nova.api.',
+            'prefix'     => 'nova-api',
             'middleware' => 'nova',
         ];
     }
@@ -117,8 +117,8 @@ class NovaServiceProvider extends ServiceProvider
     protected function registerTools()
     {
         Nova::tools([
-            new Dashboard,
-            new ResourceManager,
+            new Dashboard(),
+            new ResourceManager(),
         ]);
     }
 
@@ -129,8 +129,8 @@ class NovaServiceProvider extends ServiceProvider
      */
     protected function registerCarbonMacros()
     {
-        Carbon::macro('firstDayOfQuarter', new Macros\FirstDayOfQuarter);
-        Carbon::macro('firstDayOfPreviousQuarter', new Macros\FirstDayOfPreviousQuarter);
+        Carbon::macro('firstDayOfQuarter', new Macros\FirstDayOfQuarter());
+        Carbon::macro('firstDayOfPreviousQuarter', new Macros\FirstDayOfPreviousQuarter());
     }
 
     /**
@@ -142,10 +142,10 @@ class NovaServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             Nova::provideToScript([
-                'timezone' => config('app.timezone', 'UTC'),
+                'timezone'     => config('app.timezone', 'UTC'),
                 'translations' => $this->getTranslations(),
                 'userTimezone' => Nova::resolveUserTimezone($event->request),
-                'pagination' => config('nova.pagination', 'links'),
+                'pagination'   => config('nova.pagination', 'links'),
             ]);
         });
     }
@@ -188,7 +188,7 @@ class NovaServiceProvider extends ServiceProvider
     {
         $translationFile = resource_path('lang/vendor/nova/'.app()->getLocale().'.json');
 
-        if (! is_readable($translationFile)) {
+        if (!is_readable($translationFile)) {
             return [];
         }
 

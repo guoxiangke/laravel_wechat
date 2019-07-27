@@ -2,13 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Models\LyMeta;
 use App\Models\LyAudio;
+use App\Models\LyMeta;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class LyAudioUpdateQueue implements ShouldQueue
 {
@@ -41,7 +41,7 @@ class LyAudioUpdateQueue implements ShouldQueue
         $metaUrl = 'https://txly2.net/';
         $metaUrl .= $code;
         $html = @file_get_contents($metaUrl);
-        if (! $html) {
+        if (!$html) {
             return;
         }
         $pq = \phpQuery::newDocumentHTML($html);
@@ -50,21 +50,21 @@ class LyAudioUpdateQueue implements ShouldQueue
             $texts = $pq->find($selector);
             $excerpt = trim($texts->find('p')->text());
             $excerpt = $excerpt ? $excerpt : trim($texts->find('.ss-title')->text());
-            if (! $excerpt) {
+            if (!$excerpt) {
                 continue;
             }
 
             $down_link = $texts->find('.ss-dl a')->attr('href');
             $pattern = '/'.$code.'(\d+)\.mp3/';
             preg_match($pattern, $down_link, $matches);
-            if (! isset($matches[1])) {
+            if (!isset($matches[1])) {
                 continue;
             }
             $play_at = (int) $matches[1]; //180805
             $tmpData = [
-                'excerpt'    => $excerpt,
-                'play_at'    => $play_at,
-                'target_id' => $target_id,
+                'excerpt'     => $excerpt,
+                'play_at'     => $play_at,
+                'target_id'   => $target_id,
                 'target_type' => LyMeta::class,
             ];
             LyAudio::updateOrCreate($tmpData);

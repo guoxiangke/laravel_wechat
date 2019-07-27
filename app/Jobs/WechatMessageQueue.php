@@ -4,11 +4,11 @@ namespace App\Jobs;
 
 use App\Models\WechatMessage;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class WechatMessageQueue implements ShouldQueue
 {
@@ -45,6 +45,7 @@ class WechatMessageQueue implements ShouldQueue
         array_pop($fillDataKeys); //不要create_time了
         $fillData = compact($fillDataKeys);
         $fillData['content'] = json_encode($message);
+
         try {
             WechatMessage::updateOrCreate($fillData);
         } catch (\Exception $e) {

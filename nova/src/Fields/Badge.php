@@ -9,9 +9,10 @@ class Badge extends Field
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|callable|null  $attribute
-     * @param  callable|null  $resolveCallback
+     * @param string               $name
+     * @param string|callable|null $attribute
+     * @param callable|null        $resolveCallback
+     *
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
@@ -63,8 +64,8 @@ class Badge extends Field
      */
     public $types = [
         'success' => 'bg-success-light text-success-dark',
-        'info' => 'bg-info-light text-info-dark',
-        'danger' => 'bg-danger-light text-danger-dark',
+        'info'    => 'bg-info-light text-info-dark',
+        'danger'  => 'bg-danger-light text-danger-dark',
         'warning' => 'bg-warning-light text-warning-dark',
     ];
 
@@ -72,6 +73,7 @@ class Badge extends Field
      * Set the badge types and their corresponding CSS classes.
      *
      * @param array $types
+     *
      * @return $this
      */
     public function types($types)
@@ -85,6 +87,7 @@ class Badge extends Field
      * Set the labels for each possible field value.
      *
      * @param array $labels
+     *
      * @return $this
      */
     public function labels($labels)
@@ -98,6 +101,7 @@ class Badge extends Field
      * Set the callback to be used to determine the field's displayable label.
      *
      * @param callable $labelCallback
+     *
      * @return $this
      */
     public function label(callable $labelCallback)
@@ -111,6 +115,7 @@ class Badge extends Field
      * Map the possible field values to the built-in badge types.
      *
      * @param array $map
+     *
      * @return $this
      */
     public function map($map)
@@ -158,7 +163,7 @@ class Badge extends Field
     public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
-            'label' => $this->resolveLabel(),
+            'label'     => $this->resolveLabel(),
             'typeClass' => $this->resolveBadgeClasses(),
         ]);
     }

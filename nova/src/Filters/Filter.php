@@ -2,14 +2,14 @@
 
 namespace Laravel\Nova\Filters;
 
-use JsonSerializable;
-use Laravel\Nova\Nova;
-use Laravel\Nova\Metable;
-use Illuminate\Http\Request;
-use Laravel\Nova\AuthorizedToSee;
 use Illuminate\Container\Container;
-use Laravel\Nova\ProxiesCanSeeToGate;
+use Illuminate\Http\Request;
+use JsonSerializable;
+use Laravel\Nova\AuthorizedToSee;
 use Laravel\Nova\Contracts\Filter as FilterContract;
+use Laravel\Nova\Metable;
+use Laravel\Nova\Nova;
+use Laravel\Nova\ProxiesCanSeeToGate;
 
 abstract class Filter implements FilterContract, JsonSerializable
 {
@@ -34,9 +34,10 @@ abstract class Filter implements FilterContract, JsonSerializable
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  mixed  $value
+     * @param \Illuminate\Http\Request              $request
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed                                 $value
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     abstract public function apply(Request $request, $query, $value);
@@ -44,7 +45,8 @@ abstract class Filter implements FilterContract, JsonSerializable
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     abstract public function options(Request $request);
@@ -99,10 +101,10 @@ abstract class Filter implements FilterContract, JsonSerializable
         $container = Container::getInstance();
 
         return array_merge([
-            'class' => $this->key(),
-            'name' => $this->name(),
+            'class'     => $this->key(),
+            'name'      => $this->name(),
             'component' => $this->component(),
-            'options' => collect($this->options($container->make(Request::class)))->map(function ($value, $key) {
+            'options'   => collect($this->options($container->make(Request::class)))->map(function ($value, $key) {
                 return is_array($value) ? ($value + ['value' => $key]) : ['name' => $key, 'value' => $value];
             })->values()->all(),
             'currentValue' => $this->default() ?? '',

@@ -10,8 +10,9 @@ class CustomerRevenue extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @param  \Laravel\Nova\Tests\Fixtures\User
+     *
      * @return mixed
      */
     public function calculate(Request $request, User $user)

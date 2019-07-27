@@ -10,7 +10,8 @@ class ResourceIndexController extends Controller
     /**
      * List the resources for administration.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
+     * @param \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function handle(ResourceIndexRequest $request)
@@ -20,20 +21,21 @@ class ResourceIndexController extends Controller
         );
 
         return response()->json([
-            'label' => $resource::label(),
-            'resources' => $paginator->getCollection()->mapInto($resource)->map->serializeForIndex($request),
+            'label'         => $resource::label(),
+            'resources'     => $paginator->getCollection()->mapInto($resource)->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
-            'per_page' => $paginator->perPage(),
-            'softDeletes' => $resource::softDeletes(),
+            'per_page'      => $paginator->perPage(),
+            'softDeletes'   => $resource::softDeletes(),
         ]);
     }
 
     /**
      * Get the paginator instance for the index request.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
-     * @param  string  $resource
+     * @param \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
+     * @param string                                           $resource
+     *
      * @return \Illuminate\Pagination\Paginator
      */
     protected function paginator(ResourceIndexRequest $request, $resource)

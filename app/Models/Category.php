@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslatedDescriptionField;
 use App\Traits\HasTranslatedNameField;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Traits\HasTranslatedDescriptionField;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -30,11 +29,11 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
+        return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 }

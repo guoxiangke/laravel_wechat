@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class AssetCommand extends Command
 {
@@ -33,11 +33,11 @@ class AssetCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(
+        (new Filesystem())->copyDirectory(
             __DIR__.'/asset-stubs',
             $this->assetPath()
         );
@@ -99,7 +99,7 @@ class AssetCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeAssetPath(),
+            'url'  => './'.$this->relativeAssetPath(),
         ];
 
         file_put_contents(
@@ -176,8 +176,9 @@ class AssetCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
+     *
      * @return void
      */
     protected function runCommand($command, $path)
@@ -196,9 +197,10 @@ class AssetCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
+     *
      * @return void
      */
     protected function replace($search, $replace, $path)

@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\UserPolicy;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceUpdateTest extends IntegrationTest
 {
@@ -22,14 +22,14 @@ class ResourceUpdateTest extends IntegrationTest
     public function test_can_update_resources()
     {
         $user = factory(User::class)->create([
-            'name' => 'Taylor Otwell',
+            'name'  => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
         ]);
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => 'David Hemphill',
-                            'email' => 'david@laravel.com',
+                            'name'     => 'David Hemphill',
+                            'email'    => 'david@laravel.com',
                             'password' => 'secret',
                         ]);
 
@@ -56,9 +56,9 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => 'Taylor Otwell',
-                            'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'name'       => 'Taylor Otwell',
+                            'email'      => 'taylor@laravel.com',
+                            'password'   => 'secret',
                             'restricted' => 'No',
                         ]);
 
@@ -76,9 +76,9 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => 'Taylor Otwell',
-                            'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'name'          => 'Taylor Otwell',
+                            'email'         => 'taylor@laravel.com',
+                            'password'      => 'secret',
                             '_retrieved_at' => now()->subHours(1)->getTimestamp(),
                         ]);
 
@@ -96,8 +96,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => 'Taylor Otwell',
-                            'email' => 'taylor@laravel.com',
+                            'name'     => 'Taylor Otwell',
+                            'email'    => 'taylor@laravel.com',
                             'password' => 'secret',
                         ]);
 
@@ -117,7 +117,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => $user3->id,
+                            'user'  => $user3->id,
                             'title' => 'Fake Title',
                         ]);
 
@@ -131,7 +131,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => $user->id,
+                            'user'  => $user->id,
                             'title' => 'Fake Title',
                         ]);
 
@@ -144,7 +144,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => $user->id,
+                            'user'  => $user->id,
                             'title' => 'Fake Title',
                         ]);
 
@@ -165,8 +165,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => 'Taylor Otwell',
-                            'email' => 'taylor@laravel.com',
+                            'name'     => 'Taylor Otwell',
+                            'email'    => 'taylor@laravel.com',
                             'password' => 'secret',
                         ]);
 
@@ -188,8 +188,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => $user->name,
-                            'email' => $user->email,
+                            'name'     => $user->name,
+                            'email'    => $user->email,
                             'password' => $user->password,
                         ]);
 
@@ -203,8 +203,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/users/'.$user->id, [
-                            'name' => $user->name,
-                            'email' => $user2->email,
+                            'name'     => $user->name,
+                            'email'    => $user2->email,
                             'password' => $user->password,
                         ]);
 
@@ -220,7 +220,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => $post->user->id,
+                            'user'  => $post->user->id,
                             'title' => 'Fake Title',
                         ]);
 
@@ -233,7 +233,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => 100,
+                            'user'  => 100,
                             'title' => 'Fake Title',
                         ]);
 
@@ -249,7 +249,7 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->putJson('/nova-api/posts/'.$post->id, [
-                            'user' => $post->user_id,
+                            'user'  => $post->user_id,
                             'title' => 'Fake Title',
                         ]);
 
@@ -275,8 +275,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
             ->putJson('/nova-api/users/'.$user->id, [
-                'name' => 'Taylor Otwell',
-                'email' => 'taylor@laravel.com',
+                'name'     => 'Taylor Otwell',
+                'email'    => 'taylor@laravel.com',
                 'password' => 'secret',
             ]);
 
@@ -289,8 +289,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
             ->putJson('/nova-api/users-with-redirects/'.$user->id, [
-                'name' => 'Taylor Otwell',
-                'email' => 'taylor@laravel.com',
+                'name'     => 'Taylor Otwell',
+                'email'    => 'taylor@laravel.com',
                 'password' => 'secret',
             ]);
 

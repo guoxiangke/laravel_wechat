@@ -9,12 +9,12 @@
 
 namespace App\Services\Wechat;
 
-use App\Services\Wechat;
 use App\Models\WechatAccount;
-use Illuminate\Support\Facades\Log;
+use App\Services\Wechat;
+use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use EasyWeChat\Kernel\Messages\Image;
 use Illuminate\Support\Facades\Cache;
-use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
+use Illuminate\Support\Facades\Log;
 
 class LyMessageReplyHandler implements EventHandlerInterface
 {
@@ -52,10 +52,10 @@ class LyMessageReplyHandler implements EventHandlerInterface
             if ($keyword == '金句' && $this->isCertified && $this->isLyApp) {
                 $cachedKeyword = $this->toUserName.'_'.$this->keyword;
                 $mediaId = $lyCache->get($cachedKeyword);
-                if (! $mediaId) {
+                if (!$mediaId) {
                     $image_file_path = storage_path().'/app/jinju/';
                     $image_file_path = $image_file_path.date('W').'.jpg';
-                    if (! file_exists($image_file_path)) {
+                    if (!file_exists($image_file_path)) {
                         $this->app->customer_service->message('消息好像还没准备好，请加小永微信： 13520055900 告诉俺')->to('oTjEwsycJgEpiKTzzisTRa8RP8y4')->send();
                     }
                     set_time_limit(0);
@@ -66,7 +66,7 @@ class LyMessageReplyHandler implements EventHandlerInterface
                         $lyCache->set($cachedKeyword, $mediaId, 43200); //3day 60*24*3
                     } else {
                         $reply = [
-                            'type'=>'text',
+                            'type'          => 'text',
                             'ga_data'       => [
                                 'category' => 'lyapi_ju',
                                 'action'   => 'error',
@@ -81,7 +81,7 @@ class LyMessageReplyHandler implements EventHandlerInterface
                 Log::error('金句', [$mediaId]);
                 // todo
                 $reply = [
-                    'type' => 'image',
+                    'type'      => 'image',
                     'ga_data'   => [
                         'category' => 'lyapi_ju',
                         'action'   => 'get',

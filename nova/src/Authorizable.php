@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova;
 
-use Illuminate\Support\Str;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Auth\Access\AuthorizationException;
 
 trait Authorizable
 {
@@ -17,18 +17,19 @@ trait Authorizable
      */
     public static function authorizable()
     {
-        return ! is_null(Gate::getPolicyFor(static::newModel()));
+        return !is_null(Gate::getPolicyFor(static::newModel()));
     }
 
     /**
      * Determine if the resource should be available for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizeToViewAny(Request $request)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return;
         }
 
@@ -40,12 +41,13 @@ trait Authorizable
     /**
      * Determine if the resource should be available for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public static function authorizedToViewAny(Request $request)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return true;
         }
 
@@ -57,10 +59,11 @@ trait Authorizable
     /**
      * Determine if the current user can view the given resource or throw an exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return void
      */
     public function authorizeToView(Request $request)
     {
@@ -70,7 +73,8 @@ trait Authorizable
     /**
      * Determine if the current user can view the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToView(Request $request)
@@ -81,10 +85,11 @@ trait Authorizable
     /**
      * Determine if the current user can create new resources or throw an exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return void
      */
     public static function authorizeToCreate(Request $request)
     {
@@ -94,7 +99,8 @@ trait Authorizable
     /**
      * Determine if the current user can create new resources.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public static function authorizedToCreate(Request $request)
@@ -109,10 +115,11 @@ trait Authorizable
     /**
      * Determine if the current user can update the given resource or throw an exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return void
      */
     public function authorizeToUpdate(Request $request)
     {
@@ -122,7 +129,8 @@ trait Authorizable
     /**
      * Determine if the current user can update the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToUpdate(Request $request)
@@ -133,10 +141,11 @@ trait Authorizable
     /**
      * Determine if the current user can delete the given resource or throw an exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return void
      */
     public function authorizeToDelete(Request $request)
     {
@@ -146,7 +155,8 @@ trait Authorizable
     /**
      * Determine if the current user can delete the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToDelete(Request $request)
@@ -157,7 +167,8 @@ trait Authorizable
     /**
      * Determine if the current user can restore the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToRestore(Request $request)
@@ -168,7 +179,8 @@ trait Authorizable
     /**
      * Determine if the current user can force delete the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToForceDelete(Request $request)
@@ -179,13 +191,14 @@ trait Authorizable
     /**
      * Determine if the user can add / associate models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest    $request
+     * @param \Illuminate\Database\Eloquent\Model|string $model
+     *
      * @return bool
      */
     public function authorizedToAdd(NovaRequest $request, $model)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return true;
         }
 
@@ -199,13 +212,14 @@ trait Authorizable
     /**
      * Determine if the user can attach any models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest    $request
+     * @param \Illuminate\Database\Eloquent\Model|string $model
+     *
      * @return bool
      */
     public function authorizedToAttachAny(NovaRequest $request, $model)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return true;
         }
 
@@ -219,13 +233,14 @@ trait Authorizable
     /**
      * Determine if the user can attach models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest    $request
+     * @param \Illuminate\Database\Eloquent\Model|string $model
+     *
      * @return bool
      */
     public function authorizedToAttach(NovaRequest $request, $model)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return true;
         }
 
@@ -239,14 +254,15 @@ trait Authorizable
     /**
      * Determine if the user can detach models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model|string  $model
-     * @param  string  $relationship
+     * @param \Laravel\Nova\Http\Requests\NovaRequest    $request
+     * @param \Illuminate\Database\Eloquent\Model|string $model
+     * @param string                                     $relationship
+     *
      * @return bool
      */
     public function authorizedToDetach(NovaRequest $request, $model, $relationship)
     {
-        if (! static::authorizable()) {
+        if (!static::authorizable()) {
             return true;
         }
 
@@ -260,11 +276,12 @@ trait Authorizable
     /**
      * Determine if the current user has a given ability.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $ability
-     * @return void
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $ability
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return void
      */
     public function authorizeTo(Request $request, $ability)
     {
@@ -274,8 +291,9 @@ trait Authorizable
     /**
      * Determine if the current user can view the given resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $ability
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $ability
+     *
      * @return bool
      */
     public function authorizedTo(Request $request, $ability)

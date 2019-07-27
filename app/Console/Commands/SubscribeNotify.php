@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\AlbumSubscription;
 use App\Jobs\SubscribeNotifyQueue;
+use App\Models\AlbumSubscription;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 class SubscribeNotify extends Command
@@ -48,7 +48,7 @@ class SubscribeNotify extends Command
                     $nowHour = date('H');
                     if ($nowHour == $sendAtHour) {
                         //取消关注的不再发送
-                        if ($subscription->user && ! $subscription->user->subscribe) {
+                        if ($subscription->user && !$subscription->user->subscribe) {
                             $subscription->delete();
                             Log::info(__FILE__, ['unsubscribed subscription, delete it!', $subscription->id, $subscription->user->profile->nickname]);
                             continue;

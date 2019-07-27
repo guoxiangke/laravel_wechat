@@ -7,9 +7,10 @@ class Gravatar extends Avatar
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  mixed|null  $resolveCallback
+     * @param string      $name
+     * @param string|null $attribute
+     * @param mixed|null  $resolveCallback
+     *
      * @return void
      */
     public function __construct($name = 'Avatar', $attribute = 'email', $resolveCallback = null)
@@ -24,8 +25,9 @@ class Gravatar extends Avatar
     /**
      * Resolve the given attribute from the given resource.
      *
-     * @param  mixed  $resource
-     * @param  string  $attribute
+     * @param mixed  $resource
+     * @param string $attribute
+     *
      * @return mixed
      */
     protected function resolveAttribute($resource, $attribute)

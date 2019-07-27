@@ -2,16 +2,17 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Laravel\Nova\Nova;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class MorphableController extends Controller
 {
     /**
      * List the available morphable resources for a given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(NovaRequest $request)
@@ -41,8 +42,9 @@ class MorphableController extends Controller
     /**
      * Determine if the query should include trashed models.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $associatedResource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $associatedResource
+     *
      * @return bool
      */
     protected function shouldIncludeTrashed(NovaRequest $request, $associatedResource)

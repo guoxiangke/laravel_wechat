@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova\Actions;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Http\Requests\ActionRequest;
 
 class DispatchAction
@@ -13,11 +13,12 @@ class DispatchAction
     /**
      * Dispatch the given action.
      *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param  \Laravel\Nova\Actions\Action $action
-     * @param  string $method
-     * @param  \Illuminate\Support\Collection $models
-     * @param  \Laravel\Nova\Fields\ActionFields $fields
+     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
+     * @param \Laravel\Nova\Actions\Action              $action
+     * @param string                                    $method
+     * @param \Illuminate\Support\Collection            $models
+     * @param \Laravel\Nova\Fields\ActionFields         $fields
+     *
      * @return mixed
      */
     public static function forModels(
@@ -36,7 +37,7 @@ class DispatchAction
         }
 
         return Transaction::run(function ($batchId) use ($fields, $request, $action, $method, $models) {
-            if (! $action->withoutActionEvents) {
+            if (!$action->withoutActionEvents) {
                 ActionEvent::createForModels($request, $action, $batchId, $models);
             }
 
@@ -49,16 +50,17 @@ class DispatchAction
     /**
      * Dispatch the given action in the background.
      *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @param  \Laravel\Nova\Actions\Action  $action
-     * @param  string  $method
-     * @param  \Illuminate\Support\Collection  $models
+     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
+     * @param \Laravel\Nova\Actions\Action              $action
+     * @param string                                    $method
+     * @param \Illuminate\Support\Collection            $models
+     *
      * @return void
      */
     protected static function queueForModels(ActionRequest $request, Action $action, $method, Collection $models)
     {
         return Transaction::run(function ($batchId) use ($request, $action, $method, $models) {
-            if (! $action->withoutActionEvents) {
+            if (!$action->withoutActionEvents) {
                 ActionEvent::createForModels($request, $action, $batchId, $models, 'waiting');
             }
 
@@ -74,7 +76,8 @@ class DispatchAction
     /**
      * Extract the queue connection for the action.
      *
-     * @param  \Laravel\Nova\Actions\Action  $action
+     * @param \Laravel\Nova\Actions\Action $action
+     *
      * @return string|null
      */
     protected static function connection($action)
@@ -85,7 +88,8 @@ class DispatchAction
     /**
      * Extract the queue name for the action.
      *
-     * @param  \Laravel\Nova\Actions\Action  $action
+     * @param \Laravel\Nova\Actions\Action $action
+     *
      * @return string|null
      */
     protected static function queue($action)

@@ -2,15 +2,14 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Nova;
 use Illuminate\Support\Carbon;
 use Laravel\Nova\Metrics\Metric;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\Fixtures\UserGrowth;
-use Laravel\Nova\Tests\Fixtures\CustomerRevenue;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricControllerTest extends IntegrationTest
 {
@@ -29,7 +28,7 @@ class MetricControllerTest extends IntegrationTest
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
         $this->assertEquals(TotalUsers::class, $response->original[0]->jsonSerialize()['class']);
-        $this->assertEquals((new TotalUsers)->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
+        $this->assertEquals((new TotalUsers())->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
         $this->assertFalse($response->original[0]->jsonSerialize()['onlyOnDetail']);
     }
 
@@ -41,7 +40,7 @@ class MetricControllerTest extends IntegrationTest
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
         $this->assertEquals(TotalUsers::class, $response->original[0]->jsonSerialize()['class']);
-        $this->assertEquals((new TotalUsers)->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
+        $this->assertEquals((new TotalUsers())->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
         $this->assertFalse($response->original[0]->jsonSerialize()['onlyOnDetail']);
     }
 
@@ -107,7 +106,7 @@ class MetricControllerTest extends IntegrationTest
 
     public function test_available_dashboard_cards_can_be_retrieved()
     {
-        Nova::cards([new TotalUsers]);
+        Nova::cards([new TotalUsers()]);
 
         $response = $this->withExceptionHandling()
                         ->get('/nova-api/cards');
@@ -119,7 +118,7 @@ class MetricControllerTest extends IntegrationTest
 
     public function test_available_dashboard_metrics_can_be_retrieved()
     {
-        Nova::cards([new TotalUsers]);
+        Nova::cards([new TotalUsers()]);
 
         $response = $this->withExceptionHandling()
                         ->get('/nova-api/metrics');
@@ -131,7 +130,7 @@ class MetricControllerTest extends IntegrationTest
 
     public function test_can_retrieve_dashboard_metric_value()
     {
-        Nova::cards([new TotalUsers]);
+        Nova::cards([new TotalUsers()]);
 
         $user = factory(User::class)->create();
 

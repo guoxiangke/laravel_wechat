@@ -24,8 +24,9 @@ class GlobalSearch
     /**
      * Create a new global search instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Support\Collection  $resources
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Support\Collection          $resources
+     *
      * @return void
      */
     public function __construct(NovaRequest $request, Collection $resources)
@@ -48,13 +49,13 @@ class GlobalSearch
                 $instance = new $resource($model);
 
                 $formatted[] = [
-                    'resourceName' => $resource::uriKey(),
+                    'resourceName'  => $resource::uriKey(),
                     'resourceTitle' => $resource::label(),
-                    'title' => $instance->title(),
-                    'subTitle' => $instance->subtitle(),
-                    'resourceId' => $model->getKey(),
-                    'url' => url(Nova::path().'/resources/'.$resource::uriKey().'/'.$model->getKey()),
-                    'avatar' => $instance->resolveAvatarUrl($this->request),
+                    'title'         => $instance->title(),
+                    'subTitle'      => $instance->subtitle(),
+                    'resourceId'    => $model->getKey(),
+                    'url'           => url(Nova::path().'/resources/'.$resource::uriKey().'/'.$model->getKey()),
+                    'avatar'        => $instance->resolveAvatarUrl($this->request),
                 ];
             }
         }

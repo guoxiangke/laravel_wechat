@@ -24,7 +24,8 @@ class PartitionResult implements JsonSerializable
     /**
      * Create a new partition result instance.
      *
-     * @param  array  $value
+     * @param array $value
+     *
      * @return void
      */
     public function __construct(array $value)
@@ -36,7 +37,8 @@ class PartitionResult implements JsonSerializable
     /**
      * Format the labels for the partition result.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
+     *
      * @return $this
      */
     public function label(Closure $callback)
@@ -51,7 +53,8 @@ class PartitionResult implements JsonSerializable
     /**
      * Set the custom label colors.
      *
-     * @param  array  $colors
+     * @param array $colors
+     *
      * @return $this
      */
     public function colors(array $colors)
@@ -75,7 +78,7 @@ class PartitionResult implements JsonSerializable
                     'label' => $label,
                     'value' => $value,
                 ], function ($value) {
-                    return ! is_null($value);
+                    return !is_null($value);
                 });
             })->values()->all(),
         ];

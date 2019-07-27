@@ -9,8 +9,9 @@ trait FillsFields
     /**
      * Fill a new model instance using the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return array
      */
     public static function fill(NovaRequest $request, $model)
@@ -24,8 +25,9 @@ trait FillsFields
     /**
      * Fill a new model instance using the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return array
      */
     public static function fillForUpdate(NovaRequest $request, $model)
@@ -39,9 +41,10 @@ trait FillsFields
     /**
      * Fill a new pivot model instance using the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  \Illuminate\Database\Eloquent\Relations\Pivot  $pivot
+     * @param \Laravel\Nova\Http\Requests\NovaRequest       $request
+     * @param \Illuminate\Database\Eloquent\Model           $model
+     * @param \Illuminate\Database\Eloquent\Relations\Pivot $pivot
+     *
      * @return array
      */
     public static function fillPivot(NovaRequest $request, $model, $pivot)
@@ -57,9 +60,10 @@ trait FillsFields
     /**
      * Fill the given fields for the model.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  \Illuminate\Support\Collection  $fields
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     * @param \Illuminate\Support\Collection          $fields
+     *
      * @return array
      */
     protected static function fillFields(NovaRequest $request, $model, $fields)

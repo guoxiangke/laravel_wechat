@@ -14,7 +14,8 @@ class Select extends Field
     /**
      * Set the options for the select menu.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return $this
      */
     public function options($options)

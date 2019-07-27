@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Traits\HasMorphsTargetField;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class WechatPayOrder extends Model
 {
@@ -28,7 +28,7 @@ class WechatPayOrder extends Model
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (! $this->user_id && Auth::user()) {
+        if (!$this->user_id && Auth::user()) {
             $this->user_id = Auth::user()->id;
         }
 

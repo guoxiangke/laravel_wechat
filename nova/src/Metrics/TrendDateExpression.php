@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Metrics;
 
+use Cake\Chronos\Chronos;
 use DateTime;
 use DateTimeZone;
-use Cake\Chronos\Chronos;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 
@@ -41,10 +41,11 @@ abstract class TrendDateExpression extends Expression
     /**
      * Create a new raw query expression.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $column
-     * @param  string  $unit
-     * @param  string  $timezone
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $column
+     * @param string                                $unit
+     * @param string                                $timezone
+     *
      * @return void
      */
     public function __construct(Builder $query, $column, $unit, $timezone)
@@ -72,7 +73,8 @@ abstract class TrendDateExpression extends Expression
     /**
      * Wrap the given value using the query's grammar.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     protected function wrap($value)

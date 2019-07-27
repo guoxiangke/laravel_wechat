@@ -2,15 +2,16 @@
 
 namespace Laravel\Nova\Exceptions;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\AuthenticationException as BaseAuthenticationException;
+use Illuminate\Support\Facades\Route;
 
 class AuthenticationException extends BaseAuthenticationException
 {
     /**
      * Render the exception.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request)

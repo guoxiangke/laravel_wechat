@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class ThemeCommand extends Command
 {
@@ -33,11 +33,11 @@ class ThemeCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(
+        (new Filesystem())->copyDirectory(
             __DIR__.'/theme-stubs',
             $this->themePath()
         );
@@ -86,7 +86,7 @@ class ThemeCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeThemePath(),
+            'url'  => './'.$this->relativeThemePath(),
         ];
 
         file_put_contents(
@@ -125,8 +125,9 @@ class ThemeCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
+     *
      * @return void
      */
     protected function runCommand($command, $path)
@@ -145,9 +146,10 @@ class ThemeCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
+     *
      * @return void
      */
     protected function replace($search, $replace, $path)

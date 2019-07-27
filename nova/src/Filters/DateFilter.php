@@ -16,7 +16,8 @@ abstract class DateFilter extends Filter
     /**
      * Set the first day of the week.
      *
-     * @param  int  $day
+     * @param int $day
+     *
      * @return $this
      */
     public function firstDayOfWeek($day)
@@ -27,7 +28,8 @@ abstract class DateFilter extends Filter
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function options(Request $request)

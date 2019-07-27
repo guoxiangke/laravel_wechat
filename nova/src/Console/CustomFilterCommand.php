@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class CustomFilterCommand extends Command
 {
@@ -33,11 +33,11 @@ class CustomFilterCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(
+        (new Filesystem())->copyDirectory(
             __DIR__.'/filter-stubs',
             $this->filterPath()
         );
@@ -50,7 +50,7 @@ class CustomFilterCommand extends Command
         $this->replace('{{ class }}', $this->filterClass(), $this->filterPath().'/src/Filter.stub');
         $this->replace('{{ component }}', $this->filterName(), $this->filterPath().'/src/Filter.stub');
 
-        (new Filesystem)->move(
+        (new Filesystem())->move(
             $this->filterPath().'/src/Filter.stub',
             $this->filterPath().'/src/'.$this->filterClass().'.php'
         );
@@ -101,7 +101,8 @@ class CustomFilterCommand extends Command
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
@@ -132,7 +133,7 @@ class CustomFilterCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeFilterPath(),
+            'url'  => './'.$this->relativeFilterPath(),
         ];
 
         file_put_contents(
@@ -209,8 +210,9 @@ class CustomFilterCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
+     *
      * @return void
      */
     protected function runCommand($command, $path)
@@ -229,9 +231,10 @@ class CustomFilterCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
+     *
      * @return void
      */
     protected function replace($search, $replace, $path)

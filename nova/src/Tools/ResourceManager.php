@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tools;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use Illuminate\Http\Request;
 
 class ResourceManager extends Tool
 {
@@ -39,7 +39,7 @@ class ResourceManager extends Tool
 
         return view('nova::resources.navigation', [
             'navigation' => $navigation,
-            'groups' => $groups,
+            'groups'     => $groups,
         ]);
     }
 }

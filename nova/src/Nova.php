@@ -2,18 +2,18 @@
 
 namespace Laravel\Nova;
 
-use ReflectionClass;
 use BadMethodCallException;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Nova\Events\ServingNova;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Support\Str;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Http\Middleware\RedirectIfAuthenticated;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use ReflectionClass;
+use Symfony\Component\Finder\Finder;
 
 class Nova
 {
@@ -142,13 +142,14 @@ class Nova
     {
         Route::aliasMiddleware('nova.guest', RedirectIfAuthenticated::class);
 
-        return new PendingRouteRegistration;
+        return new PendingRouteRegistration();
     }
 
     /**
      * Register an event listener for the Nova "serving" event.
      *
-     * @param  \Closure|string  $callback
+     * @param \Closure|string $callback
+     *
      * @return void
      */
     public static function serving($callback)
@@ -159,18 +160,19 @@ class Nova
     /**
      * Get meta data information about all resources for client side consumption.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function resourceInformation(Request $request)
     {
         return collect(static::$resources)->map(function ($resource) use ($request) {
             return array_merge([
-                'uriKey' => $resource::uriKey(),
-                'label' => $resource::label(),
-                'singularLabel' => $resource::singularLabel(),
+                'uriKey'             => $resource::uriKey(),
+                'label'              => $resource::label(),
+                'singularLabel'      => $resource::singularLabel(),
                 'authorizedToCreate' => $resource::authorizedToCreate($request),
-                'searchable' => $resource::searchable(),
+                'searchable'         => $resource::searchable(),
             ], $resource::additionalInformation($request));
         })->values()->all();
     }
@@ -178,7 +180,8 @@ class Nova
     /**
      * Get the resources available for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function availableResources(Request $request)
@@ -192,7 +195,8 @@ class Nova
     /**
      * Get the resources available for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function globallySearchableResources(Request $request)
@@ -206,20 +210,22 @@ class Nova
     /**
      * Register the given resources.
      *
-     * @param  array  $resources
+     * @param array $resources
+     *
      * @return static
      */
     public static function resources(array $resources)
     {
         static::$resources = array_merge(static::$resources, $resources);
 
-        return new static;
+        return new static();
     }
 
     /**
      * Get the available resource groups for the given request.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array
      */
     public static function groups(Request $request)
@@ -233,7 +239,8 @@ class Nova
     /**
      * Get the grouped resources available for the given request.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array
      */
     public static function groupedResources(Request $request)
@@ -247,7 +254,8 @@ class Nova
     /**
      * Register all of the resource classes in the given directory.
      *
-     * @param  string  $directory
+     * @param string $directory
+     *
      * @return void
      */
     public static function resourcesIn($directory)
@@ -256,7 +264,7 @@ class Nova
 
         $resources = [];
 
-        foreach ((new Finder)->in($directory)->files() as $resource) {
+        foreach ((new Finder())->in($directory)->files() as $resource) {
             $resource = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],
@@ -264,7 +272,7 @@ class Nova
             );
 
             if (is_subclass_of($resource, Resource::class) &&
-                ! (new ReflectionClass($resource))->isAbstract()) {
+                !(new ReflectionClass($resource))->isAbstract()) {
                 $resources[] = $resource;
             }
         }
@@ -277,7 +285,8 @@ class Nova
     /**
      * Get the resource class name for a given key.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return string
      */
     public static function resourceForKey($key)
@@ -290,7 +299,8 @@ class Nova
     /**
      * Get a new resource instance with the given model instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return \Laravel\Nova\Resource
      */
     public static function newResourceFromModel($model)
@@ -303,7 +313,8 @@ class Nova
     /**
      * Get the resource class name for a given model class.
      *
-     * @param  object|string  $class
+     * @param object|string $class
+     *
      * @return string
      */
     public static function resourceForModel($class)
@@ -326,7 +337,8 @@ class Nova
     /**
      * Get a resource instance for a given key.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return \Laravel\Nova\Resource|null
      */
     public static function resourceInstanceForKey($key)
@@ -339,7 +351,8 @@ class Nova
     /**
      * Get a fresh model instance for the resource with the given key.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public static function modelInstanceForKey($key)
@@ -352,7 +365,8 @@ class Nova
     /**
      * Get the available dashboard cards for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public static function availableDashboardCards(NovaRequest $request)
@@ -364,11 +378,12 @@ class Nova
      * Create a new user instance.
      *
      * @param  \Illuminate\Console\Command
+     *
      * @return mixed
      */
     public static function createUser($command)
     {
-        if (! static::$createUserCallback) {
+        if (!static::$createUserCallback) {
             static::createUserUsing();
         }
 
@@ -381,13 +396,14 @@ class Nova
     /**
      * Register the callbacks used to create a new user via the CLI.
      *
-     * @param  \Closure  $createUserCommandCallback
-     * @param  \Closure  $createUserCallback
+     * @param \Closure $createUserCommandCallback
+     * @param \Closure $createUserCallback
+     *
      * @return static
      */
     public static function createUserUsing($createUserCommandCallback = null, $createUserCallback = null)
     {
-        if (! $createUserCallback) {
+        if (!$createUserCallback) {
             $createUserCallback = $createUserCommandCallback;
             $createUserCommandCallback = null;
         }
@@ -398,7 +414,7 @@ class Nova
         static::$createUserCallback = $createUserCallback ??
                   static::defaultCreateUserCallback();
 
-        return new static;
+        return new static();
     }
 
     /**
@@ -431,9 +447,9 @@ class Nova
 
             $model = config("auth.providers.{$provider}.model");
 
-            return tap((new $model)->forceFill([
-                'name' => $name,
-                'email' => $email,
+            return tap((new $model())->forceFill([
+                'name'     => $name,
+                'email'    => $email,
                 'password' => Hash::make($password),
             ]))->save();
         };
@@ -442,20 +458,22 @@ class Nova
     /**
      * Set the callable that resolves the user's preferred timezone.
      *
-     * @param  callable  $userTimezoneCallback
+     * @param callable $userTimezoneCallback
+     *
      * @return static
      */
     public static function userTimezone($userTimezoneCallback)
     {
         static::$userTimezoneCallback = $userTimezoneCallback;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Resolve the user's preferred timezone.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return string|null
      */
     public static function resolveUserTimezone(Request $request)
@@ -468,7 +486,8 @@ class Nova
     /**
      * Register new tools with Nova.
      *
-     * @param  array  $tools
+     * @param array $tools
+     *
      * @return static
      */
     public static function tools(array $tools)
@@ -478,7 +497,7 @@ class Nova
             $tools
         );
 
-        return new static;
+        return new static();
     }
 
     /**
@@ -494,7 +513,8 @@ class Nova
     /**
      * Boot the available Nova tools.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return void
      */
     public static function bootTools(Request $request)
@@ -505,7 +525,8 @@ class Nova
     /**
      * Get the tools registered with Nova.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function availableTools(Request $request)
@@ -516,7 +537,8 @@ class Nova
     /**
      * Register new dashboard cards with Nova.
      *
-     * @param  array  $cards
+     * @param array $cards
+     *
      * @return static
      */
     public static function cards(array $cards)
@@ -526,7 +548,7 @@ class Nova
             $cards
         );
 
-        return new static;
+        return new static();
     }
 
     /**
@@ -542,7 +564,8 @@ class Nova
     /**
      * Get the cards registered with Nova.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function availableCards(Request $request)
@@ -563,7 +586,8 @@ class Nova
     /**
      * Get all of the available scripts that should be registered.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function availableScripts(Request $request)
@@ -584,7 +608,8 @@ class Nova
     /**
      * Get all of the available stylesheets that should be registered.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function availableStyles(Request $request)
@@ -595,48 +620,52 @@ class Nova
     /**
      * Register the given script file with Nova.
      *
-     * @param  string  $name
-     * @param  string  $path
+     * @param string $name
+     * @param string $path
+     *
      * @return static
      */
     public static function script($name, $path)
     {
         static::$scripts[$name] = $path;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Register the given remote script file with Nova.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return static
      */
     public static function remoteScript($path)
     {
         static::$scripts[md5($path)] = $path;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Register the given CSS file with Nova.
      *
-     * @param  string  $name
-     * @param  string  $path
+     * @param string $name
+     * @param string $path
+     *
      * @return static
      */
     public static function style($name, $path)
     {
         static::$styles[$name] = $path;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Get the JSON variables that should be provided to the global Nova JavaScript object.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function jsonVariables(Request $request)
@@ -649,21 +678,22 @@ class Nova
     /**
      * Provide additional variables to the global Nova JavaScript object.
      *
-     * @param  array  $variables
+     * @param array $variables
+     *
      * @return static
      */
     public static function provideToScript(array $variables)
     {
         if (empty(static::$jsonVariables)) {
             static::$jsonVariables = [
-                'base' => static::path(),
+                'base'   => static::path(),
                 'userId' => Auth::id() ?? null,
             ];
         }
 
         static::$jsonVariables = array_merge(static::$jsonVariables, $variables);
 
-        return new static;
+        return new static();
     }
 
     /**
@@ -675,13 +705,14 @@ class Nova
     {
         static::$runsMigrations = false;
 
-        return new static;
+        return new static();
     }
 
     /**
      * Humanize the given value into a proper name.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public static function humanize($value)
@@ -696,13 +727,14 @@ class Nova
     /**
      * Dynamically proxy static method calls.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return void
      */
     public static function __callStatic($method, $parameters)
     {
-        if (! property_exists(get_called_class(), $method)) {
+        if (!property_exists(get_called_class(), $method)) {
             throw new BadMethodCallException("Method {$method} does not exist.");
         }
 

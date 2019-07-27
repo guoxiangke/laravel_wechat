@@ -5,11 +5,11 @@ namespace App\Nova;
 use App\Models\Album;
 use App\Models\LyLts;
 use App\Models\LyMeta;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 
 class AlbumSubscriptions extends Resource
 {
@@ -57,13 +57,14 @@ class AlbumSubscriptions extends Resource
      */
     public static $searchRelations = [
         'user.profile' => ['nickname'],
-        'album' => ['title'],
+        'album'        => ['title'],
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -127,21 +128,23 @@ class AlbumSubscriptions extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
     {
         return [
-            new Metrics\NewSubscriptions,
-            new Metrics\SubscriptionsPerDay,
+            new Metrics\NewSubscriptions(),
+            new Metrics\SubscriptionsPerDay(),
         ];
     }
 
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function filters(Request $request)
@@ -152,7 +155,8 @@ class AlbumSubscriptions extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)
@@ -163,11 +167,12 @@ class AlbumSubscriptions extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)
     {
-        return [new Actions\AlbumSubscriptionToogleActive];
+        return [new Actions\AlbumSubscriptionToogleActive()];
     }
 }

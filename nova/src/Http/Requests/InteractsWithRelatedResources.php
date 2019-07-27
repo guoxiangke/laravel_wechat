@@ -29,7 +29,7 @@ trait InteractsWithRelatedResources
     public function findParentModel()
     {
         return once(function () {
-            if (! $this->viaRelationship()) {
+            if (!$this->viaRelationship()) {
                 return;
             }
 
@@ -80,7 +80,7 @@ trait InteractsWithRelatedResources
      */
     public function pivotName()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return Resource::DEFAULT_PIVOT_NAME;
         }
 

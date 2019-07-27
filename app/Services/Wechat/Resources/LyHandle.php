@@ -8,10 +8,10 @@
 
 namespace App\Services\Wechat\Resources;
 
-use App\Models\LyMeta;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Api\LyMetaController;
+use App\Models\LyMeta;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class LyHandle
 {
@@ -44,13 +44,13 @@ class LyHandle
             $moreLyLink = route('lymeta.index');
 
             return [
-                'type'=>'text',
+                'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lyapi_menu',
                     'action'   => '600',
                 ],
                 'offset'   => $offset,
-                'content'=> $menu_text."回复【】内编号获取相应资源\n不带【中括号】\n<a href='{$moreLyLink}'>更多节目介绍请点击</a>",
+                'content'  => $menu_text."回复【】内编号获取相应资源\n不带【中括号】\n<a href='{$moreLyLink}'>更多节目介绍请点击</a>",
             ];
         }
         // endregion
@@ -60,7 +60,7 @@ class LyHandle
         $LyMeta = $lyMetas[$key];
         $code = $LyMeta['code'];
         //region
-        if (! $code) {
+        if (!$code) {
             return;
         }
 
@@ -69,7 +69,7 @@ class LyHandle
             $cache = Cache::tags('lyaudio');
             $cacheKey = $keyword.'_'.$offset.($isLyApp ? '' : '_ly');
             $res = $cache->get($cacheKey);
-            if (! $res) {
+            if (!$res) {
                 $res = LyMetaController::get($code, $offset);
                 $cache->put($cacheKey, $res, now()->addMinutes(720));
                 Log::notice(__CLASS__, ['Cached LYitem', $cacheKey]);

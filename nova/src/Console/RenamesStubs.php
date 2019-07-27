@@ -14,7 +14,7 @@ trait RenamesStubs
     protected function renameStubs()
     {
         foreach ($this->stubsToRename() as $stub) {
-            (new Filesystem)->move($stub, str_replace('.stub', '.php', $stub));
+            (new Filesystem())->move($stub, str_replace('.stub', '.php', $stub));
         }
     }
 }

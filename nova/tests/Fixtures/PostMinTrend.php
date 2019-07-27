@@ -11,7 +11,8 @@ class PostMinTrend extends Trend
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function calculate(Request $request)
@@ -30,7 +31,7 @@ class PostMinTrend extends Trend
     public function ranges()
     {
         return $_SERVER['nova.postCountRanges'] ?? [
-            6 => 'Last 6 Months',
+            6  => 'Last 6 Months',
             12 => 'Last 12 Months',
         ];
     }

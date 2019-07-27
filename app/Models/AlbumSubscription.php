@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Traits\HasMorphsTargetField;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AlbumSubscription extends Model
@@ -78,7 +77,7 @@ class AlbumSubscription extends Model
 
     public function toogleActive()
     {
-        $this->active = ! $this->active;
+        $this->active = !$this->active;
         $this->save();
     }
 }

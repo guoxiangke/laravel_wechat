@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Fields;
 
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\PendingAttachment;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Trix\StorePendingAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Trix\DeleteAttachments;
+use Laravel\Nova\Trix\DetachAttachment;
+use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Laravel\Nova\Trix\PendingAttachment;
+use Laravel\Nova\Trix\StorePendingAttachment;
 
 class Trix extends Field implements DeletableContract
 {
@@ -66,7 +66,8 @@ class Trix extends Field implements DeletableContract
     /**
      * The disk that should be used to store attachments.
      *
-     * @param  string  $disk
+     * @param string $disk
+     *
      * @return $this
      */
     public function disk($disk)
@@ -79,7 +80,8 @@ class Trix extends Field implements DeletableContract
     /**
      * Specify the callback that should be used to store file attachments.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function attach(callable $callback)
@@ -94,7 +96,8 @@ class Trix extends Field implements DeletableContract
     /**
      * Specify the callback that should be used to delete a single, persisted file attachment.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function detach(callable $callback)
@@ -109,7 +112,8 @@ class Trix extends Field implements DeletableContract
     /**
      * Specify the callback that should be used to discard pending file attachments.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function discard(callable $callback)
@@ -124,7 +128,8 @@ class Trix extends Field implements DeletableContract
     /**
      * Specify the callback that should be used to delete the field.
      *
-     * @param  callable  $deleteCallback
+     * @param callable $deleteCallback
+     *
      * @return $this
      */
     public function delete(callable $deleteCallback)
@@ -139,7 +144,8 @@ class Trix extends Field implements DeletableContract
     /**
      * Specify that file uploads should not be allowed.
      *
-     * @param  string  $disk
+     * @param string $disk
+     *
      * @return $this
      */
     public function withFiles($disk = null)
@@ -160,10 +166,11 @@ class Trix extends Field implements DeletableContract
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $requestAttribute
+     * @param object                                  $model
+     * @param string                                  $attribute
+     *
      * @return void
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -190,7 +197,7 @@ class Trix extends Field implements DeletableContract
     {
         return array_merge(parent::jsonSerialize(), [
             'shouldShow' => $this->shouldBeExpanded(),
-            'withFiles' => $this->withFiles,
+            'withFiles'  => $this->withFiles,
         ]);
     }
 }

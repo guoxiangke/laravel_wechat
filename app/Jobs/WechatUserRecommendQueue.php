@@ -2,18 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use App\Models\Album;
-use App\Services\Wechat;
-use App\Models\WechatAccount;
-use Illuminate\Bus\Queueable;
 use App\Models\AlbumSubscription;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\User;
+use App\Models\WechatAccount;
+use App\Services\Wechat;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 
 class WechatUserRecommendQueue implements ShouldQueue
 {
@@ -102,7 +102,7 @@ class WechatUserRecommendQueue implements ShouldQueue
                 $openId = $user->name;
                 $type = 'text';
                 $res = [
-                    'custom_message' =>$content,
+                    'custom_message' => $content,
                 ];
                 Wechat::customMessage($res, $app, $openId);
             }
@@ -116,15 +116,15 @@ class WechatUserRecommendQueue implements ShouldQueue
         $totalPoints = $user->currentPoints();
         $nickname = $user->profile->nickname;
         $app->template_message->send([
-            'touser' => $user->profile->openid,
+            'touser'      => $user->profile->openid,
             'template_id' => 'XpRmCnx6kFbaFW2euenvH3uhcCol2aJrTLnTktMReyM',
-            'url' => $link,
-            'data' => [
-                'first' => '推荐成功, 您的积分账户变更如下',
+            'url'         => $link,
+            'data'        => [
+                'first'    => '推荐成功, 您的积分账户变更如下',
                 'keyword1' => $nickname,
                 'keyword2' => '获得'.User::POINT_PRE_USER_RECOMMEND.'积分',
                 'keyword3' => $totalPoints,
-                'remark' => ['感谢您的使用，永不止息，感恩有你！', '#173177'],
+                'remark'   => ['感谢您的使用，永不止息，感恩有你！', '#173177'],
             ],
         ]);
     }

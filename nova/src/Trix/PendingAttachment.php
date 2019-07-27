@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Trix;
 
-use Laravel\Nova\Fields\Trix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\Trix;
 
 class PendingAttachment extends Model
 {
@@ -25,9 +25,10 @@ class PendingAttachment extends Model
     /**
      * Persist the given draft's pending attachments.
      *
-     * @param  string  $draftId
-     * @param  \Laravel\Nova\Fields\Trix  $field
-     * @param  mixed  $model
+     * @param string                    $draftId
+     * @param \Laravel\Nova\Fields\Trix $field
+     * @param mixed                     $model
+     *
      * @return void
      */
     public static function persistDraft($draftId, Trix $field, $model)
@@ -38,18 +39,19 @@ class PendingAttachment extends Model
     /**
      * Persist the pending attachment.
      *
-     * @param  \Laravel\Nova\Fields\Trix  $field
-     * @param  mixed  $model
+     * @param \Laravel\Nova\Fields\Trix $field
+     * @param mixed                     $model
+     *
      * @return void
      */
     public function persist(Trix $field, $model)
     {
         Attachment::create([
             'attachable_type' => get_class($model),
-            'attachable_id' => $model->getKey(),
-            'attachment' => $this->attachment,
-            'disk' => $field->disk,
-            'url' => Storage::disk($field->disk)->url($this->attachment),
+            'attachable_id'   => $model->getKey(),
+            'attachment'      => $this->attachment,
+            'disk'            => $field->disk,
+            'url'             => Storage::disk($field->disk)->url($this->attachment),
         ]);
 
         $this->delete();

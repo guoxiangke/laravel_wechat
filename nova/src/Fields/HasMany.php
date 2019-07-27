@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Fields;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Contracts\ListableField;
 
 class HasMany extends Field implements ListableField
@@ -46,9 +46,10 @@ class HasMany extends Field implements ListableField
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  string|null  $resource
+     * @param string      $name
+     * @param string|null $attribute
+     * @param string|null $resource
+     *
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -65,7 +66,8 @@ class HasMany extends Field implements ListableField
     /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorize(Request $request)
@@ -78,8 +80,9 @@ class HasMany extends Field implements ListableField
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed       $resource
+     * @param string|null $attribute
+     *
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -107,11 +110,11 @@ class HasMany extends Field implements ListableField
     public function meta()
     {
         return array_merge([
-            'resourceName' => $this->resourceName,
+            'resourceName'        => $this->resourceName,
             'hasManyRelationship' => $this->hasManyRelationship,
-            'listable' => true,
-            'singularLabel' => $this->singularLabel ?? Str::singular($this->name),
-            'perPage'=> $this->resourceClass::$perPageViaRelationship,
+            'listable'            => true,
+            'singularLabel'       => $this->singularLabel ?? Str::singular($this->name),
+            'perPage'             => $this->resourceClass::$perPageViaRelationship,
         ], $this->meta);
     }
 }

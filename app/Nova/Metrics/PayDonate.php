@@ -2,8 +2,8 @@
 
 namespace App\Nova\Metrics;
 
-use Illuminate\Http\Request;
 use App\Models\WechatPayOrder;
+use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
 class PayDonate extends Partition
@@ -11,7 +11,8 @@ class PayDonate extends Partition
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function calculate(Request $request)
@@ -22,7 +23,7 @@ class PayDonate extends Partition
     /**
      * Determine for how many minutes the metric should be cached.
      *
-     * @return  \DateTimeInterface|\DateInterval|float|int
+     * @return \DateTimeInterface|\DateInterval|float|int
      */
     public function cacheFor()
     {

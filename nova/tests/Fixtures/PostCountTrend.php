@@ -11,7 +11,8 @@ class PostCountTrend extends Trend
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function calculate(Request $request)
@@ -19,7 +20,7 @@ class PostCountTrend extends Trend
         if ($request->resourceId) {
             $query = Post::where('user_id', $request->resourceId);
         } else {
-            $query = (new Post)->newQuery();
+            $query = (new Post())->newQuery();
         }
 
         return $this->count(
@@ -36,8 +37,8 @@ class PostCountTrend extends Trend
     public function ranges()
     {
         return $_SERVER['nova.postCountRanges'] ?? [
-            3 => 'Last 3 Months',
-            6 => 'Last 6 Months',
+            3  => 'Last 3 Months',
+            6  => 'Last 6 Months',
             12 => 'Last 12 Months',
         ];
     }

@@ -4,11 +4,11 @@ namespace App\Jobs;
 
 use App\Models\Gamp;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-// use Irazasyed\LaravelGAMP\Facades\GAMP;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+// use Irazasyed\LaravelGAMP\Facades\GAMP;
+use Illuminate\Queue\SerializesModels;
 
 class GampQueue implements ShouldQueue
 {
@@ -39,7 +39,7 @@ class GampQueue implements ShouldQueue
      */
     public function handle()
     {
-        $event = new Gamp;
+        $event = new Gamp();
         $event->client_id = $this->clientId;
         $event->category = $this->category;
         $event->action = $this->action;

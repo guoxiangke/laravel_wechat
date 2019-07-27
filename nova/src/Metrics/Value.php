@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Metrics;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 abstract class Value extends RangedMetric
 {
@@ -17,10 +17,11 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of an count aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string|null  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string|null                                  $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function count($request, $model, $column = null, $dateColumn = null)
@@ -31,10 +32,11 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of an average aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string                                       $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function average($request, $model, $column, $dateColumn = null)
@@ -45,10 +47,11 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a sum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string                                       $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function sum($request, $model, $column, $dateColumn = null)
@@ -59,10 +62,11 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a maximum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string                                       $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function max($request, $model, $column, $dateColumn = null)
@@ -73,10 +77,11 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a minimum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string                                       $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function min($request, $model, $column, $dateColumn = null)
@@ -87,16 +92,17 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a model over a given time frame.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $function
-     * @param  string|null  $column
-     * @param  string|null  $dateColumn
+     * @param \Illuminate\Http\Request                     $request
+     * @param \Illuminate\Database\Eloquent\Builder|string $model
+     * @param string                                       $function
+     * @param string|null                                  $column
+     * @param string|null                                  $dateColumn
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     protected function aggregate($request, $model, $function, $column = null, $dateColumn = null)
     {
-        $query = $model instanceof Builder ? $model : (new $model)->newQuery();
+        $query = $model instanceof Builder ? $model : (new $model())->newQuery();
 
         $column = $column ?? $query->getModel()->getQualifiedKeyName();
 
@@ -114,7 +120,8 @@ abstract class Value extends RangedMetric
     /**
      * Calculate the previous range and calculate any short-cuts.
      *
-     * @param  string|int  $range
+     * @param string|int $range
+     *
      * @return array
      */
     protected function previousRange($range)
@@ -159,7 +166,8 @@ abstract class Value extends RangedMetric
     /**
      * Calculate the current range and calculate any short-cuts.
      *
-     * @param  string|int  $range
+     * @param string|int $range
+     *
      * @return array
      */
     protected function currentRange($range)
@@ -204,7 +212,8 @@ abstract class Value extends RangedMetric
     /**
      * Create a new value metric result.
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function result($value)

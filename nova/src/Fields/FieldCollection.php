@@ -9,8 +9,9 @@ class FieldCollection extends Collection
     /**
      * Find a given field by its attribute.
      *
-     * @param  string  $attribute
-     * @param  mixed  $default
+     * @param string $attribute
+     * @param mixed  $default
+     *
      * @return \Laravel\Nova\Fields\Field|null
      */
     public function findFieldByAttribute($attribute, $default = null)

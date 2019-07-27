@@ -28,10 +28,10 @@ class LyLts extends Model
     ];
 
     const CATEGORY = [
-      0=>'基础课程',
-      1=>'本科课程',
-      2=>'进深课程',
-      3=>'专辑课程',
+      0=> '基础课程',
+      1=> '本科课程',
+      2=> '进深课程',
+      3=> '专辑课程',
     ];
 
     protected $attributes = [
