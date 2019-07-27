@@ -1,15 +1,16 @@
 <?php
+
 //todo delete!!!!
+
 namespace App\Jobs;
 
-use App\Services\WechatUserProfileHelper;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Services\WechatUserProfileHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
-use App\Models\User;
 
 class WechatUserSaveQueue implements ShouldQueue
 {
@@ -23,7 +24,7 @@ class WechatUserSaveQueue implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($openId, $recommendId=0)
+    public function __construct($openId, $recommendId = 0)
     {
         $this->openId = $openId;
         $this->recommendId = $recommendId;

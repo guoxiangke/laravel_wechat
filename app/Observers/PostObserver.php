@@ -16,10 +16,10 @@ class PostObserver
      */
     public function created(Post $post)
     {
-        if(!$post->slug){
-          $hashids = new Hashids(Config::get('app.name'), 11);
-          $post->slug = $hashids->encode($post->id, time());
-          $post->save();
+        if (! $post->slug) {
+            $hashids = new Hashids(Config::get('app.name'), 11);
+            $post->slug = $hashids->encode($post->id, time());
+            $post->save();
         }
     }
 }

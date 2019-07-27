@@ -2,25 +2,23 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasOne;
+use App\Models\Album;
+use App\Models\LyLts;
+use App\Models\LyMeta;
+use Spatie\TagsField\Tags;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Text;
-use Digitalazgroup\PlainText\PlainText;
-use Laravel\Nova\Fields\Textarea;
 // use Laravel\Nova\Fields\Trix;
 // use Manogi\Tiptap\Tiptap;
-use Vexilo\NovaFroalaEditor\NovaFroalaEditor;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\File;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Spatie\TagsField\Tags;
-use App\Models\LyMeta;
-use App\Models\LyLts;
-use App\Models\Album;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
+use Digitalazgroup\PlainText\PlainText;
+use Vexilo\NovaFroalaEditor\NovaFroalaEditor;
 
 class Posts extends Resource
 {
@@ -58,7 +56,7 @@ class Posts extends Resource
      * @var array
      */
     public static $search = [
-        'title','youtube_vid'
+        'title', 'youtube_vid',
     ];
 
     /**
@@ -79,16 +77,18 @@ class Posts extends Resource
     public function fields(Request $request)
     {
         $className = 'posts';
+
         return [
             ID::make()->sortable(),
-            Text::make('标题','title', function () {
+            Text::make('标题', 'title', function () {
                 $url = config('app.url').'/posts/'.$this->slug;
-                return '<span class="whitespace-no-wrap text-left"> <a target="_blank" href="'. $url .'?admin=1">'.$this->title.'</a></span>';
+
+                return '<span class="whitespace-no-wrap text-left"> <a target="_blank" href="'.$url.'?admin=1">'.$this->title.'</a></span>';
             })->asHtml()->onlyOnIndex(),
 
-            Text::make('标题','title')->hideFromIndex(),
-            Textarea::make('摘要','excerpt')->help('图文摘要部分,可为空'),
-            NovaFroalaEditor::make('正文','body')
+            Text::make('标题', 'title')->hideFromIndex(),
+            Textarea::make('摘要', 'excerpt')->help('图文摘要部分,可为空'),
+            NovaFroalaEditor::make('正文', 'body')
                 ->options([
                     'heightMin' => 500,
                     'toolbarButtons' => ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', 'lineHeight', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', 'insertTable', '|', 'emoticons', 'fontAwesome', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'print', 'getPDF', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
@@ -103,7 +103,7 @@ class Posts extends Resource
 
             BelongsTo::make('分类', 'category', Categories::class)
                 ->nullable(),
-            Number::make('专辑顺序','order')
+            Number::make('专辑顺序', 'order')
                 ->min(1)->step(1)
                 ->sortable()
                 ->help('从小到大,默认是1'),
@@ -115,15 +115,15 @@ class Posts extends Resource
             ])->hideFromIndex(),
             Number::make('Target_Id')->min(1)->step(1)->hideFromIndex(),
 
-            Select::make('状态','status')->options([
+            Select::make('状态', 'status')->options([
                 'PUBLISHED' => '发布',
                 'DRAFT' => '草稿',
                 'PENDING' => '审核中',
             ]),
-            Tags::make('标签','Tags')
+            Tags::make('标签', 'Tags')
                 ->help('输入回车添加,可多个'),
             Image::make('image')
-                ->path(static::get_path('images',$className))
+                ->path(static::get_path('images', $className))
                 ->help('可为空'),
             Text::make('image_url')->onlyOnForms()->help('URL地址,可为空'),
 
@@ -132,18 +132,19 @@ class Posts extends Resource
             //     if($this->target_type)
             //         return $this->target_type::ModelName;
             // })->onlyOnIndex(),
-            Text::make('Target_Id',function(){
-                if($this->album && $this->target_type == Album::class){
+            Text::make('Target_Id', function () {
+                if ($this->album && $this->target_type == Album::class) {
                     return $this->album->title;
                 }
-                if($this->lymeta && in_array($this->target_type,[LyMeta::class, LyLts::class])){
+                if ($this->lymeta && in_array($this->target_type, [LyMeta::class, LyLts::class])) {
                     return $this->lymeta->name;
                 }
+
                 return $this->target_id;
             })->onlyOnIndex(),
 
             File::make('mp3')
-                ->path(static::get_path('mp3',$className))
+                ->path(static::get_path('mp3', $className))
                 ->help('可为空'),
             Text::make('mp3_url')->onlyOnForms()->help('URL地址,可为空'),
             Text::make('mp4_url')->onlyOnForms()->help('URL地址,可为空'),
@@ -156,37 +157,39 @@ class Posts extends Resource
             Text::make('origin_url')->onlyOnForms()->help('URL地址,可为空'),
 
             //公众号uid
-            BelongsTo::make('公号','author',  Users::class)->nullable()->onlyOnForms(),
-            PlainText::make('author', function(){
-                    if($user = $this->author){
-                        if($ghprofile = $user->ghprofile){
-                            return $ghprofile->nickname;
-                        }
+            BelongsTo::make('公号', 'author', Users::class)->nullable()->onlyOnForms(),
+            PlainText::make('author', function () {
+                if ($user = $this->author) {
+                    if ($ghprofile = $user->ghprofile) {
+                        return $ghprofile->nickname;
                     }
-                    return $this->author_id?:'';
-                }),
-            PlainText::make('User_id',function(){
-                    if($this->user){
-                        return $this->user->profile->nickname;
-                    }
-                    return $this->user_id?:'';
-                }),
-            PlainText::make('modified_id',function(){
-                    if($this->modifier){
-                        return $this->modifier->profile->nickname;
-                    }
-                    return $this->modified_id?:'';
-                }),
+                }
 
+                return $this->author_id ?: '';
+            }),
+            PlainText::make('User_id', function () {
+                if ($this->user) {
+                    return $this->user->profile->nickname;
+                }
 
-            Text::make('营销标题','seo_title')->help('可为空'),
+                return $this->user_id ?: '';
+            }),
+            PlainText::make('modified_id', function () {
+                if ($this->modifier) {
+                    return $this->modifier->profile->nickname;
+                }
+
+                return $this->modified_id ?: '';
+            }),
+
+            Text::make('营销标题', 'seo_title')->help('可为空'),
             Text::make('meta_description')->help('可为空'),
             Text::make('meta_keywords')->help('可为空'),
 
-
-            Text::make('标题','title', function () {
+            Text::make('标题', 'title', function () {
                 $url = config('app.url').'/posts/'.$this->slug;
-                return '<span class="whitespace-no-wrap text-left"> <a target="_blank" href="'. $url .'?admin=1">'.$this->title.'</a></span>';
+
+                return '<span class="whitespace-no-wrap text-left"> <a target="_blank" href="'.$url.'?admin=1">'.$this->title.'</a></span>';
             })->asHtml()->onlyOnIndex(),
         ];
     }

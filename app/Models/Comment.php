@@ -5,14 +5,12 @@ namespace App\Models;
 // use Actuallymab\LaravelComment\Commentable;
 // use Actuallymab\LaravelComment\Models\Comment as LaravelComment;
 use Carbon\Carbon;
-use App\Models\User;
 
 class Comment // extends LaravelComment
 {
     // use Commentable;
     protected $canBeRated = true;
     protected $mustBeApproved = true;
-
 
     public function user()
     {
@@ -25,9 +23,9 @@ class Comment // extends LaravelComment
     }
 
     //N minutes ago
-    public function getCreatedAtAttribute($date) {
+    public function getCreatedAtAttribute($date)
+    {
         return Carbon::parse($date)->format('m/d H:i');
         // return Carbon::parse($date)->diffForHumans();
     }
-
 }

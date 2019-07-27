@@ -31,7 +31,7 @@ Route::get('/users', function () {
 Route::get('/ly/code/all', 'Api\LyMetaController@all');
 
 Route::resources([
-    'posts' => 'Api\PostController'
+    'posts' => 'Api\PostController',
 ]);
 // Route::get('/posts', 'PostController@index');//list
 // Route::get('/posts/{id}', 'PostController@show');//list one

@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\WechatUserProfileQueue;
 use App\Models\User;
-use App\Models\WechatAccount;
 use App\Services\Wechat;
+use App\Models\WechatAccount;
+use App\Jobs\WechatUserProfileQueue;
+use Illuminate\Support\Facades\Auth;
+use EasyWeChat\Kernel\Messages\Message;
 use App\Services\Wechat\MessageLogHandler;
+use App\Services\Wechat\LinkMessageHandler;
 use App\Services\Wechat\MessageReplyHandler;
 use App\Services\Wechat\LyMessageReplyHandler;
-use App\Services\Wechat\LinkMessageHandler;
-use App\Services\Wechat\MessageUserHandler;
-use EasyWeChat\Kernel\Messages\Message;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 
 class WechatController extends Controller
 {
     /**
-     * 处理微信的请求消息
+     * 处理微信的请求消息.
      *
      * @return string
      */
@@ -30,7 +27,7 @@ class WechatController extends Controller
         if ($wechatAccount) {
             /* @var $app \EasyWeChat\officialAccount\Application */
             $app = Wechat::init($wechatAccount);
-        }else{
+        } else {
             /* @var $app \EasyWeChat\officialAccount\Application */
             $app = app('wechat.official_account');
         }
@@ -44,7 +41,7 @@ class WechatController extends Controller
 
         $message = $server->getMessage();
         //第一次微信验证token没有msg_id，不记录！
-        if(is_array($message) && isset($message['MsgType'])) {
+        if (is_array($message) && isset($message['MsgType'])) {
             $server->push(MessageReplyHandler::class);
             /*
             //良友知音定制回复
@@ -60,24 +57,26 @@ class WechatController extends Controller
             }*/
         }
         $response = $server->serve();
+
         return $response;
     }
 
     /**
-     * 微信自动登录网页
+     * 微信自动登录网页.
      */
-    public function login () {
+    public function login()
+    {
         $wechatUser = session('wechat.oauth_user.default');
         $openId = $wechatUser['id'];
         $user = User::where('name', $openId)->first();
-        if(!$user){
+        if (! $user) {
             $user = User::newUser($openId);
             WechatUserProfileQueue::dispatch($user)->delay(now()->addSeconds(10));
         }
-        if($user){
+        if ($user) {
             Auth::login($user);
         }
+
         return redirect()->intended('home');
     }
-
 }

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
 use App\Services\Wechat;
+use Illuminate\Http\Request;
 // use App\Models\Comment;
-use App\Models\User;
-
 
 class PostController extends Controller
 {
@@ -56,8 +54,8 @@ class PostController extends Controller
         $imgUrl = $post->getImageUrl();
         $post->image_url = proximage($imgUrl)->width(960)->get();
         $title = $post->title;
-        if($album = $post->album()->first()){
-            $title = $post->title . '('.$post->getIndex().'/'. $album->getPostCounts() .')';
+        if ($album = $post->album()->first()) {
+            $title = $post->title.'('.$post->getIndex().'/'.$album->getPostCounts().')';
         }
 
         $shareData = [
@@ -65,22 +63,22 @@ class PostController extends Controller
             'link' => $link,
             'imgUrl' => $imgUrl,
         ];
-        return view('posts.show',[
+
+        return view('posts.show', [
             'title' => $title,
             'post' => $post,
             'video' => $video,
             'audio' => $audio,
             'album' => $album,
             'shareData' => $shareData,
-            'signPackage' => $signPackage
+            'signPackage' => $signPackage,
         ]);
     }
-
-
 
     public function showSlug($slugString)
     {
         $post = Post::whereSlug($slugString)->firstOrFail();
+
         return $this->show($post);
     }
 

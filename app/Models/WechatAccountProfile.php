@@ -10,5 +10,5 @@ class WechatAccountProfile extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['nickname','to_user_name','head_img_url','app_id','description'];
+    protected $fillable = ['nickname', 'to_user_name', 'head_img_url', 'app_id', 'description'];
 }

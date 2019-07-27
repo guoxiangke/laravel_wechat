@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +9,7 @@ class Page extends Model
 {
     public const ModelName = '页面类型';
 
-    protected $fillable = ['user_id','slug','image','title','excerpt','body','meta_description','meta_keywords','status'];
+    protected $fillable = ['user_id', 'slug', 'image', 'title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'status'];
 
     /**
      * Statuses.
@@ -25,14 +26,12 @@ class Page extends Model
 
     protected $guarded = [];
 
-
-
     public function save(array $options = [])
     {
         //todo $newsItem->addMedia($pathToFile)->toMediaCollection('images');
 
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (!$this->user_id && Auth::user()) {
+        if (! $this->user_id && Auth::user()) {
             $this->user_id = Auth::user()->id;
         }
 

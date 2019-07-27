@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SubscribeNotifyQueue;
-use App\Models\AlbumSubscription;
 use Illuminate\Console\Command;
+use App\Models\AlbumSubscription;
+use App\Jobs\SubscribeNotifyQueue;
 use Illuminate\Support\Facades\Log;
 
 class SubscribeNotify extends Command
@@ -40,26 +40,26 @@ class SubscribeNotify extends Command
      */
     public function handle()
     {
-        AlbumSubscription::where('active',true)
+        AlbumSubscription::where('active', true)
             ->where('price', '>=', 0)
             ->chunk(100, function ($subscriptions) {
-            foreach ($subscriptions as $subscription){
-                $sendAtHour = $subscription->send_at;
-                $nowHour = date('H');
-                if($nowHour == $sendAtHour){
-                    //取消关注的不再发送
-                    if($subscription->user && !$subscription->user->subscribe){
-                        $subscription->delete();
-                        Log::info(__FILE__, ['unsubscribed subscription, delete it!', $subscription->id,$subscription->user->profile->nickname]);
-                        continue;
-                    }
-                    if($subscription->rrule){
-                        // todo
-                    }else{
-                        SubscribeNotifyQueue::dispatch($subscription);
+                foreach ($subscriptions as $subscription) {
+                    $sendAtHour = $subscription->send_at;
+                    $nowHour = date('H');
+                    if ($nowHour == $sendAtHour) {
+                        //取消关注的不再发送
+                        if ($subscription->user && ! $subscription->user->subscribe) {
+                            $subscription->delete();
+                            Log::info(__FILE__, ['unsubscribed subscription, delete it!', $subscription->id, $subscription->user->profile->nickname]);
+                            continue;
+                        }
+                        if ($subscription->rrule) {
+                            // todo
+                        } else {
+                            SubscribeNotifyQueue::dispatch($subscription);
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 }

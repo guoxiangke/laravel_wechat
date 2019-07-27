@@ -4,12 +4,11 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Textarea;
 
 class WechatAccounts extends Resource
@@ -48,6 +47,7 @@ class WechatAccounts extends Resource
     public function fields(Request $request)
     {
         $className = 'wechat';
+
         return [
             ID::make()->sortable(),
             Text::make('Name')
@@ -62,34 +62,36 @@ class WechatAccounts extends Resource
                 ->creationRules('required', 'string', 'min:6'),
             Boolean::make('Is_Certified'),
             Image::make('image_qr')
-                ->path(static::get_path('image_qr',$className))
+                ->path(static::get_path('image_qr', $className))
                 ->help('可为空'),
             Code::make('Menu')->json(),
             Code::make('Resources')->json(),
         ];
     }
+
     private function schema(): array
     {
         return [
-             "type" => "object",
-             "required" => ["lymeta","lylts",'comment',"subscribe"],
-             "properties" => [
-                "lymeta" =>[
-                    "type"=> "integer",
+             'type' => 'object',
+             'required' => ['lymeta', 'lylts', 'comment', 'subscribe'],
+             'properties' => [
+                'lymeta' =>[
+                    'type'=> 'integer',
                 ],
-                "lylts" =>[
-                    "type"=> "integer",
+                'lylts' =>[
+                    'type'=> 'integer',
                 ],
-                "comment" =>[
-                    "type"=> "integer",
+                'comment' =>[
+                    'type'=> 'integer',
                 ],
-                "subscribe" =>[
-                    "type"=> "integer",
-                ]
+                'subscribe' =>[
+                    'type'=> 'integer',
+                ],
              ],
 
         ];
     }
+
     /**
      * Get the cards available for the request.
      *

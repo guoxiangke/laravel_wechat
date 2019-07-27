@@ -1,19 +1,22 @@
 <?php
+
 //todo delet!
+
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class LyAudioDownloadQueue implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $code;
+
     /**
      * Create a new job instance.
      *
@@ -34,18 +37,20 @@ class LyAudioDownloadQueue implements ShouldQueue
         $code = $this->code;
 
         $dateStr = date('ymd'); //161129
-        $mp3file = $code . $dateStr . '.mp3'; //ee181016.mp3
+        $mp3file = $code.$dateStr.'.mp3'; //ee181016.mp3
         $year = date('Y');
         //http://txly2.net/ly/audio/2018/ee/ee181016.mp3
         $url = "https://txly2.net/ly/audio/$year/$code/$mp3file";
         $headers = @get_headers($url)
             or die("Unable to connect to $url");
-        if ($headers[0] != 'HTTP/1.1 200 OK') return;
-        Log::info('LyAudioDownloadQueue', ['Curl:download begin '. $url]);
+        if ($headers[0] != 'HTTP/1.1 200 OK') {
+            return;
+        }
+        Log::info('LyAudioDownloadQueue', ['Curl:download begin '.$url]);
         $downloadPath = "/tmp/$mp3file";
 
         // open file descriptor
-        $fp = fopen ($downloadPath, 'w+') or die('Unable to write a file');
+        $fp = fopen($downloadPath, 'w+') or die('Unable to write a file');
         // file to download
         $ch = curl_init($url);
         // enable SSL if needed
@@ -60,7 +65,7 @@ class LyAudioDownloadQueue implements ShouldQueue
         curl_setopt($ch, CURLOPT_VERBOSE, true);
         curl_exec($ch);
         //If there was an error, throw an Exception
-        if(curl_errno($ch)){
+        if (curl_errno($ch)) {
             throw new Exception(curl_error($ch));
         }
 
@@ -70,9 +75,9 @@ class LyAudioDownloadQueue implements ShouldQueue
         //Close the cURL handler.
         curl_close($ch);
 
-        if($statusCode == 200){
+        if ($statusCode == 200) {
             Log::info('LyAudioDownloadQueue', ['Curl:Downloaded '.$mp3file]);
-        } else{
+        } else {
             Log::error('LyAudioDownloadQueue', ['Curl Code '.$statusCode]);
         }
         fclose($fp);

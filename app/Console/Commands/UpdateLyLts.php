@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\LyLts;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 class UpdateLyLts extends Command
@@ -47,8 +47,9 @@ class UpdateLyLts extends Command
             'http://www.729ly.net/Template/Shared/images/programs/lts_dp_prog_banner.png',
             'http://www.729ly.net/Template/Shared/images/programs/lts_hdp_prog_banner.png',
         ];
-        if(!count($apiData)){
+        if (! count($apiData)) {
             Log::error(__FILE__, [__FUNCTION__, __LINE__, $apiData, 'wechat.edu.pl error']);
+
             return false;
         }
         foreach ($apiData as $data) {
@@ -57,15 +58,14 @@ class UpdateLyLts extends Command
 
             $data['category'] = array_search($data['category'], LyLts::CATEGORY);
             $data['image'] = $imageLinks[$data['category']];
-            if($ltsModel){
+            if ($ltsModel) {
                 foreach ($data as $key => $value) {
                     $ltsModel->{$key} = $value;
                 }
                 $ltsModel->save();
-            }else{
+            } else {
                 LyLts::updateOrCreate($data);
             }
-
         }
     }
 }

@@ -3,11 +3,9 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Date;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
-
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
 
 class PlanSubscriptions extends Resource
 {
@@ -45,16 +43,17 @@ class PlanSubscriptions extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Avatar', function () {
-                if($this->profile){
+                if ($this->profile) {
                     return '<img style="max-width:45px;" src="'.$this->profile->headimgurl.'"></img>';
                 }
             })->asHtml(),
-            Text::make('User_Id',function(){
-                if($this->profile){
+            Text::make('User_Id', function () {
+                if ($this->profile) {
                     return $this->profile->nickname;
                 }
+
                 return $this->user_id;
-                })
+            })
                 ->rules('required', 'max:255'),
             Text::make('Plan_id')->onlyOnIndex(),
             Text::make('Slug')->onlyOnIndex(),

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\LyAudio;
 use App\Models\LyMeta;
+use App\Models\LyAudio;
+use Illuminate\Console\Command;
 
 class LyMwArticle extends Command
 {
@@ -39,23 +39,24 @@ class LyMwArticle extends Command
      */
     public function handle()
     {
-        $page = $this->argument('page')??0;
+        $page = $this->argument('page') ?? 0;
+
         return $this->devotionals_handle('mw', $page);
     }
 
-    public function devotionals_handle($code = 'mw', $page=0){
+    public function devotionals_handle($code = 'mw', $page = 0)
+    {
         $page *= 10;
         $url = "https://r.729ly.net/devotionals/devotionals-{$code}?start={$page}";
         $html = @file_get_contents($url) or die("error file_get_contents $link");
         $pq = \phpQuery::newDocumentHTML($html);
         $selector = '.list-title a';
-        foreach($pq->find($selector) as $link) {
+        foreach ($pq->find($selector) as $link) {
             $title = pq($link)->text();
             $detailLink = pq($link)->attr('href');
             // $detailLink = 'devotionals/devotionals-psalm/devotionals-psalm190202';
-            preg_match('/\d{6}/',$detailLink,$matches);
+            preg_match('/\d{6}/', $detailLink, $matches);
             $date = $matches[0];
-
 
             $audio = LyAudio::firstOrNew(
                 [
@@ -65,11 +66,10 @@ class LyMwArticle extends Command
                 ]
             );
 
-            $detailLink = 'https://r.729ly.net/' . $detailLink;
+            $detailLink = 'https://r.729ly.net/'.$detailLink;
             // // $title = '2019年2月2日：仰望神，靠祂得胜（诗19:7-14）';
-            if(!$audio->excerpt){
-
-                $title = explode('：',$title);
+            if (! $audio->excerpt) {
+                $title = explode('：', $title);
                 $title = $title[1];
                 $audio->excerpt = trim($title);
             }
@@ -83,7 +83,7 @@ class LyMwArticle extends Command
             $body = $pq->find($selector)->htmlOuter();
             $audio->body = $body;
             $audio->save();
-            \Log::debug(__CLASS__,[__LINE__, $audio->id, $audio->excerpt, $date]);
+            \Log::debug(__CLASS__, [__LINE__, $audio->id, $audio->excerpt, $date]);
         }
     }
 }

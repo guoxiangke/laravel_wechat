@@ -2,9 +2,9 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\AlbumSubscription;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
+use App\Models\AlbumSubscription;
 
 class NewSubscriptions extends Value
 {
@@ -44,7 +44,7 @@ class NewSubscriptions extends Value
      */
     public function cacheFor()
     {
-         return now()->addMinutes(60);
+        return now()->addMinutes(60);
     }
 
     /**

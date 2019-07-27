@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Post;
 use App\Services\ZhConvert;
+use Illuminate\Console\Command;
+
 class DailyMessageGet extends Command
 {
     /**
@@ -42,21 +43,23 @@ class DailyMessageGet extends Command
         $zhConvert = new ZhConvert();
         $year = date('Y');
         $month = date('m');
-        for($i=$month;$i<=$month;$i++){
-            $month = str_pad($i,2,0,STR_PAD_LEFT);
+        for ($i = $month; $i <= $month; $i++) {
+            $month = str_pad($i, 2, 0, STR_PAD_LEFT);
             $listUrl = "https://www.tpehoc.org.tw/{$year}/{$month}";
-            for($j=1;$j<=4;$j++){
+            for ($j = 1; $j <= 4; $j++) {
                 //最多4页
-                if($j!=1) $listUrl = "https://www.tpehoc.org.tw/{$year}/{$month}/page/{$j}";
+                if ($j != 1) {
+                    $listUrl = "https://www.tpehoc.org.tw/{$year}/{$month}/page/{$j}";
+                }
                 //get title expert & detailLink
                 $html = get_html($listUrl);
-                if(!$html){
-                    \Log::error(__LINE__,[$i,$j,$listUrl,$html]);
+                if (! $html) {
+                    \Log::error(__LINE__, [$i, $j, $listUrl, $html]);
                     continue;
                 }
                 $pq = \phpQuery::newDocumentHTML($html);
                 $selector = '.list-item .post-content-outer';
-                foreach($pq->find($selector) as $selected) {
+                foreach ($pq->find($selector) as $selected) {
                     $title = $zhConvert->convert(pq($selected)->find('h3 a:first')->attr('title'));
                     $titles = explode(' ', $title);
                     $dates = explode('/', array_shift($titles));
@@ -65,18 +68,18 @@ class DailyMessageGet extends Command
                     $month = $dates[0];
                     $day = $dates[1];
                     // $day = '30创世记';
-                    preg_match('/\d+/', $day,$matches);
-                    if(isset($matches[0])){
-                        $title = str_replace($matches[0],'',$day) .' '. $title;
+                    preg_match('/\d+/', $day, $matches);
+                    if (isset($matches[0])) {
+                        $title = str_replace($matches[0], '', $day).' '.$title;
                         $day = $matches[0];
                         // \Log::error(__LINE__,[$i,$j,$month,$day,$title]);
                     }
 
                     $title = trim($title);
-                    if($month != $i){
-                        \Log::error(__LINE__,[$i,$j,$month,'$month != $i']);
+                    if ($month != $i) {
+                        \Log::error(__LINE__, [$i, $j, $month, '$month != $i']);
                     }
-                    $monthDay = $month . $day;
+                    $monthDay = $month.$day;
 
                     // \Log::error(__LINE__,[$i,$j,$month,$monthDay,$title]);
                     $onePath = "/share/Other/tpehoc/daily_message/{$year}/{$monthDay}.mp3";
@@ -95,20 +98,20 @@ class DailyMessageGet extends Command
                         'status'=>'PUBLISHED',
                         'category_id'=>45,
                         'target_type'=>'App\\Models\\Album',
-                        'target_id'=>28,//28 =》2019
+                        'target_id'=>28, //28 =》2019
                         'order'=> $monthDay,
-                        'mp3_url'=>'1path:' . $onePath,
+                        'mp3_url'=>'1path:'.$onePath,
                     ];
                     $post = Post::firstOrNew($post);
 
                     $html = get_html($detailLink);
 
-                    if(!$html){
-                        \Log::error(__LINE__,[$i,$j,$monthDay,$title,$detailLink]);
+                    if (! $html) {
+                        \Log::error(__LINE__, [$i, $j, $monthDay, $title, $detailLink]);
                         continue;
                     }
                     $pq = \phpQuery::newDocumentHTML($html);
-                    $selector = ".post-article .post-content.the-content:first";
+                    $selector = '.post-article .post-content.the-content:first';
                     $pq->find('#jp-relatedposts')->remove();
                     $body = $pq->find($selector)->html();
                     //style去掉!
@@ -127,11 +130,10 @@ class DailyMessageGet extends Command
                     // $post['body'] = $zhConvert->convert($body);
                     $post->body = $zhConvert->convert($body);
                     $post->save();
-                    $filename = storage_path("app/public/daily_message_{$year}{$month}.txt");;
+                    $filename = storage_path("app/public/daily_message_{$year}{$month}.txt");
                     file_put_contents($filename, "{$post->id};  {$post->title};  {$monthDay};  https://wechat.yongbuzhixi.com/posts/{$post->slug}".PHP_EOL, FILE_APPEND);
-                    \Log::error(__FUNCTION__,[$i,$j,$monthDay,$title]);
+                    \Log::error(__FUNCTION__, [$i, $j, $monthDay, $title]);
                 }
-
             }
             // continue;
         }

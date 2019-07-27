@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\LyAudio;
 use App\Models\LyMeta;
+use App\Models\LyAudio;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,12 +16,13 @@ class LyAudioUpdateQueue implements ShouldQueue
 
     protected $target_id;
     protected $code;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($target_id,$code)
+    public function __construct($target_id, $code)
     {
         $this->target_id = $target_id;
         $this->code = $code;
@@ -40,20 +41,26 @@ class LyAudioUpdateQueue implements ShouldQueue
         $metaUrl = 'https://txly2.net/';
         $metaUrl .= $code;
         $html = @file_get_contents($metaUrl);
-        if (!$html) return;
+        if (! $html) {
+            return;
+        }
         $pq = \phpQuery::newDocumentHTML($html);
         for ($i = 0; $i < 20; $i++) {
-            $selector = 'tbody #sermon' . $i;
+            $selector = 'tbody #sermon'.$i;
             $texts = $pq->find($selector);
             $excerpt = trim($texts->find('p')->text());
             $excerpt = $excerpt ? $excerpt : trim($texts->find('.ss-title')->text());
-            if (!$excerpt) continue;
+            if (! $excerpt) {
+                continue;
+            }
 
             $down_link = $texts->find('.ss-dl a')->attr('href');
-            $pattern = '/' . $code . '(\d+)\.mp3/';
+            $pattern = '/'.$code.'(\d+)\.mp3/';
             preg_match($pattern, $down_link, $matches);
-            if (!isset($matches[1])) continue;
-            $play_at = (int)$matches[1]; //180805
+            if (! isset($matches[1])) {
+                continue;
+            }
+            $play_at = (int) $matches[1]; //180805
             $tmpData = [
                 'excerpt'    => $excerpt,
                 'play_at'    => $play_at,

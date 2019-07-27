@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\Page;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Page;
 
 class CreatePagesTable extends Migration
 {

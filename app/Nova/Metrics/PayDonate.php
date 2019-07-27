@@ -2,8 +2,8 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\WechatPayOrder;
 use Illuminate\Http\Request;
+use App\Models\WechatPayOrder;
 use Laravel\Nova\Metrics\Partition;
 
 class PayDonate extends Partition
@@ -16,7 +16,7 @@ class PayDonate extends Partition
      */
     public function calculate(Request $request)
     {
-        return $this->sum($request, WechatPayOrder::class, 'total_fee','body');
+        return $this->sum($request, WechatPayOrder::class, 'total_fee', 'body');
     }
 
     /**

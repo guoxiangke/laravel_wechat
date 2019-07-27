@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\LyMeta;
+use Illuminate\Database\Seeder;
 use App\Http\Controllers\Api\LyMetaController;
 
 class LymetasTableSeeder extends Seeder
@@ -13,7 +13,6 @@ class LymetasTableSeeder extends Seeder
      */
     public function run()
     {
-
         $metaUrl = 'https://m.729ly.net';
         $html = file_get_contents($metaUrl);
         $pq = \phpQuery::newDocumentHTML($html);
@@ -31,7 +30,7 @@ class LymetasTableSeeder extends Seeder
                 $programName = $a->attr('title'); //绝妙当家
                 $programCode = $a->attr('href'); //yu.html
                 $programCode = str_replace('.html', '', $programCode);
-                if (!$programCode) {
+                if (! $programCode) {
                     continue;
                 }
                 $programImg = $metaUrl.'/'.pq($a)->find('img')->attr('src'); //

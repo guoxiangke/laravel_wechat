@@ -3,33 +3,32 @@
  * Created by PhpStorm.
  * User: dale
  * Date: 2018/8/30
- * Time: 上午8:47
+ * Time: 上午8:47.
  */
 
 namespace App\Services;
 
-use App\Models\WechatAccount;
-use App\Models\WechatRedpack;//红包发送记录
-use App\Services\Upyun;
-use EasyWeChat\Factory;
 use EasyWeChat;
+use App\Jobs\GampQueue; //红包发送记录
+use EasyWeChat\Factory;
+use App\Models\WechatAccount;
 
-use EasyWeChat\Kernel\Messages\Music;
+use App\Models\WechatRedpack;
+use Illuminate\Support\Facades\Log;
+use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Image;
-use EasyWeChat\Kernel\Messages\News;
-use EasyWeChat\Kernel\Messages\NewsItem;
-use EasyWeChat\Kernel\Messages\Transfer;
+use EasyWeChat\Kernel\Messages\Music;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
+use EasyWeChat\Kernel\Messages\NewsItem;
 // use Overtrue\Pinyin\Pinyin;
 // use WechatDev\WechatJSSDK;
-use App\Jobs\GampQueue;
+use EasyWeChat\Kernel\Messages\Transfer;
 
 class Wechat
 {
-    const MAIN_APP = 'gh_c2138e687da3';//认证服务号
+    const MAIN_APP = 'gh_c2138e687da3'; //认证服务号
     const TEST_OPEN_ID = 'oTjEws-8eAAUqgR4q_ns7pbd0zN8'; //小永
     const THUMB_MEDIA_ID = '0EiLlKqUqHoIZkYcahv0yy10zHDdyfGOvzTIlUtiJHE';
 
@@ -37,19 +36,19 @@ class Wechat
     // "media_id" => "0EiLlKqUqHoIZkYcahv0y-4RLUfoVdDo2gCKhCC-V7A"
     // "url" => "http://mmbiz.qpic.cn/mmbiz_jpg/dTE2nNAecJYF9EabBqziaU3OlrySsyqvOwWQBibELGzFib0Tu07DPZico2VtwPFvHtotjxX2CwVQIVna89gicGUy7Gg/0?wx_fmt=jpeg"
 
-    public static function init($wechatAccount=1)
+    public static function init($wechatAccount = 1)
     {
         if (is_int($wechatAccount)) {
             $wechatAccount = WechatAccount::find($wechatAccount);
         }
-        if($wechatAccount->token == self::MAIN_APP){
+        if ($wechatAccount->token == self::MAIN_APP) {
             return app('wechat.official_account');
         }
         $config = [];
-        $config['app_id']   =   $wechatAccount->app_id;
-        $config['secret']   =   $wechatAccount->secret;
-        $config['token']    =   $wechatAccount->token;
-        $config['aes_key']  =   $wechatAccount->aes_key;
+        $config['app_id'] = $wechatAccount->app_id;
+        $config['secret'] = $wechatAccount->secret;
+        $config['token'] = $wechatAccount->token;
+        $config['aes_key'] = $wechatAccount->aes_key;
         $logPath = env('WECHAT_LOG_FILE', storage_path('logs/'.$wechatAccount->token.'.log'));
         $config['log'] = [
             'default' => Config::get('app.env'), // 默认使用的 channel，生产环境可以改为下面的 prod
@@ -82,13 +81,14 @@ class Wechat
         switch ($type) {
             case 'news':
                 $items = [];
-                if(is_string($content)){
+                if (is_string($content)) {
                     foreach (json_decode($content, 1) as $item) {
                         $items[] = new NewsItem($item);
                     }
-                }else{
+                } else {
                     $items[] = new NewsItem($content);
                 }
+
                 return new News($items);
                 break;
             case 'image':
@@ -104,12 +104,12 @@ class Wechat
                 return new Transfer();
                 break;
             default:
-                return null;
+                return;
         }
     }
 
     /**
-     * [customMessage only text]
+     * [customMessage only text].
      * @param  [type] $res    [description]
      * @param  [type] $app    [description]
      * @param  [type] $openId [description]
@@ -123,25 +123,27 @@ class Wechat
         $customRes['type'] = 'text';
 
         //[604]+节目摘要
-        if(isset($res['custom_message'])){
+        if (isset($res['custom_message'])) {
             $message = $res['custom_message'];
             $customRes['content'] = $message;
+
             return static::custom($customRes, $app, $openId);
         }
 
         if (isset($res['custom_messages'])) {
             $messages = '';
             foreach ($res['custom_messages'] as $message) {
-                $messages .=  $message . "\n";
+                $messages .= $message."\n";
             }
-            $messages .=  "=========\n" . static::getRandomFaq();
+            $messages .= "=========\n".static::getRandomFaq();
             $customRes['content'] = $messages;
+
             return static::custom($customRes, $app, $openId);
         }
     }
 
     /**
-     * 发送客服消息
+     * 发送客服消息.
      * @param  [type] $custom_res    [description]
      * @param  [type] $app    [description]
      * @param  [type] $openId [description]
@@ -150,9 +152,9 @@ class Wechat
     public static function custom($res, $app, $openId)
     {
         $message = Wechat::replyByType($res['type'], $res['content']);
+
         return $app->customer_service->message($message)->to($openId)->send();
     }
-
 
     public static function gaPush($res, $wechatAccount, $toUserName)
     {
@@ -202,21 +204,22 @@ class Wechat
         'openProductSpecificView',
         'addCard',
         'chooseCard',
-        'openCard'
+        'openCard',
     ];
 
     public static function get_wechat_qr_url($userId)
     {
         $cache = Cache::tags('wechat_qr');
-        $cacheKey   = 'wechat_qr_' . $userId;
+        $cacheKey = 'wechat_qr_'.$userId;
         $res = $cache->get($cacheKey);
-        if (!$res) {
+        if (! $res) {
             /* @var $app \EasyWeChat\officialAccount\Application */
-            $app =  static::init(1);
+            $app = static::init(1);
             $result = $app->qrcode->temporary('sharefrom_'.$userId);
             $res = $result['url'];
-            $cache->put($cacheKey, $res, now()->addMinutes(43200));// 30天后过期
+            $cache->put($cacheKey, $res, now()->addMinutes(43200)); // 30天后过期
         }
+
         return $res;
     }
 
@@ -236,107 +239,111 @@ class Wechat
     //     return false;
     // }
 
-    public static function getSignPackage($currentUrl){
-        $wechatJSSDK = new WechatJSSDK(config('wechat.official_account.default.app_id'),config('wechat.official_account.default.secret'));
+    public static function getSignPackage($currentUrl)
+    {
+        $wechatJSSDK = new WechatJSSDK(config('wechat.official_account.default.app_id'), config('wechat.official_account.default.secret'));
         //env('WECHAT_OFFICIAL_ACCOUNT_APPID'),env('WECHAT_OFFICIAL_ACCOUNT_SECRET')
         return $wechatJSSDK->getSignPackage($currentUrl);
     }
 
-    public static function getRandomFaq(){
-       $FaqRandom = array_random(
+    public static function getRandomFaq()
+    {
+        $FaqRandom = array_random(
           [
             [
-              "title"=>"如何解除套餐提醒?",
-              "src" => "解除套餐提醒限制.mp4"
+              'title'=>'如何解除套餐提醒?',
+              'src' => '解除套餐提醒限制.mp4',
             ],
             [
-              "title"=>"如何获取消息?",
-              "src" => "如何获取消息.mp4"
+              'title'=>'如何获取消息?',
+              'src' => '如何获取消息.mp4',
             ],
             [
-              "title"=>"如何订阅消息?",
-              "src" => "如何订阅和退订.mp4"
+              'title'=>'如何订阅消息?',
+              'src' => '如何订阅和退订.mp4',
             ],
             [
-              "title"=>"如何收听音频消息?",
-              "src" => "收听音频.mp4"
+              'title'=>'如何收听音频消息?',
+              'src' => '收听音频.mp4',
             ],
             [
-              "title"=>"如何评论?",
-              "src" => "如何评论.mp4"
+              'title'=>'如何评论?',
+              'src' => '如何评论.mp4',
             ],
             [
-              "title"=>"如何分享音频消息给朋友?",
-              "src" => "分享音频消息.mp4"
+              'title'=>'如何分享音频消息给朋友?',
+              'src' => '分享音频消息.mp4',
             ],
             [
-              "title"=>"如何分享到朋友圈?",
-              "src" => "分享朋友圈.mp4"
+              'title'=>'如何分享到朋友圈?',
+              'src' => '分享朋友圈.mp4',
             ],
             [
-              "title"=>"错误的分享方式?",
-              "src" => "错误分享方式.mp4"
+              'title'=>'错误的分享方式?',
+              'src' => '错误分享方式.mp4',
             ],
             [
-              "title"=>"如何订阅和退订?",
-              "src" => "如何订阅和退订.mp4"
+              'title'=>'如何订阅和退订?',
+              'src' => '如何订阅和退订.mp4',
             ],
             [
-              "title"=>"如何置顶云彩助手?",
-              "src" => "置顶.mp4"
+              'title'=>'如何置顶云彩助手?',
+              'src' => '置顶.mp4',
             ],
             [
-              "title"=>"如何暂停?",
-              "src" => "暂停.mp4"
+              'title'=>'如何暂停?',
+              'src' => '暂停.mp4',
             ],
             [
-              "title"=>"如何浮窗播放?",
-              "src" => "iphone浮窗.mp4"
+              'title'=>'如何浮窗播放?',
+              'src' => 'iphone浮窗.mp4',
             ],
             [
-              "title"=>"如何调整图文字体大小?",
-              "src" => "字体大小.mp4"
+              'title'=>'如何调整图文字体大小?',
+              'src' => '字体大小.mp4',
             ],
             [
-              "title"=>"如何关注云彩助手?",
-              "src" => "关注.mp4"
+              'title'=>'如何关注云彩助手?',
+              'src' => '关注.mp4',
             ],
             [
-              "title"=>"订阅有啥好处?",
-              "src" => "订阅功能好处.mp4"
+              'title'=>'订阅有啥好处?',
+              'src' => '订阅功能好处.mp4',
             ],
             [
-              "title"=>"啥叫耐心等待数秒?⌛️",
-              "src" => "耐心等待数秒.mp4"
+              'title'=>'啥叫耐心等待数秒?⌛️',
+              'src' => '耐心等待数秒.mp4',
             ],
           ]
         );
-       $domain = Upyun::DOMAIN . '/videos/2019/faq';
-       return "<a href='{$domain}/{$FaqRandom['src']}'>{$FaqRandom['title']}</a>";
+        $domain = Upyun::DOMAIN.'/videos/2019/faq';
+
+        return "<a href='{$domain}/{$FaqRandom['src']}'>{$FaqRandom['title']}</a>";
     }
 
     // 单位为分，不小于100=1元,最低1元
-    public static function sendRedpack($amount = 1, $openId = self::TEST_OPEN_ID){
+    public static function sendRedpack($amount = 1, $openId = self::TEST_OPEN_ID)
+    {
         $payment = EasyWeChat::payment(); // 微信支付
         $redpack = $payment->redpack;
         $redpackData = [
-            'mch_billno'   => 'test' . date('YmdHis'),
+            'mch_billno'   => 'test'.date('YmdHis'),
             'send_name'    => '云彩助手',
             're_openid'    => $openId,
-            'total_amount' => $amount*100,
+            'total_amount' => $amount * 100,
             'wishing'      => '永不止息,分享有礼,回复[推荐]获得更多红包.',
             'act_name'     => '感谢您的参与',
-            'scene_id'     => 'PRODUCT_2'
+            'scene_id'     => 'PRODUCT_2',
         ];
         $result = $redpack->sendNormal($redpackData);
         $model = WechatRedPack::firstOrCreate($result); //红包发送记录
-        Log::error(__FUNCTION__, [$result,$model]);
+        Log::error(__FUNCTION__, [$result, $model]);
         // Notification::send($users, new WechatTemplateMessageSent($redpackData)); //微信模版通知记录
         return $result;
     }
 
     /**
-     * 主动发送客服消息 without $app
+     * 主动发送客服消息 without $app.
      * @param  [type] $custom_res    [description]
      * @param  [type] $app    [description]
      * @param  [type] $openId [description]
@@ -346,6 +353,7 @@ class Wechat
     {
         $app = EasyWeChat::officialAccount();
         $message = Wechat::replyByType($res['type'], $res['content']);
+
         return $app->customer_service->message($message)->to($openId)->send();
     }
 
@@ -354,7 +362,7 @@ class Wechat
     public static function updateProfile($user) //$mpId, $openId, $userId
     {
         $userId = $user->id;
-        $mpId = config("wechat.official_account.default.token");
+        $mpId = config('wechat.official_account.default.token');
         $openId = $user->name;
 
         // $wechatAccount = WechatAccount::where('to_user_name', $mpId)
@@ -362,9 +370,15 @@ class Wechat
         // $app = Wechat::init($wechatAccount);
         $app = EasyWeChat::officialAccount();
         $wxProfile = $app->user->get($openId);
-        if (!is_array($wxProfile)) return;
-        if (!isset($wxProfile['nickname'])) return;
-        if (!isset($wxProfile['headimgurl'])) return;
+        if (! is_array($wxProfile)) {
+            return;
+        }
+        if (! isset($wxProfile['nickname'])) {
+            return;
+        }
+        if (! isset($wxProfile['headimgurl'])) {
+            return;
+        }
 
         $wechatProfile = WechatUserProfile::where('user_id', $userId)->first();
         if ($wechatProfile) {
@@ -381,27 +395,33 @@ class Wechat
             $wechatProfile->fill($wxProfile);
             $wechatProfile->save();
         }
+
         return $wechatProfile;
     }
 
-    public static function getMenu($uid=1){
+    public static function getMenu($uid = 1)
+    {
         $app = Wechat::init($uid);
         $current = $app->menu->current();
-        return collect($current['selfmenu_info']['button'])->map(function($menu){
-            if(isset($menu['sub_button'])){
+
+        return collect($current['selfmenu_info']['button'])->map(function ($menu) {
+            if (isset($menu['sub_button'])) {
                 $menu['sub_button'] = $menu['sub_button']['list'];
             }
+
             return $menu;
         })->toArray();
     }
 
-    public static function setMenu($uid=1,$menu=null){
-        $menu = $menu?:config('wechatmenu.'.$uid);
+    public static function setMenu($uid = 1, $menu = null)
+    {
+        $menu = $menu ?: config('wechatmenu.'.$uid);
         $app = Wechat::init($uid);
         $current = $app->menu->current();
         $res1 = $app->menu->delete();
         $res2 = $app->menu->create($menu);
-        \Log::error(__FUNCTION__,[$current,$res1,$res2]);
+        \Log::error(__FUNCTION__, [$current, $res1, $res2]);
+
         return $res2;
     }
 }

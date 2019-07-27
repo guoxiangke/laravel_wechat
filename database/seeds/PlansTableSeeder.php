@@ -4,7 +4,6 @@ use Illuminate\Database\Seeder;
 
 class PlansTableSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -12,7 +11,7 @@ class PlansTableSeeder extends Seeder
      */
     public function run()
     {
-      app('rinvex.subscriptions.plan')->create([
+        app('rinvex.subscriptions.plan')->create([
           'name' => 'Month',
           'description' => 'Monthly plan',
           'price' => 19,
@@ -24,7 +23,7 @@ class PlansTableSeeder extends Seeder
           'sort_order' => 1,
           'currency' => 'CNY',
       ]);
-      app('rinvex.subscriptions.plan')->create([
+        app('rinvex.subscriptions.plan')->create([
           'name' => 'Quarter',
           'description' => 'Quarterly plan',
           'price' => 29,
@@ -36,7 +35,7 @@ class PlansTableSeeder extends Seeder
           'sort_order' => 1,
           'currency' => 'CNY',
       ]);
-      app('rinvex.subscriptions.plan')->create([
+        app('rinvex.subscriptions.plan')->create([
           'name' => 'Year',
           'description' => 'Yearly plan',
           'price' => 99,

@@ -11,7 +11,7 @@ class WechatAccount extends Model
     protected $dates = ['deleted_at'];
 
     protected $table = 'wechat_accounts';
-    protected $fillable = ['name','to_user_name','app_id','secret','token','aes_key','is_certified','menu','resources','description','image_qr'];
+    protected $fillable = ['name', 'to_user_name', 'app_id', 'secret', 'token', 'aes_key', 'is_certified', 'menu', 'resources', 'description', 'image_qr'];
 
     // todo 转换成数组
     protected $casts = [

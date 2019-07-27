@@ -3,16 +3,14 @@
  * Created by PhpStorm.
  * User: dale
  * Date: 2018/9/10
- * Time: 下午2:36
+ * Time: 下午2:36.
  */
 
 namespace App\Services;
 
-
 use App\Models\User;
 use App\Models\WechatAccount;
 use App\Models\WechatUserProfile;
-use Illuminate\Support\Facades\Log;
 
 class WechatUserProfileHelper
 {
@@ -21,16 +19,22 @@ class WechatUserProfileHelper
     public static function updateProfile($user) //$mpId, $openId, $userId
     {
         $userId = $user->id;
-        $mpId = config("wechat.official_account.default.token");
+        $mpId = config('wechat.official_account.default.token');
         $openId = $user->name;
 
         $wechatAccount = WechatAccount::where('to_user_name', $mpId)
             ->first();
         $app = Wechat::init($wechatAccount);
         $wxProfile = $app->user->get($openId);
-        if (!is_array($wxProfile)) return;
-        if (!isset($wxProfile['nickname'])) return;
-        if (!isset($wxProfile['headimgurl'])) return;
+        if (! is_array($wxProfile)) {
+            return;
+        }
+        if (! isset($wxProfile['nickname'])) {
+            return;
+        }
+        if (! isset($wxProfile['headimgurl'])) {
+            return;
+        }
 
         $wechatProfile = WechatUserProfile::where('user_id', $userId)->first();
         if ($wechatProfile) {
@@ -47,6 +51,7 @@ class WechatUserProfileHelper
             $wechatProfile->fill($wxProfile);
             $wechatProfile->save();
         }
+
         return $wechatProfile;
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Models\Post;
+use App\Models\User;
+use App\Services\ZhConvert;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use App\Models\WechatAccountProfile;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\User;
-use App\Models\Post;
-use App\Models\WechatAccountProfile;
-use Illuminate\Support\Facades\Log;
-use App\Services\ZhConvert;
 
 class WechatLinkSaveQueue implements ShouldQueue
 {
@@ -19,12 +19,13 @@ class WechatLinkSaveQueue implements ShouldQueue
 
     protected $link;
     protected $collector_uid;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($link, $collector_uid=1)
+    public function __construct($link, $collector_uid = 1)
     {
         $this->link = $link;
         //link must be begin with : https://mp.weixin.qq.com/
@@ -42,31 +43,30 @@ class WechatLinkSaveQueue implements ShouldQueue
         $html = file_get_contents($link);
 
         preg_match('/var nickname = "(.+)"/', $html, $matchs);
-        $nickname = $matchs[1];//生活无国界
+        $nickname = $matchs[1]; //生活无国界
         preg_match('/var user_name = "(\S+)"/', $html, $matchs);
-        $to_user_name = $matchs[1];//gh_01f807be5d1b
+        $to_user_name = $matchs[1]; //gh_01f807be5d1b
 
         preg_match('/ori_head_img_url = "(.+)"/', $html, $matchs);
         $head_img_url = $matchs[1];
         preg_match('/var hd_head_img = ""\|\|"(.+)"/', $html, $matchs);
-        if(!isset($matchs[1])){
+        if (! isset($matchs[1])) {
             preg_match('/var hd_head_img = "([^"]+)"/', $html, $matchs);
-            if(isset($matchs[1])){
+            if (isset($matchs[1])) {
                 $head_img_url = $matchs[1];
             }
         }
 
         $pq = \phpQuery::newDocumentHTML($html);
-        $selector  = ".profile_meta_value:first";
+        $selector = '.profile_meta_value:first';
         $app_id = $pq->find($selector)->text();
-        $selector  = ".profile_meta_value:last";
+        $selector = '.profile_meta_value:last';
         $description = $pq->find($selector)->text();
         $author = User::where('name', $to_user_name)->first();
-        if (!$author) {
+        if (! $author) {
             $author = User::newUser($to_user_name, User::MP_ROLE);
-            Log::notice(__CLASS__,['new an mp account while collect mp article',$author->id]);
+            Log::notice(__CLASS__, ['new an mp account while collect mp article', $author->id]);
             WechatAccountProfile::updateOrCreate(compact('nickname', 'to_user_name', 'head_img_url', 'app_id', 'description'));
-
         }
         //save the article!
         // $title = $nickname;
@@ -75,8 +75,9 @@ class WechatLinkSaveQueue implements ShouldQueue
 
         $excerpt = '暂无摘要';
         preg_match('/var msg_desc = "(\S+)"/', $html, $matchs);
-        if (isset($matchs[1]))
+        if (isset($matchs[1])) {
             $excerpt = $matchs[1];
+        }
 
         $body = $pq->find('#js_content:first')->html();
         $body = strip_tags($body, '<span><p><ul><li><ol><section><img><iframe><a><div>');
@@ -102,7 +103,6 @@ class WechatLinkSaveQueue implements ShouldQueue
         $body = str_replace('    ', '', $body);
         $body = str_replace('&nbsp;', '', $body);
 
-
         $status = Post::PUBLISHED;
         $user_id = $this->collector_uid;
         $modified_id = $user_id;
@@ -116,31 +116,30 @@ class WechatLinkSaveQueue implements ShouldQueue
         $compact = ['title', 'excerpt', 'body', 'status', 'user_id', 'author_id', 'modified_id'];
 
         preg_match('/var msg_cdn_url = "(\S+)"/', $html, $matchs);
-        if(isset($matchs[1])){
+        if (isset($matchs[1])) {
             $image_url = $matchs[1];
             $compact[] = 'image_url';
         }
         preg_match('/var msg_link = "(\S+)"/', $html, $matchs);
-        if(isset($matchs[1])){
+        if (isset($matchs[1])) {
             $origin_url = $matchs[1];
             $compact[] = 'origin_url';
         }
         //todo save voice/mp4 2 onedrive
-        preg_match('/&amp;vid=(\S[^"|^&|^+]+)/', $html, $matchs);//?vid=s0354348eo8
+        preg_match('/&amp;vid=(\S[^"|^&|^+]+)/', $html, $matchs); //?vid=s0354348eo8
         if (isset($matchs[1])) {
             $qq_vid = $matchs[1];
             $compact[] = 'qq_vid';
         }
         $voiceId = $pq->find('mpvoice:first')->attr('voice_encode_fileid');
         if ($voiceId) {
-            $mp3_url = 'https://res.wx.qq.com/voice/getvoice?mediaid=' . $voiceId;
+            $mp3_url = 'https://res.wx.qq.com/voice/getvoice?mediaid='.$voiceId;
             $compact[] = 'mp3_url';
         }
 
-
         $post = Post::updateOrCreate(compact($compact));
-        Log::notice(__CLASS__,['collect a article', $post->id, $this->collector_uid]);
-          // 'category_id',
+        Log::notice(__CLASS__, ['collect a article', $post->id, $this->collector_uid]);
+        // 'category_id',
           // 'order',
           // 'target_type',
           // 'target_id'

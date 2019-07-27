@@ -22,13 +22,14 @@ class LyMeta extends Model
 
     protected $casts = [
         'stop_play_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
 
     public function album()
     {
         return $this->hasMany(Album::class);
     }
+
     /**
      * Scope a query to only include active.
      *
@@ -40,6 +41,7 @@ class LyMeta extends Model
     {
         return $query->whereNull('stop_play_at');
     }
+
     public static $slugs = [
         [
             'name' => '生活智慧',

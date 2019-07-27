@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\LyAudio;
 use Hashids\Hashids;
-use Illuminate\Support\Facades\Config;
-
+use App\Models\LyAudio;
 use Illuminate\Console\Command;
+
+use Illuminate\Support\Facades\Config;
 
 class LyAudioSlugUpdate extends Command
 {
@@ -41,7 +41,7 @@ class LyAudioSlugUpdate extends Command
      */
     public function handle()
     {
-        LyAudio::all()->map(function($post){
+        LyAudio::all()->map(function ($post) {
             $hashids = new Hashids(Config::get('app.name'), 11);
             $post->slug = $hashids->encode($post->id, time());
             $post->save();

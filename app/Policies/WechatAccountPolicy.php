@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WechatAccountPolicy
 {
@@ -19,6 +18,7 @@ class WechatAccountPolicy
     {
         //
     }
+
     public function viewAny($user)
     {
         return Gate::any(['viewWechatAccount', 'manageWechatAccount'], $user);

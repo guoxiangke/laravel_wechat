@@ -163,7 +163,7 @@ return [
 
         Overtrue\LaravelFollow\FollowServiceProvider::class,
         Trexology\Pointable\PointableServiceProvider::class,
-        Irazasyed\LaravelGAMP\LaravelGAMPServiceProvider::class
+        Irazasyed\LaravelGAMP\LaravelGAMPServiceProvider::class,
 
     ],
 
@@ -215,7 +215,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
         'Carbon' => 'Carbon\Carbon',
-        'GAMP'  => Irazasyed\LaravelGAMP\Facades\GAMP::class
+        'GAMP'  => Irazasyed\LaravelGAMP\Facades\GAMP::class,
     ],
 
 ];

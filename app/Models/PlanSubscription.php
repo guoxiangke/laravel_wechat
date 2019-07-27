@@ -11,15 +11,14 @@ class PlanSubscription extends Model
     protected $casts = [
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
-
 
     /**
      * wechatProfile.
      */
     public function profile()
     {
-        return $this->hasOne(WechatUserProfile::class,'user_id','user_id');
+        return $this->hasOne(WechatUserProfile::class, 'user_id', 'user_id');
     }
 }

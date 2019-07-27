@@ -19,13 +19,13 @@ class CreateLyAudiosTable extends Migration
             // $table->integer('ly_meta_id')->unsigned()->index();
             // 180805|24
             $table->integer('play_at')->unsigned()->index()->comment('节目播放日期或lts的index');
-            $table->text('excerpt')->nullable()->comment('节目梗概');//todo 全文搜索🔍
+            $table->text('excerpt')->nullable()->comment('节目梗概'); //todo 全文搜索🔍
             $table->text('body')->nullable()->comment('节目图文');
             $table->json('wave')->nullable()->comment('节目波形');
             // album_id
-            $table->unsignedBigInteger('album_id')->unsigned()->nullable()->default(NULL);
+            $table->unsignedBigInteger('album_id')->unsigned()->nullable()->default(null);
             // ALTER TABLE ly_audios ADD COLUMN album_id INT DEFAULT NULL AFTER wave;
-            $table->string('slug')->nullable();//todo unique index
+            $table->string('slug')->nullable(); //todo unique index
             // ALTER TABLE ly_audios ADD COLUMN slug VARCHAR(255) DEFAULT NULL AFTER wave;
 
             $table->softDeletes();

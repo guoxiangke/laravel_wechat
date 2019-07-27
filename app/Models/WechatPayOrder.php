@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasMorphsTargetField;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
-use App\Traits\HasMorphsTargetField;
 
 class WechatPayOrder extends Model
 {
@@ -13,24 +13,22 @@ class WechatPayOrder extends Model
     use HasMorphsTargetField;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id','target_type','target_id','body','out_trade_no','total_fee','trade_type','openid'
-    ,'prepay_id'
-    ,'status'
-    ,'body'];
+    protected $fillable = ['user_id', 'target_type', 'target_id', 'body', 'out_trade_no', 'total_fee', 'trade_type', 'openid', 'prepay_id', 'status', 'body'];
 
-
-    public function getTotalFeeAttribute($value){
-      return $value/100;
+    public function getTotalFeeAttribute($value)
+    {
+        return $value / 100;
     }
 
-    public function setTotalFeeAttribute($value){
-      $this->attributes['total_fee'] = $value*100;
+    public function setTotalFeeAttribute($value)
+    {
+        $this->attributes['total_fee'] = $value * 100;
     }
 
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (!$this->user_id && Auth::user()) {
+        if (! $this->user_id && Auth::user()) {
             $this->user_id = Auth::user()->id;
         }
 

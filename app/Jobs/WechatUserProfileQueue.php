@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Services\WechatUserProfileHelper;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Services\WechatUserProfileHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class WechatUserProfileQueue implements ShouldQueue
 {
@@ -35,11 +35,10 @@ class WechatUserProfileQueue implements ShouldQueue
     public function handle()
     {
         $user = $this->user;
-        if($user){
+        if ($user) {
             WechatUserProfileHelper::updateProfile($user);
-        }else{
+        } else {
             Log::error(__CLASS__, [__LINE__, 'no user']);
         }
-
     }
 }

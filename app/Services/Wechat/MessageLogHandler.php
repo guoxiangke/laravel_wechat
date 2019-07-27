@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: dale
  * Date: 2018/7/2
- * Time: 下午2:22
+ * Time: 下午2:22.
  */
 
 namespace App\Services\Wechat;
 
-use \EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use App\Jobs\WechatMessageQueue;
+use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 
 class MessageLogHandler implements EventHandlerInterface
 {
@@ -17,5 +17,4 @@ class MessageLogHandler implements EventHandlerInterface
     {
         WechatMessageQueue::dispatch($message)->delay(now()->addSeconds(6));
     }
-
 }

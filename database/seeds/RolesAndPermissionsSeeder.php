@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
+use App\Models\User;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Seeder;
 use Silvanite\Brandenburg\Role;
-use App\Models\User;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -15,38 +15,36 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run()
     {
-
-      Role::create([
+        Role::create([
           'name' => 'Administrator',
           'slug' => 'administrator',
       ]);
 
-      Role::create([
+        Role::create([
           'name' => 'Editor',
           'slug' => 'editor',
       ]);
 
-      Role::create([
+        Role::create([
           'name' => '微信用户',
           'slug' => User::DEFAULT_ROLE,
       ]);
 
-      Role::create([
+        Role::create([
           'name' => '公众号用户',
           'slug' => User::MP_ROLE,
       ]);
 
-      Role::create([
+        Role::create([
           'name' => '婚恋用户',
           'slug' => 'seeker',
       ]);
-      // // 重置角色和权限的缓存
+        // // 重置角色和权限的缓存
       // app()['cache']->forget('spatie.permission.cache');
 
       // $role = Role::create(['name' => 'wx']);//wxUser微信用户 openId@wx
       // $role = Role::create(['name' => 'mp']);//wxUser微信用户 ==>关联 ==〉wxAccount微信公众用户 openId@mp
       // $role = Role::create(['name' => 'seeker']);//婚恋用户
-
 
       // // 创建权限
       // Permission::create(['name' => 'edit posts']);

@@ -1,6 +1,6 @@
 <?php
-/** actuallymab | 12.06.2016 - 02:00 */
 
+/** actuallymab | 12.06.2016 - 02:00 */
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 

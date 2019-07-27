@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Nova;
 
 use Illuminate\Http\Request;

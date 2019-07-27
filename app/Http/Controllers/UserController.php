@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Album;
-use App\Models\AlbumSubscription;
-use Illuminate\Support\Facades\Auth;
 use App\Models\WechatUserProfile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,18 +16,18 @@ class UserController extends Controller
         $user = Auth::user();
         $countAll = $user->count_recommenders();
         $countVaule = $user->count_value_recommenders();
-        if (!$countAll) {
+        if (! $countAll) {
             $msg1 = '啊呜,您还没有成功分享!';
-        }else{
+        } else {
             $msg1 = "迄今为止,您总共推荐了{$countAll}人!";
         }
-        if($countVaule){
+        if ($countVaule) {
             $msg1 .= " 其中{$countVaule}人为有效关注!";
         }
         $monthVaule = $user->count_value_recommenders(1);
-        if($monthVaule){
-            $msg2 = '本次活动(/本月)您推荐了' . $monthVaule . '个有效用户.';
-        }else{
+        if ($monthVaule) {
+            $msg2 = '本次活动(/本月)您推荐了'.$monthVaule.'个有效用户.';
+        } else {
             $msg2 = '本次活动(/本月)您推荐了0个有效用户.';
         }
 
@@ -39,18 +38,18 @@ class UserController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->simplePaginate(15);
 
-        return view('users.recommend', compact('msg1','msg2','users'));
+        return view('users.recommend', compact('msg1', 'msg2', 'users'));
     }
 
-    public function recommendsTop($top=100)
+    public function recommendsTop($top = 100)
     {
         $account = Auth::user();
         $canManageUsers = $account->hasRoleWithPermission('manageUsers');
-        if(!$canManageUsers){
+        if (! $canManageUsers) {
             return redirect('/')->with('status', 'Not Authorized!');
         }
         // $sql = "select user_id, count(*) as count from users where subscribe=1 group by user_id order by count";
-        $recommenderIds = DB::table('users')->select(DB::raw('count(*) as count, user_id'))->where('subscribe', 1)->groupBy('user_id')->limit($top)->get();//->where('user_id', '<>', 1)
+        $recommenderIds = DB::table('users')->select(DB::raw('count(*) as count, user_id'))->where('subscribe', 1)->groupBy('user_id')->limit($top)->get(); //->where('user_id', '<>', 1)
 
         $uidCounts = $recommenderIds->pluck('count')->toArray();
         // dd($profiles->pluck('user_id')->unique());
@@ -62,8 +61,7 @@ class UserController extends Controller
         $profiles = WechatUserProfile::whereIn('user_id', $recommenderIds->pluck('user_id')->toArray())
             ->limit($top)->get();
 
-
-        return view('users.recommends_top', compact('top','uidCounts','profiles'));
+        return view('users.recommends_top', compact('top', 'uidCounts', 'profiles'));
     }
 
     //获取用户分享的用户 管理员
@@ -71,20 +69,19 @@ class UserController extends Controller
     {
         $account = Auth::user();
         $canManageUsers = $account->hasRoleWithPermission('manageUsers');
-        if(!$canManageUsers){
+        if (! $canManageUsers) {
             return redirect('/')->with('status', 'Not Authorized!');
         }
 
-
         $countAll = $user->count_recommenders();
         $countVaule = $user->count_value_recommenders();
-        if (!$countAll) {
+        if (! $countAll) {
             $msg1 = '啊呜,Ta还没有成功分享!';
         }
         if ($countAll - $countVaule > 0) {
             $msg1 = "迄今Ta推荐了{$countAll}人,其中{$countVaule}人为有效关注!";
-            $msg2 = '本次活动Ta推荐了' . $user->count_value_recommenders(1) . '个有效用户.';
-        }else{
+            $msg2 = '本次活动Ta推荐了'.$user->count_value_recommenders(1).'个有效用户.';
+        } else {
             $msg1 = "Ta推荐了{$countAll}人!";
             $msg2 = '本次活动Ta推荐了0个有效用户.';
         }
@@ -94,9 +91,8 @@ class UserController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->simplePaginate(15);
 
-        return view('users.recommend', compact('msg1','msg2','users'));
+        return view('users.recommend', compact('msg1', 'msg2', 'users'));
     }
-
 
     public function subscription()
     {
@@ -107,6 +103,7 @@ class UserController extends Controller
             ->orderBy('price')
             ->orderBy('updated_at', 'DESC')
             ->simplePaginate(10);
+
         return view('users.subscription', compact('subscriptions'));
     }
 }

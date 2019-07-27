@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Jobs;
 
-use App\Services\WechatUserProfileHelper;
+use App\Models\Gamp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 // use Irazasyed\LaravelGAMP\Facades\GAMP;
-use App\Models\Gamp;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class GampQueue implements ShouldQueue
 {

@@ -25,7 +25,7 @@ class CreateAlbumSubscriptionsTable extends Migration
             $table->unsignedBigInteger('wechat_pay_order_id')->nullable()->unsigned()->index();
             // ALTER TABLE album_subscriptions ADD COLUMN wechat_pay_order_id INT DEFAULT NULL AFTER price;
             $table->smallInteger('count')->unsigned()->default(0)->comment('++成功推送次数');
-            $table->boolean('active')->default(true);//done or cancled
+            $table->boolean('active')->default(true); //done or cancled
             // ALTER TABLE album_subscriptions ADD COLUMN active TinyInt(1) NOT NULL DEFAULT 1 AFTER count;
             $table->smallInteger('push_type')->unsigned()->default(0)->comment('推送方式音频music、单图文news');
 
@@ -34,13 +34,13 @@ class CreateAlbumSubscriptionsTable extends Migration
             $table->string('rrule')->nullable();
             // ALTER TABLE album_subscriptions ADD COLUMN rrule VARCHAR(255) AFTER send_at;
 
-            $table->softDeletes();//失效时间：取消订阅或订阅结束
-            $table->timestamps();//生效时间
+            $table->softDeletes(); //失效时间：取消订阅或订阅结束
+            $table->timestamps(); //生效时间
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');//
+                ->onDelete('cascade'); //
         });
     }
 

@@ -34,8 +34,8 @@ return [
     'versions'      => [
         'default'   => '1.0',
         'published' => [
-            '1.0'
-        ]
+            '1.0',
+        ],
     ],
 
     /*
@@ -61,7 +61,7 @@ return [
                 'url' => '',
             ],
         ],
-        'ga_id' => ''
+        'ga_id' => '',
     ],
 
     /*
@@ -79,7 +79,7 @@ return [
 
     'cache'       => [
         'enabled' => false,
-        'period'  => 5
+        'period'  => 5,
     ],
 
     /*
@@ -100,13 +100,13 @@ return [
         'default'       => 'algolia',
         'engines'       => [
             'internal'  => [
-                'index' => ['h2', 'h3']
+                'index' => ['h2', 'h3'],
             ],
             'algolia'   => [
                 'key'   => '',
-                'index' => ''
-            ]
-        ]
+                'index' => '',
+            ],
+        ],
     ],
 
     /*
@@ -123,7 +123,7 @@ return [
 
     'repository'   => [
         'provider' => 'github',
-        'url'      => ''
+        'url'      => '',
     ],
 
     /*
@@ -150,7 +150,7 @@ return [
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2',
-            'selection'  => '#f4f5f7'
+            'selection'  => '#f4f5f7',
         ],
         'additional_css' => [
             //'css/custom.css',
@@ -182,7 +182,7 @@ return [
             'url'         => '',
             'image'       => '',
             'description' => '',
-        ]
+        ],
     ],
 
    /*
@@ -204,7 +204,7 @@ return [
         'services'          => [
             'disqus'        => [
                 'site_name' => '', // yoursite.disqus.com
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

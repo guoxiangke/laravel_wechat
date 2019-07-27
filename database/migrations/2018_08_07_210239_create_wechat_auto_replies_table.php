@@ -19,9 +19,9 @@ class CreateWechatAutoRepliesTable extends Migration
             $table->string('to_user_name')->comment('对应的公众号gh_id,gh_all==ALL');
             $table->enum('type', ['Text', 'Image', 'Video', 'Voice', 'News', 'Transfer'])->default('Text');
             $table->string('patten')->comment('正则表达式,多个用行分隔，subscribe类型为 关注时回复');
-            # todo 关注时回复内容
+            // todo 关注时回复内容
             $table->text('content')->nullable()->comment('回复内容');
-            $table->smallInteger('weight')->default(0)->comment('权重');//0-65536
+            $table->smallInteger('weight')->default(0)->comment('权重'); //0-65536
 
             $table->softDeletes();
             $table->timestamps();

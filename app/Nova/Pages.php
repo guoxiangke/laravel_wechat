@@ -2,15 +2,14 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\Boolean;
+use App\Models\Page;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Textarea;
 use Vexilo\NovaFroalaEditor\NovaFroalaEditor;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Models\Page;
 
 class Pages extends Resource
 {
@@ -34,7 +33,7 @@ class Pages extends Resource
      * @var array
      */
     public static $search = [
-        'meta_keywords','title'
+        'meta_keywords', 'title',
     ];
 
     /**
@@ -46,6 +45,7 @@ class Pages extends Resource
     public function fields(Request $request)
     {
         $className = 'pages';
+
         return [
             ID::make()->sortable(),
             Text::make('User_id')->onlyOnIndex(),

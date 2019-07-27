@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-use App\Models\WechatAccount;
-use App\Models\User;
-use App\Models\WechatPayOrder;
 use App\Traits\HasMorphsTargetField;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AlbumSubscription extends Model
 {
-
-    const FREE_COUNT_LIMIT = 1;//最多订阅1个免费专辑
-    const FREE_SHTARE_MIN = 3;//免费订阅本专辑,最少推荐新人数量3
-    const RANDOM_SEND_AT = [6,12,18,7,8,9,10,11,13,14,15,16,17,19,20,21,22];
+    const FREE_COUNT_LIMIT = 1; //最多订阅1个免费专辑
+    const FREE_SHTARE_MIN = 3; //免费订阅本专辑,最少推荐新人数量3
+    const RANDOM_SEND_AT = [6, 12, 18, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 19, 20, 21, 22];
 
     use SoftDeletes;
     use HasMorphsTargetField;
@@ -60,24 +56,29 @@ class AlbumSubscription extends Model
         return $this->hasOne(WechatAccount::class, 'id', 'wechat_account_id');
     }
 
-    public function getPriceAttribute($value){
-      return $value/100;
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
     }
 
-    public function setPriceAttribute($value){
-      $this->attributes['price'] = $value*100;
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value * 100;
     }
 
-    public function order(){
-      return $this->hasOne(WechatPayOrder::class);//, 'id', 'wechat_pay_order_id'
+    public function order()
+    {
+        return $this->hasOne(WechatPayOrder::class); //, 'id', 'wechat_pay_order_id'
     }
 
-    public function getPayLink(){
-      return config('app.url'). '/wxpay/' . $this->id;
+    public function getPayLink()
+    {
+        return config('app.url').'/wxpay/'.$this->id;
     }
 
-    public function toogleActive(){
-      $this->active = !$this->active;
-      $this->save();
+    public function toogleActive()
+    {
+        $this->active = ! $this->active;
+        $this->save();
     }
 }

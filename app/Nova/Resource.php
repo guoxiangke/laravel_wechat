@@ -10,9 +10,11 @@ abstract class Resource extends NovaResource
 {
     use SearchesRelations;
 
-    public static function get_path($type, $model){
-       return 'uploads/' . $type . '/' . strtolower($model) .'/'.  date("Ym", time()) . '/'.date("d", time());
+    public static function get_path($type, $model)
+    {
+        return 'uploads/'.$type.'/'.strtolower($model).'/'.date('Ym', time()).'/'.date('d', time());
     }
+
     // https://laracasts.com/discuss/channels/nova/resources-orderby
     // https://github.com/laravel/nova-issues/issues/156
     /**
@@ -21,7 +23,7 @@ abstract class Resource extends NovaResource
      * @var array
      */
     public static $sort = [
-        'id' => 'desc'
+        'id' => 'desc',
     ];
 
     /**

@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\LyAudio;
-use App\Models\Post;
+
 class CreatePostsTable extends Migration
 {
     /**
@@ -27,7 +27,6 @@ class CreatePostsTable extends Migration
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
 
-
             $table->enum('status', [Post::PUBLISHED, Post::DRAFT, Post::PENDING])->default(Post::DRAFT);
 
             $table->unsignedBigInteger('author_id')->unsigned()->nullable()->comment('公众号uid');
@@ -49,8 +48,8 @@ class CreatePostsTable extends Migration
             $table->string('mp4_upyun_path')->nullable();
             //http://onemedia.yongbuzhixi.com /mp4/2018/youtube_vid.mp4
             $table->string('qq_vid')->nullable();
-            $table->string('pan_url')->nullable();//分享链接或播放链接
-            $table->string('pan_password')->nullable();//百度分享链接密码
+            $table->string('pan_url')->nullable(); //分享链接或播放链接
+            $table->string('pan_password')->nullable(); //百度分享链接密码
             $table->string('origin_url')->nullable();
             //reference!
             $table->nullableMorphs('target');

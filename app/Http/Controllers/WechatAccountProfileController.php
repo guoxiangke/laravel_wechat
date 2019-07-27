@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\WechatAccountProfile;
 use Illuminate\Http\Request;
+use App\WechatAccountProfile;
 
 class WechatAccountProfileController extends Controller
 {

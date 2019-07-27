@@ -2,9 +2,9 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\AlbumSubscription;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
+use App\Models\AlbumSubscription;
 
 class SubscriptionsPerDay extends Trend
 {

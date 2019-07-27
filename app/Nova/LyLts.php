@@ -3,12 +3,11 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Date;
-use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\LyLts as LtsModel;
 
 class LyLts extends Resource
@@ -44,7 +43,7 @@ class LyLts extends Resource
      * @var array
      */
     public static $sort = [
-        'index' => 'desc'
+        'index' => 'desc',
     ];
 
     /**
@@ -57,13 +56,13 @@ class LyLts extends Resource
     {
         return [
             ID::make()->sortable(),
-            Number::make('编号','index')->help('节目编号#101-999,不带#')
+            Number::make('编号', 'index')->help('节目编号#101-999,不带#')
                 ->min(101)->max(999)->step(1)->sortable(),
-            Text::make('名称','name'),
-            Text::make('简介','description')->onlyOnForms(),
-            Text::make('老师','author')->help('授课老师、分割'),
-            Text::make('前缀','code')->help('节目命名前缀vfe0'),
-            Number::make('总数','count')->help('节目数量')->sortable(),
+            Text::make('名称', 'name'),
+            Text::make('简介', 'description')->onlyOnForms(),
+            Text::make('老师', 'author')->help('授课老师、分割'),
+            Text::make('前缀', 'code')->help('节目命名前缀vfe0'),
+            Number::make('总数', 'count')->help('节目数量')->sortable(),
             Select::make('category')
                 ->options(LtsModel::CATEGORY)
                 ->displayUsingLabels(),

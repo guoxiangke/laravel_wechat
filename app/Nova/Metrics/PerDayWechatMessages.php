@@ -3,8 +3,8 @@
 namespace App\Nova\Metrics;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Metrics\Trend;
 use App\Models\WechatMessage;
+use Laravel\Nova\Metrics\Trend;
 
 class PerDayWechatMessages extends Trend
 {

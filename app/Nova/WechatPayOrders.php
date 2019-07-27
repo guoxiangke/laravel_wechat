@@ -2,16 +2,14 @@
 
 namespace App\Nova;
 
+use App\Models\Album;
+use App\Models\LyLts;
+use App\Models\LyMeta;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Digitalazgroup\PlainText\PlainText;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Models\LyMeta;
-use App\Models\LyLts;
-use App\Models\Album;
+use Laravel\Nova\Fields\Boolean;
 
 class WechatPayOrders extends Resource
 {
@@ -66,18 +64,19 @@ class WechatPayOrders extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Avatar', function () {
-                if($this->profile){
+                if ($this->profile) {
                     return '<img style="max-width:45px;" src="'.$this->profile->headimgurl.'"></img>';
                 }
             })->asHtml(),
-            Text::make('User_Id',function(){
-                if($this->profile){
+            Text::make('User_Id', function () {
+                if ($this->profile) {
                     return $this->profile->nickname;
                 }
+
                 return $this->user_id;
-                })
+            })
                 ->onlyOnIndex(),
-            Number::make('金额','total_fee')
+            Number::make('金额', 'total_fee')
                 ->onlyOnIndex()
                 ->sortable(),
             Boolean::make('Success')
@@ -85,19 +84,21 @@ class WechatPayOrders extends Resource
             Text::make('Body')
                 ->rules('required', 'max:255'),
             Text::make('Target_type', function () {
-                if($this->target_type)
+                if ($this->target_type) {
                     return $this->target_type::ModelName;
-                }),
-            Text::make('Target_Id',function(){;
-                if($this->target_type == LyMeta::class){
+                }
+            }),
+            Text::make('Target_Id', function () {
+                if ($this->target_type == LyMeta::class) {
                     return $this->lymeta->name;
                 }
-                if($this->target_type == Album::class){
+                if ($this->target_type == Album::class) {
                     return $this->album->title;
                 }
-                if($this->target_type == LyLts::class){
+                if ($this->target_type == LyLts::class) {
                     return $this->lylts->name;
                 }
+
                 return $this->target_id;
             }),
             Text::make('out_trade_no')->onlyOnIndex(),

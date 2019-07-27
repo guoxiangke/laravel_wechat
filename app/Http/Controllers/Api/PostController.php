@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use Auth;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use Auth;
 
 class PostController extends Controller
 {
@@ -22,6 +22,7 @@ class PostController extends Controller
     public function index()
     {
         $articles = Post::paginate(5);
+
         return $articles;
     }
 
@@ -37,6 +38,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->modified_id = Auth::id();
         $post->save();
+
         return $post;
     }
 

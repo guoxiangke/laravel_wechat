@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use App\Traits\HasTranslatedNameField;
+use Illuminate\Database\Eloquent\Model;
+
 use App\Traits\HasTranslatedDescriptionField;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
@@ -17,7 +17,7 @@ class Category extends Model
         'slug',
         'name',
         'description',
-        'parent_id'
+        'parent_id',
     ];
 
     // protected $casts = [
@@ -32,10 +32,9 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
     }
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
-
-
 }

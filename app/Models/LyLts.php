@@ -10,7 +10,7 @@ class LyLts extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name','description','author','code','count','index','category','weight', 'image'];
+    protected $fillable = ['name', 'description', 'author', 'code', 'count', 'index', 'category', 'weight', 'image'];
     public const ModelName = '良院课程';
 
     //ori: https://s3-ap-northeast-1.amazonaws.com/lyfiles/lts/本科课程/圣经背景/mavbi008.mp3
@@ -24,14 +24,14 @@ class LyLts extends Model
     const CDN_PREFIX = '/ly/addfiles/lts/';
 
     protected $casts = [
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
 
     const CATEGORY = [
       0=>'基础课程',
       1=>'本科课程',
       2=>'进深课程',
-      3=>'专辑课程'
+      3=>'专辑课程',
     ];
 
     protected $attributes = [

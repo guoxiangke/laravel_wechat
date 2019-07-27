@@ -3,18 +3,18 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\ServiceProvider;
+use App\Models\Post;
+use App\Models\LyAudio;
+use App\Models\Category;
 use Laravel\Horizon\Horizon;
 use App\Models\WechatPayOrder;
-use App\Observers\WechatPayOrderObserver;
-use App\Models\Category;
-use App\Observers\CategoryObserver;
-use App\Models\Post;
 use App\Observers\PostObserver;
-use App\Models\LyAudio;
 use App\Observers\LyAudioObserver;
+use App\Observers\CategoryObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\ServiceProvider;
+use App\Observers\WechatPayOrderObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,15 +26,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale('zh');
-        if(Config::get('app.env') != 'development') {
+        if (Config::get('app.env') != 'development') {
             URL::forceScheme('https');
         }
 
         Horizon::auth(function ($request) {
             $user = $request->user();
-            if($user && $user->isSuperuser()){
+            if ($user && $user->isSuperuser()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         });

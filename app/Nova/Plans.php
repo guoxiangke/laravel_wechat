@@ -3,11 +3,10 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Number;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 
 class Plans extends Resource
 {

@@ -2,15 +2,10 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Code;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Models\Page;
+use Laravel\Nova\Fields\BelongsTo;
 
 class Categories extends Resource
 {
@@ -34,7 +29,7 @@ class Categories extends Resource
      * @var array
      */
     public static $search = [
-        'meta_keywords','slug'
+        'meta_keywords', 'slug',
     ];
     /**
      * The relationships that should be eager loaded on index queries.
@@ -42,6 +37,7 @@ class Categories extends Resource
      * @var array
      */
     // public static $with = ['parent','children'];
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -59,6 +55,7 @@ class Categories extends Resource
             Text::make('Slug'),
         ];
     }
+
     /**
      * Get the cards available for the request.
      *

@@ -2,11 +2,9 @@
 
 namespace App\Console;
 
-use App\Services\Helper;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -35,13 +33,13 @@ class Kernel extends ConsoleKernel
         $schedule->command('lylts:update')
             ->weekly();
         $schedule->command('lyccc:get')
-            ->weekly();//每周更新每周辅导教室
+            ->weekly(); //每周更新每周辅导教室
         $schedule->command('subscribe:notify')
             ->hourly();
         //诗篇导读 每日更新 //todo delete on 2010!!
         $schedule->command('ly:psalm')
             ->dailyAt('0:10');
-            // ->everyMinute();
+        // ->everyMinute();
         // $schedule->command('horizon:snapshot')->daily();
     }
 

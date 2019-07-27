@@ -2,11 +2,11 @@
 
 namespace App\Observers;
 
+use App\Models\User;
+use App\Services\Wechat;
 use App\Models\WechatPayOrder;
 use App\Models\AlbumSubscription;
 use App\Jobs\SubscribeNotifyQueue;
-use App\Services\Wechat;
-use App\Models\User;
 
 class WechatPayOrderObserver
 {
@@ -29,13 +29,13 @@ class WechatPayOrderObserver
      */
     public function updated(WechatPayOrder $wechatPayOrder)
     {
-        if($wechatPayOrder->success){
-            if($wechatPayOrder->target_type && $wechatPayOrder->target_id){
+        if ($wechatPayOrder->success) {
+            if ($wechatPayOrder->target_type && $wechatPayOrder->target_id) {
                 $subscription = AlbumSubscription::where('user_id', $wechatPayOrder->user_id)
                 ->where('target_type', $wechatPayOrder->target_type)
                 ->where('target_id', $wechatPayOrder->target_id)
                 ->first();
-                if($subscription && $subscription->price<0){
+                if ($subscription && $subscription->price < 0) {
                     $subscription->price = -$subscription->price;
                     $subscription->count = 1;
                     $subscription->save();

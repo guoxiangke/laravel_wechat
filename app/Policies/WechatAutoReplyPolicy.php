@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WechatAutoReplyPolicy
 {
@@ -19,6 +18,7 @@ class WechatAutoReplyPolicy
     {
         //
     }
+
     public function viewAny($user)
     {
         return Gate::any(['viewWechatAutoReply', 'manageWechatAutoReply'], $user);

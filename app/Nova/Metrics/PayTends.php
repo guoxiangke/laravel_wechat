@@ -2,8 +2,8 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\WechatPayOrder;
 use Illuminate\Http\Request;
+use App\Models\WechatPayOrder;
 use Laravel\Nova\Metrics\Trend;
 
 class PayTends extends Trend

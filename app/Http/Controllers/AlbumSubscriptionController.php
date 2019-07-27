@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AlbumSubscription;
-use Illuminate\Http\Request;
-use Kris\LaravelFormBuilder\FormBuilderTrait;
-use App\Forms\SubscriptionUpdateForm;
-use Illuminate\Support\Facades\Auth;
 use Session;
 use Redirect;
+use Illuminate\Http\Request;
+use App\Models\AlbumSubscription;
+use Illuminate\Support\Facades\Auth;
+use App\Forms\SubscriptionUpdateForm;
+use Kris\LaravelFormBuilder\FormBuilderTrait;
 
 class AlbumSubscriptionController extends Controller
 {
@@ -17,6 +17,7 @@ class AlbumSubscriptionController extends Controller
     // {
     //     $this->middleware('auth');
     // }
+
     /**
      * Display a listing of the resource.
      *
@@ -68,13 +69,13 @@ class AlbumSubscriptionController extends Controller
     public function edit(AlbumSubscription $subscription)
     {
         // return view('subscriptions.edit')->with('subscriptions', $subscription);
-        if($subscription->user_id !== Auth::id()){
+        if ($subscription->user_id !== Auth::id()) {
             return abort('403');
         }
         $form = $this->form(SubscriptionUpdateForm::class, [
             'method' => 'POST',
             'url' => route('subscriptions.update', $subscription->id),
-        ],['send_at'=> $subscription->send_at ]);
+        ], ['send_at'=> $subscription->send_at]);
 
         return view('subscriptions.edit', compact('form'));
     }
@@ -88,24 +89,24 @@ class AlbumSubscriptionController extends Controller
      */
     public function update(Request $request, AlbumSubscription $subscription)
     {
-        if($subscription->user_id !== Auth::id()){
+        if ($subscription->user_id !== Auth::id()) {
             return abort('403');
         }
 
         $form = $this->form(SubscriptionUpdateForm::class);
         // It will automatically use current request, get the rules, and do the validation
-        if (!$form->isValid()) {
+        if (! $form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
         // Or automatically redirect on error. This will throw an HttpResponseException with redirect
         $form->redirectIfNotValid();
 
         $sendAt = $request->input('send_at', 6);
-        if($sendAt>4 && $sendAt<23){
+        if ($sendAt > 4 && $sendAt < 23) {
             $subscription->send_at = $sendAt;
             $subscription->save();
             Session::flash('message', '更新成功!');
-        }else{
+        } else {
             Session::flash('error', '非法操作. Something wrong!');
         }
 

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: dale
  * Date: 2018/7/29
- * Time: 下午10:49
+ * Time: 下午10:49.
  */
 
 namespace App\Services;
-
 
 class Upyun
 {
@@ -20,7 +19,6 @@ class Upyun
     const ONE_DOMAIN = 'https://oneybzx.yongbuzhixi.com';
 
     const IMAGE_CND_PREFIX = 'https://images.weserv.nl/?url=';
-
 
     /**
      * @param $path 图片相对路径

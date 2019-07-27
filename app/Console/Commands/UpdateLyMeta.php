@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\LyMeta;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class UpdateLyMeta extends Command
 {
@@ -30,7 +29,6 @@ class UpdateLyMeta extends Command
     public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
@@ -60,7 +58,7 @@ class UpdateLyMeta extends Command
                         'ly_index' => 1642,
                         'name'     => '良院本科1',
                         'day'      => 7,
-                        'category' => $categoryId
+                        'category' => $categoryId,
                     ]
                 );
 
@@ -80,7 +78,7 @@ class UpdateLyMeta extends Command
                         'ly_index' => 1644,
                         'name'     => '良院进深1',
                         'day'      => 7,
-                        'category' => $categoryId
+                        'category' => $categoryId,
                     ]
                 );
 

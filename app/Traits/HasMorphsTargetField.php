@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use App\Models\LyMeta;
-use App\Models\LyLts;
 use App\Models\Album;
+use App\Models\LyLts;
+use App\Models\LyMeta;
 
 trait HasMorphsTargetField
 {

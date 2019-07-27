@@ -3,26 +3,23 @@
 namespace App\Models;
 
 // use Actuallymab\LaravelComment\CanComment;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// use Spatie\Permission\Traits\HasRoles;
-use Silvanite\Brandenburg\Traits\HasRoles;
-use Silvanite\Brandenburg\Role;
-use Overtrue\LaravelFollow\Traits\CanFollow;
-use Overtrue\LaravelFollow\Traits\CanBeFollowed;
-use Overtrue\LaravelFollow\Traits\CanLike;
-//use Overtrue\LaravelFollow\Traits\CanSubscribe;
-use Overtrue\LaravelFollow\Traits\CanVote;
-use Overtrue\LaravelFollow\Traits\CanBookmark;
-use Trexology\Pointable\Contracts\Pointable;
-use Trexology\Pointable\Traits\Pointable as PointableTrait;
-use Rinvex\Subscriptions\Traits\HasSubscriptions;
-use App\Models\AlbumSubscription;
-use App\Models\WechatUserProfile;
-use App\Models\WechatAccountProfile;
 use Illuminate\Support\Carbon;
+use Silvanite\Brandenburg\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
+// use Spatie\Permission\Traits\HasRoles;
+use Overtrue\LaravelFollow\Traits\CanLike;
+use Overtrue\LaravelFollow\Traits\CanVote;
+use Silvanite\Brandenburg\Traits\HasRoles;
+use Overtrue\LaravelFollow\Traits\CanFollow;
+use Trexology\Pointable\Contracts\Pointable;
+//use Overtrue\LaravelFollow\Traits\CanSubscribe;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Overtrue\LaravelFollow\Traits\CanBookmark;
+use Overtrue\LaravelFollow\Traits\CanBeFollowed;
+use Rinvex\Subscriptions\Traits\HasSubscriptions;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Trexology\Pointable\Traits\Pointable as PointableTrait;
 
 class User extends Authenticatable implements Pointable
 {
@@ -44,7 +41,7 @@ class User extends Authenticatable implements Pointable
     const POINT_MUSIC_DAY_LIMIT = 100;
     const POINT_PRE_COMMENT = 50;
     const POINT_PRE_MUSIC = 10;
-    const POINT_PRE_USER_RECOMMEND = 1000;//1元
+    const POINT_PRE_USER_RECOMMEND = 1000; //1元
     const DEFAULT_ROLE = 'wx';
     const MP_ROLE = 'mp';
     /**
@@ -78,8 +75,8 @@ class User extends Authenticatable implements Pointable
     // }
 
     /**
-     * for Horizon::auth
-     * @return boolean [description]
+     * for Horizon::auth.
+     * @return bool [description]
      */
     public function isSuperuser()
     {
@@ -109,11 +106,11 @@ class User extends Authenticatable implements Pointable
     }
 
     /**
-     * wechat account profile
+     * wechat account profile.
      */
     public function ghprofile()
     {
-        return $this->hasOne(WechatAccountProfile::class,'to_user_name','name');
+        return $this->hasOne(WechatAccountProfile::class, 'to_user_name', 'name');
     }
 
     public function subscriptions()
@@ -121,7 +118,8 @@ class User extends Authenticatable implements Pointable
         return $this->hasMany(AlbumSubscription::class);
     }
 
-    public function get_free_subscription_counts() {
+    public function get_free_subscription_counts()
+    {
         return AlbumSubscription::where('user_id', $this->id)
             ->where('price', 0)
             ->where('active', 1)
@@ -136,10 +134,12 @@ class User extends Authenticatable implements Pointable
         return $this->hasMany(WechatMessage::class, 'from_user_name', 'name');
     }
 
-    public function toggleSubscribe(){
-        $this->subscribe = !$this->subscribe;
+    public function toggleSubscribe()
+    {
+        $this->subscribe = ! $this->subscribe;
         $this->save();
     }
+
     //
     public function recommenders()
     {
@@ -154,56 +154,62 @@ class User extends Authenticatable implements Pointable
     }
 
     //推荐的总数
-    public function count_recommenders(){
+    public function count_recommenders()
+    {
         return $this->recommenders()->count();
     }
 
     //有效推荐的总数
-    public function count_value_recommenders($byMonth=false){
+    public function count_value_recommenders($byMonth = false)
+    {
         $start = 0;
-        if($byMonth){
+        if ($byMonth) {
             $start = Carbon::now()->startOfMonth()->toDateTimeString();
         }
+
         return $this->recommenders()
-            ->where('subscribe',1)
+            ->where('subscribe', 1)
             ->where('created_at', '>', $start)
             ->count();
     }
+
     /**
-     * [saveUser with role wx or mp]
+     * [saveUser with role wx or mp].
      * @param  [type]  $userName    [description]
      * @param  [type]  $role        [description]
-     * @param  integer $recommendId [description]
+     * @param  int $recommendId [description]
      * @return [type]               [description]
      */
-    public static function newUser($userName, $role = User::DEFAULT_ROLE, $recommendId = 0){
+    public static function newUser($userName, $role = User::DEFAULT_ROLE, $recommendId = 0)
+    {
         $user = User::firstOrNew(
             [
                 'name'  => $userName,
                 'email' => $userName.'@'.$role,
             ]
         );
-        if (!$user->id) {
-            $password =  Hash::make(str_random(6));
+        if (! $user->id) {
+            $password = Hash::make(str_random(6));
             $user->password = $password;
             // $user->remember_token = str_random(32);
             $user->save();
         }
-        if($role == User::DEFAULT_ROLE){
-            if($user->user_id != $recommendId){
+        if ($role == User::DEFAULT_ROLE) {
+            if ($user->user_id != $recommendId) {
                 $user->user_id = $recommendId;
                 $user->save();
             }
         }
-        if($role == User::MP_ROLE){
+        if ($role == User::MP_ROLE) {
             $user->user_id = 0;
             $user->subscribe = 0;
             $user->save();
         }
         $currentRoles = $user->roles()->get()->pluck('slug')->toArray();
-        if(!in_array($role, $currentRoles)){
+        if (! in_array($role, $currentRoles)) {
             $user->assignRole($role);
         }
+
         return $user;
     }
 }

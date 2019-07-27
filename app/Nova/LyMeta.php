@@ -3,13 +3,10 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use App\Models\LyMeta as LyMetaModel;
 
 class LyMeta extends Resource
@@ -47,19 +44,19 @@ class LyMeta extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('微信编号','index')->help('节目编号6XX')->sortable(),
-            Text::make('名称','name')->sortable(),
-            Text::make('主持人','author')->onlyOnForms()->help('、分割'),
-            Text::make('简介','description')->onlyOnForms()->help('简介'),
-            Text::make('封面','image')->onlyOnForms()->help('节目封面'),
-            Text::make('代码','code')->help('节目代码ee')->sortable(),
-            Text::make('良友编号','ly_index')->help('良友微信编号10X')->sortable(),
-            Select::make('分类','category')
+            Text::make('微信编号', 'index')->help('节目编号6XX')->sortable(),
+            Text::make('名称', 'name')->sortable(),
+            Text::make('主持人', 'author')->onlyOnForms()->help('、分割'),
+            Text::make('简介', 'description')->onlyOnForms()->help('简介'),
+            Text::make('封面', 'image')->onlyOnForms()->help('节目封面'),
+            Text::make('代码', 'code')->help('节目代码ee')->sortable(),
+            Text::make('良友编号', 'ly_index')->help('良友微信编号10X')->sortable(),
+            Select::make('分类', 'category')
                 ->sortable()
                 ->options(LyMetaModel::CATEGORY)
                 ->displayUsingLabels(),
-            Text::make('时间','day')->help('周几播出,可为空'),
-            Date::make('停播时间','stop_play_at')->sortable(),
+            Text::make('时间', 'day')->help('周几播出,可为空'),
+            Date::make('停播时间', 'stop_play_at')->sortable(),
             Date::make('Updated At')->onlyOnIndex()->sortable(),
         ];
     }
@@ -114,6 +111,6 @@ class LyMeta extends Resource
      * @var array
      */
     public static $sort = [
-        'index' => 'desc'
+        'index' => 'desc',
     ];
 }
