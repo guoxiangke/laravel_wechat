@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Tests\Fixtures\Role;
 use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceAttachmentTest extends IntegrationTest
 {
@@ -25,8 +25,8 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
+                            'roles'           => $role->id,
+                            'admin'           => 'Y',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -48,7 +48,7 @@ class ResourceAttachmentTest extends IntegrationTest
         $this->assertSubset([
             'user_id' => $user->id,
             'role_id' => $role->id,
-            'admin' => 'Y',
+            'admin'   => 'Y',
         ], $actionEvent->changes);
     }
 
@@ -59,9 +59,9 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
-                            'restricted' => 'No',
+                            'roles'           => $role->id,
+                            'admin'           => 'Y',
+                            'restricted'      => 'No',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -78,9 +78,9 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withoutExceptionHandling()
                         ->postJson('/nova-api/roles/'.$role->id.'/attach/users', [
-                            'users' => $user->id,
-                            'users_trashed' => 'true',
-                            'admin' => 'Y',
+                            'users'           => $user->id,
+                            'users_trashed'   => 'true',
+                            'admin'           => 'Y',
                             'viaRelationship' => 'users',
                         ]);
 
@@ -100,8 +100,8 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => 100,
-                            'admin' => 'Y',
+                            'roles'           => 100,
+                            'admin'           => 'Y',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -121,8 +121,8 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/roles/'.$role->id.'/attach/users', [
-                            'users' => $user3->id,
-                            'admin' => 'Y',
+                            'users'           => $user3->id,
+                            'admin'           => 'Y',
                             'viaRelationship' => 'users',
                         ]);
 
@@ -170,8 +170,8 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
+                            'roles'           => $role->id,
+                            'admin'           => 'Y',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -197,8 +197,8 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
+                            'roles'           => $role->id,
+                            'admin'           => 'Y',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -215,7 +215,7 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
+                            'roles'           => $role->id,
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -230,7 +230,7 @@ class ResourceAttachmentTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
             ->postJson('/nova-api/users/'.$user->id.'/attach/users', [
-                'users' => $user2->id,
+                'users'           => $user2->id,
                 'viaRelationship' => 'relatedUsers',
             ]);
 

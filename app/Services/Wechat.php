@@ -8,23 +8,22 @@
 
 namespace App\Services;
 
-use EasyWeChat;
-use App\Jobs\GampQueue; //红包发送记录
-use EasyWeChat\Factory;
-use App\Models\WechatAccount;
-
+use App\Jobs\GampQueue;
+use App\Models\WechatAccount; //红包发送记录
 use App\Models\WechatRedpack;
-use Illuminate\Support\Facades\Log;
-use EasyWeChat\Kernel\Messages\News;
-use EasyWeChat\Kernel\Messages\Text;
+use EasyWeChat;
+use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Music;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Text;
+use EasyWeChat\Kernel\Messages\Transfer;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use EasyWeChat\Kernel\Messages\NewsItem;
 // use Overtrue\Pinyin\Pinyin;
 // use WechatDev\WechatJSSDK;
-use EasyWeChat\Kernel\Messages\Transfer;
+use Illuminate\Support\Facades\Log;
 
 class Wechat
 {
@@ -51,22 +50,22 @@ class Wechat
         $config['aes_key'] = $wechatAccount->aes_key;
         $logPath = env('WECHAT_LOG_FILE', storage_path('logs/'.$wechatAccount->token.'.log'));
         $config['log'] = [
-            'default' => Config::get('app.env'), // 默认使用的 channel，生产环境可以改为下面的 prod
+            'default'  => Config::get('app.env'), // 默认使用的 channel，生产环境可以改为下面的 prod
             'channels' => [
                 'development' => [
                     'driver' => 'single',
-                    'path' => $logPath,
-                    'level' => 'debug',
+                    'path'   => $logPath,
+                    'level'  => 'debug',
                 ],
                 'staging' => [
                     'driver' => 'single',
-                    'path' => $logPath,
-                    'level' => 'debug',
+                    'path'   => $logPath,
+                    'level'  => 'debug',
                 ],
                 'production' => [
                     'driver' => 'daily',
-                    'path' => $logPath,
-                    'level' => 'error',
+                    'path'   => $logPath,
+                    'level'  => 'error',
                 ],
             ],
         ];
@@ -110,10 +109,12 @@ class Wechat
 
     /**
      * [customMessage only text].
-     * @param  [type] $res    [description]
-     * @param  [type] $app    [description]
-     * @param  [type] $openId [description]
-     * @return [type]         [description]
+     *
+     * @param [type] $res    [description]
+     * @param [type] $app    [description]
+     * @param [type] $openId [description]
+     *
+     * @return [type] [description]
      */
     public static function customMessage($res, $app, $openId)
     {
@@ -144,14 +145,16 @@ class Wechat
 
     /**
      * 发送客服消息.
-     * @param  [type] $custom_res    [description]
-     * @param  [type] $app    [description]
-     * @param  [type] $openId [description]
-     * @return [type]         [description]
+     *
+     * @param [type] $custom_res [description]
+     * @param [type] $app        [description]
+     * @param [type] $openId     [description]
+     *
+     * @return [type] [description]
      */
     public static function custom($res, $app, $openId)
     {
-        $message = Wechat::replyByType($res['type'], $res['content']);
+        $message = self::replyByType($res['type'], $res['content']);
 
         return $app->customer_service->message($message)->to($openId)->send();
     }
@@ -212,7 +215,7 @@ class Wechat
         $cache = Cache::tags('wechat_qr');
         $cacheKey = 'wechat_qr_'.$userId;
         $res = $cache->get($cacheKey);
-        if (! $res) {
+        if (!$res) {
             /* @var $app \EasyWeChat\officialAccount\Application */
             $app = static::init(1);
             $result = $app->qrcode->temporary('sharefrom_'.$userId);
@@ -251,68 +254,68 @@ class Wechat
         $FaqRandom = array_random(
           [
             [
-              'title'=>'如何解除套餐提醒?',
-              'src' => '解除套餐提醒限制.mp4',
+              'title'=> '如何解除套餐提醒?',
+              'src'  => '解除套餐提醒限制.mp4',
             ],
             [
-              'title'=>'如何获取消息?',
-              'src' => '如何获取消息.mp4',
+              'title'=> '如何获取消息?',
+              'src'  => '如何获取消息.mp4',
             ],
             [
-              'title'=>'如何订阅消息?',
-              'src' => '如何订阅和退订.mp4',
+              'title'=> '如何订阅消息?',
+              'src'  => '如何订阅和退订.mp4',
             ],
             [
-              'title'=>'如何收听音频消息?',
-              'src' => '收听音频.mp4',
+              'title'=> '如何收听音频消息?',
+              'src'  => '收听音频.mp4',
             ],
             [
-              'title'=>'如何评论?',
-              'src' => '如何评论.mp4',
+              'title'=> '如何评论?',
+              'src'  => '如何评论.mp4',
             ],
             [
-              'title'=>'如何分享音频消息给朋友?',
-              'src' => '分享音频消息.mp4',
+              'title'=> '如何分享音频消息给朋友?',
+              'src'  => '分享音频消息.mp4',
             ],
             [
-              'title'=>'如何分享到朋友圈?',
-              'src' => '分享朋友圈.mp4',
+              'title'=> '如何分享到朋友圈?',
+              'src'  => '分享朋友圈.mp4',
             ],
             [
-              'title'=>'错误的分享方式?',
-              'src' => '错误分享方式.mp4',
+              'title'=> '错误的分享方式?',
+              'src'  => '错误分享方式.mp4',
             ],
             [
-              'title'=>'如何订阅和退订?',
-              'src' => '如何订阅和退订.mp4',
+              'title'=> '如何订阅和退订?',
+              'src'  => '如何订阅和退订.mp4',
             ],
             [
-              'title'=>'如何置顶云彩助手?',
-              'src' => '置顶.mp4',
+              'title'=> '如何置顶云彩助手?',
+              'src'  => '置顶.mp4',
             ],
             [
-              'title'=>'如何暂停?',
-              'src' => '暂停.mp4',
+              'title'=> '如何暂停?',
+              'src'  => '暂停.mp4',
             ],
             [
-              'title'=>'如何浮窗播放?',
-              'src' => 'iphone浮窗.mp4',
+              'title'=> '如何浮窗播放?',
+              'src'  => 'iphone浮窗.mp4',
             ],
             [
-              'title'=>'如何调整图文字体大小?',
-              'src' => '字体大小.mp4',
+              'title'=> '如何调整图文字体大小?',
+              'src'  => '字体大小.mp4',
             ],
             [
-              'title'=>'如何关注云彩助手?',
-              'src' => '关注.mp4',
+              'title'=> '如何关注云彩助手?',
+              'src'  => '关注.mp4',
             ],
             [
-              'title'=>'订阅有啥好处?',
-              'src' => '订阅功能好处.mp4',
+              'title'=> '订阅有啥好处?',
+              'src'  => '订阅功能好处.mp4',
             ],
             [
-              'title'=>'啥叫耐心等待数秒?⌛️',
-              'src' => '耐心等待数秒.mp4',
+              'title'=> '啥叫耐心等待数秒?⌛️',
+              'src'  => '耐心等待数秒.mp4',
             ],
           ]
         );
@@ -344,15 +347,17 @@ class Wechat
 
     /**
      * 主动发送客服消息 without $app.
-     * @param  [type] $custom_res    [description]
-     * @param  [type] $app    [description]
-     * @param  [type] $openId [description]
-     * @return [type]         [description]
+     *
+     * @param [type] $custom_res [description]
+     * @param [type] $app        [description]
+     * @param [type] $openId     [description]
+     *
+     * @return [type] [description]
      */
     public static function send($res, $openId)
     {
         $app = EasyWeChat::officialAccount();
-        $message = Wechat::replyByType($res['type'], $res['content']);
+        $message = self::replyByType($res['type'], $res['content']);
 
         return $app->customer_service->message($message)->to($openId)->send();
     }
@@ -370,13 +375,13 @@ class Wechat
         // $app = Wechat::init($wechatAccount);
         $app = EasyWeChat::officialAccount();
         $wxProfile = $app->user->get($openId);
-        if (! is_array($wxProfile)) {
+        if (!is_array($wxProfile)) {
             return;
         }
-        if (! isset($wxProfile['nickname'])) {
+        if (!isset($wxProfile['nickname'])) {
             return;
         }
-        if (! isset($wxProfile['headimgurl'])) {
+        if (!isset($wxProfile['headimgurl'])) {
             return;
         }
 
@@ -391,7 +396,7 @@ class Wechat
         } else {
             //新建用户信息
             $wxProfile['user_id'] = $userId;
-            $wechatProfile = new WechatUserProfile;
+            $wechatProfile = new WechatUserProfile();
             $wechatProfile->fill($wxProfile);
             $wechatProfile->save();
         }
@@ -401,7 +406,7 @@ class Wechat
 
     public static function getMenu($uid = 1)
     {
-        $app = Wechat::init($uid);
+        $app = self::init($uid);
         $current = $app->menu->current();
 
         return collect($current['selfmenu_info']['button'])->map(function ($menu) {
@@ -416,7 +421,7 @@ class Wechat
     public static function setMenu($uid = 1, $menu = null)
     {
         $menu = $menu ?: config('wechatmenu.'.$uid);
-        $app = Wechat::init($uid);
+        $app = self::init($uid);
         $current = $app->menu->current();
         $res1 = $app->menu->delete();
         $res2 = $app->menu->create($menu);

@@ -5,19 +5,19 @@ namespace App\Nova;
 use App\Models\Album;
 use App\Models\LyLts;
 use App\Models\LyMeta;
-use Spatie\TagsField\Tags;
-use Laravel\Nova\Fields\ID;
+use Digitalazgroup\PlainText\PlainText;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 // use Laravel\Nova\Fields\Trix;
 // use Manogi\Tiptap\Tiptap;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Digitalazgroup\PlainText\PlainText;
+use Spatie\TagsField\Tags;
 use Vexilo\NovaFroalaEditor\NovaFroalaEditor;
 
 class Posts extends Resource
@@ -71,7 +71,8 @@ class Posts extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -90,13 +91,13 @@ class Posts extends Resource
             Textarea::make('摘要', 'excerpt')->help('图文摘要部分,可为空'),
             NovaFroalaEditor::make('正文', 'body')
                 ->options([
-                    'heightMin' => 500,
-                    'toolbarButtons' => ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', 'lineHeight', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', 'insertTable', '|', 'emoticons', 'fontAwesome', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'print', 'getPDF', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
-                    'imageUploadURL' => '/editor/image/upload',
+                    'heightMin'               => 500,
+                    'toolbarButtons'          => ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', 'lineHeight', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', 'insertTable', '|', 'emoticons', 'fontAwesome', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'print', 'getPDF', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
+                    'imageUploadURL'          => '/editor/image/upload',
                     'imageManagerDeleteMethod'=> 'POST',
-                    'imageManagerDeleteURL' => '/editor/image/delete',
-                    'imageManagerLoadMethod'=> 'POST',
-                    'imageManagerLoadURL' => '/editor/image/load',
+                    'imageManagerDeleteURL'   => '/editor/image/delete',
+                    'imageManagerLoadMethod'  => 'POST',
+                    'imageManagerLoadURL'     => '/editor/image/load',
                 ])
                 ->hideFromIndex()
                 ->rules('required'),
@@ -109,16 +110,16 @@ class Posts extends Resource
                 ->help('从小到大,默认是1'),
 
             Select::make('Target_type')->options([
-                Album::class => Album::ModelName,
+                Album::class  => Album::ModelName,
                 LyMeta::class => LyMeta::ModelName,
-                LyLts::class => LyLts::ModelName,
+                LyLts::class  => LyLts::ModelName,
             ])->hideFromIndex(),
             Number::make('Target_Id')->min(1)->step(1)->hideFromIndex(),
 
             Select::make('状态', 'status')->options([
                 'PUBLISHED' => '发布',
-                'DRAFT' => '草稿',
-                'PENDING' => '审核中',
+                'DRAFT'     => '草稿',
+                'PENDING'   => '审核中',
             ]),
             Tags::make('标签', 'Tags')
                 ->help('输入回车添加,可多个'),
@@ -197,7 +198,8 @@ class Posts extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
@@ -208,7 +210,8 @@ class Posts extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function filters(Request $request)
@@ -219,7 +222,8 @@ class Posts extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)
@@ -230,7 +234,8 @@ class Posts extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)

@@ -10,7 +10,8 @@ trait ResolvesLenses
     /**
      * Get the lenses that are available for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function availableLenses(NovaRequest $request)
@@ -21,7 +22,8 @@ trait ResolvesLenses
     /**
      * Get the lenses for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function resolveLenses(NovaRequest $request)
@@ -32,7 +34,8 @@ trait ResolvesLenses
     /**
      * Get the lenses available on the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)

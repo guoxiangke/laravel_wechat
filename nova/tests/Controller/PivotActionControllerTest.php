@@ -2,23 +2,22 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Actions\Action;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\ActionEvent;
+use Laravel\Nova\Tests\Fixtures\FailingPivotAction;
+use Laravel\Nova\Tests\Fixtures\NoopAction;
+use Laravel\Nova\Tests\Fixtures\NoopActionWithPivotHandle;
+use Laravel\Nova\Tests\Fixtures\QueuedAction;
+use Laravel\Nova\Tests\Fixtures\QueuedUpdateStatusAction;
 use Laravel\Nova\Tests\Fixtures\Role;
+use Laravel\Nova\Tests\Fixtures\RoleAssignment;
+use Laravel\Nova\Tests\Fixtures\RolePolicy;
+use Laravel\Nova\Tests\Fixtures\UpdateStatusAction;
 use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\NoopAction;
-use Laravel\Nova\Tests\Fixtures\RolePolicy;
-use Laravel\Nova\Tests\Fixtures\QueuedAction;
-use Laravel\Nova\Tests\Fixtures\RoleAssignment;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Laravel\Nova\Tests\Fixtures\FailingPivotAction;
-use Laravel\Nova\Tests\Fixtures\UpdateStatusAction;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Laravel\Nova\Tests\Fixtures\QueuedResourceAction;
-use Laravel\Nova\Tests\Fixtures\QueuedUpdateStatusAction;
-use Laravel\Nova\Tests\Fixtures\NoopActionWithPivotHandle;
 
 class PivotActionControllerTest extends IntegrationTest
 {
@@ -73,8 +72,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(NoopAction::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $response->assertStatus(200);
@@ -109,8 +108,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(NoopAction::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         unset($_SERVER['nova.role.authorizable']);
@@ -140,8 +139,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(NoopAction::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         unset($_SERVER['nova.role.authorizable']);
@@ -161,8 +160,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(NoopActionWithPivotHandle::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $response->assertStatus(200);
@@ -182,8 +181,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(NoopActionWithPivotHandle::class), [
                             'resources' => 'all',
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $response->assertStatus(200);
@@ -225,8 +224,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(FailingPivotAction::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $this->assertCount(1, ActionEvent::all());
@@ -246,8 +245,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(FailingPivotAction::class), [
                             'resources' => 'all',
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $this->assertCount(1, ActionEvent::all());
@@ -267,8 +266,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(QueuedAction::class), [
                             'resources' => $role2->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $response->assertStatus(200);
@@ -316,8 +315,8 @@ class PivotActionControllerTest extends IntegrationTest
         config(['queue.default' => 'sync']);
 
         Relation::morphMap([
-            'user' => User::class,
-            'role' => Role::class,
+            'user'      => User::class,
+            'role'      => Role::class,
             'role_user' => RoleAssignment::class,
         ]);
 
@@ -329,8 +328,8 @@ class PivotActionControllerTest extends IntegrationTest
         $response = $this->withoutExceptionHandling()
                         ->post($this->pivotActionUriFor(FailingPivotAction::class), [
                             'resources' => $role->id,
-                            'test' => 'Taylor Otwell',
-                            'callback' => '',
+                            'test'      => 'Taylor Otwell',
+                            'callback'  => '',
                         ]);
 
         $actionEvent = ActionEvent::first();
@@ -352,12 +351,13 @@ class PivotActionControllerTest extends IntegrationTest
     /**
      * Get a pivot action URL for the given action.
      *
-     * @param  string  $action
+     * @param string $action
+     *
      * @return string
      */
     protected function pivotActionUriFor($action)
     {
-        $key = (new $action)->uriKey();
+        $key = (new $action())->uriKey();
 
         return '/nova-api/roles/action?action='.$key.'&pivotAction=true&viaResource=users&viaResourceId=1&viaRelationship=roles';
     }

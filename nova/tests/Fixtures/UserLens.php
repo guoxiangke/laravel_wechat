@@ -2,19 +2,20 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Lenses\Lens;
 use Laravel\Nova\Http\Requests\LensRequest;
+use Laravel\Nova\Lenses\Lens;
 
 class UserLens extends Lens
 {
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\LensRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return mixed
      */
     public static function query(LensRequest $request, $query)
@@ -25,7 +26,8 @@ class UserLens extends Lens
     /**
      * Get the fields available to the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -39,13 +41,14 @@ class UserLens extends Lens
     /**
      * Get the filters available for the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function filters(Request $request)
     {
         return [
-            new IdFilter,
+            new IdFilter(),
         ];
     }
 
@@ -62,7 +65,8 @@ class UserLens extends Lens
     /**
      * Determine if the action should be available for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorizedToSee(Request $request)
@@ -73,7 +77,8 @@ class UserLens extends Lens
     /**
      * Get the actions available on the entity.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)
@@ -86,18 +91,19 @@ class UserLens extends Lens
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
     {
         return [
-            (new TotalUsers)->canSee(function ($request) {
+            (new TotalUsers())->canSee(function ($request) {
                 return $_SERVER['nova.totalUsers.canSee'] ?? true;
             }),
 
-            new UserGrowth,
-            (new CustomerRevenue)->onlyOnDetail(),
+            new UserGrowth(),
+            (new CustomerRevenue())->onlyOnDetail(),
         ];
     }
 }

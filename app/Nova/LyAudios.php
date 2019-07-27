@@ -4,9 +4,8 @@ namespace App\Nova;
 
 use App\Models\LyLts;
 use App\Models\LyMeta;
-use Laravel\Nova\Fields\ID;
-
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Vexilo\NovaFroalaEditor\NovaFroalaEditor;
 
@@ -41,15 +40,16 @@ class LyAudios extends Resource
      * @var array
      */
     public static $searchRelations = [
-        'lymeta' => ['name'],
-        'lylts' => ['name'],
+        'lymeta'   => ['name'],
+        'lylts'    => ['name'],
         'oneAlbum' => ['title'],
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -86,13 +86,13 @@ class LyAudios extends Resource
             Text::make('简介/标题', 'excerpt'),
             NovaFroalaEditor::make('正文', 'body')
                 ->options([
-                    'heightMin' => 500,
-                    'toolbarButtons' => ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', 'lineHeight', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', 'insertTable', '|', 'emoticons', 'fontAwesome', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'print', 'getPDF', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
-                    'imageUploadURL' => '/editor/image/upload',
+                    'heightMin'               => 500,
+                    'toolbarButtons'          => ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', 'lineHeight', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', 'insertTable', '|', 'emoticons', 'fontAwesome', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'print', 'getPDF', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
+                    'imageUploadURL'          => '/editor/image/upload',
                     'imageManagerDeleteMethod'=> 'POST',
-                    'imageManagerDeleteURL' => '/editor/image/delete',
-                    'imageManagerLoadMethod'=> 'POST',
-                    'imageManagerLoadURL' => '/editor/image/load',
+                    'imageManagerDeleteURL'   => '/editor/image/delete',
+                    'imageManagerLoadMethod'  => 'POST',
+                    'imageManagerLoadURL'     => '/editor/image/load',
                 ])
                 ->hideFromIndex()
                 ->rules('required'),
@@ -102,7 +102,8 @@ class LyAudios extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
@@ -113,7 +114,8 @@ class LyAudios extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function filters(Request $request)
@@ -124,7 +126,8 @@ class LyAudios extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)
@@ -135,7 +138,8 @@ class LyAudios extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)

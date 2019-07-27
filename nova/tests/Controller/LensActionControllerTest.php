@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
+use Laravel\Nova\Tests\Fixtures\NoopAction;
 use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\NoopAction;
 
 class LensActionControllerTest extends IntegrationTest
 {
@@ -31,9 +31,9 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
+                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction())->uriKey(), [
                             'resources' => implode(',', [$user->id, $user2->id]),
-                            'test' => 'Taylor Otwell',
+                            'test'      => 'Taylor Otwell',
                         ]);
 
         $response->assertStatus(200);
@@ -46,9 +46,9 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
+                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction())->uriKey(), [
                             'resources' => 'all',
-                            'test' => 'Taylor Otwell',
+                            'test'      => 'Taylor Otwell',
                         ]);
 
         $response->assertStatus(200);
@@ -63,7 +63,7 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withoutExceptionHandling()
-                        ->post('/nova-api/users/lens/paginating-user-lens/action?action='.(new NoopAction)->uriKey(), [
+                        ->post('/nova-api/users/lens/paginating-user-lens/action?action='.(new NoopAction())->uriKey(), [
                             'resources' => 'all',
                         ]);
     }

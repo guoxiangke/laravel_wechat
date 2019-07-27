@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use App\Services\Upyun;
-use Spatie\Tags\HasTags;
-use Illuminate\Support\Facades\URL;
 use App\Traits\HasMorphsTargetField;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 //https://github.com/spatie/laravel-tags/issues/134 hack core!!!
 // vi vonder/spatie/laravel-tags/src/Tag.php   line 66
 // use Spatie\MediaLibrary\HasMedia\HasMedia;
 // use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 // use Rinvex\Categories\Traits\Categorizable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use Spatie\Tags\HasTags;
+
 // use Actuallymab\LaravelComment\Commentable;
 
 class Post extends Model // implements HasMedia
@@ -57,7 +58,7 @@ class Post extends Model // implements HasMedia
     // public $translatable = ['en'];
 
     protected $attributes = [
-      'order' => 1,
+      'order'  => 1,
       'status' => 'PUBLISHED',
     ];
 
@@ -66,10 +67,10 @@ class Post extends Model // implements HasMedia
         //todo $newsItem->addMedia($pathToFile)->toMediaCollection('images');
 
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (! $this->user_id && Auth::user()) {
+        if (!$this->user_id && Auth::user()) {
             $this->user_id = Auth::id();
         }
-        if (! $this->modified_id && Auth::user()) {
+        if (!$this->modified_id && Auth::user()) {
             $this->modified_id = Auth::id();
         }
         parent::save();
@@ -137,7 +138,7 @@ class Post extends Model // implements HasMedia
     {
         $album = $this->album()->first();
         if ($album) {
-            $order = Post::where('target_type', Album::class)
+            $order = self::where('target_type', Album::class)
           ->where('target_id', $album->id)
           ->where('order', '<=', $this->order)
           ->count();
@@ -152,21 +153,21 @@ class Post extends Model // implements HasMedia
     {
         $image = false;
         //从文章/所属专辑中找图片
-        if (! empty($this->image_url)) {
+        if (!empty($this->image_url)) {
             $image = $this->image_url;
         } elseif ($this->image) {
             $image = config('app.url').'/storage/'.$this->image;
         }
-        if (! $image && $this->youtube_vid) {
+        if (!$image && $this->youtube_vid) {
             $image = "https://img.youtube.com/vi/{$this->youtube_vid}/hqdefault.jpg";
         }
-        if (! $image) {
+        if (!$image) {
             $album = $this->album()->first();
             if ($album) {
                 $image = config('app.url').'/storage/'.$album->image;
             }
         }
-        if (! $image) {
+        if (!$image) {
             $image = URL::asset('public/images/ybzx01.jpg');
         }
 
@@ -179,8 +180,8 @@ class Post extends Model // implements HasMedia
         $image = $this->getImageUrl();
 
         $title = $this->title;
-        $excerpt = ! empty($this->excerpt) ? $this->excerpt : null;
-        if (! $excerpt) {
+        $excerpt = !empty($this->excerpt) ? $this->excerpt : null;
+        if (!$excerpt) {
             $excerpt = str_limit(strip_tags($this->body), '120');
         }
         $album = $this->album()->first();
@@ -202,13 +203,13 @@ class Post extends Model // implements HasMedia
             $hqUrl = $audio['url'];
             $default_desc = '点击▶️收听 公号:云彩助手';
             $customRes = [
-          'type'=>'music',
-          'comment_id' => $this->id,
+          'type'          => 'music',
+          'comment_id'    => $this->id,
           'ga_data'       => [
               'category' => 'post_audio',
               'action'   => $this->id,
           ],
-          'content'=>[
+          'content'=> [
               'title'          => $title,
               'description'    => $default_desc,
               'url'            => $hqUrl,
@@ -222,23 +223,23 @@ class Post extends Model // implements HasMedia
             }
         }
         $url = URL::route('Post.show', ['slug'=>$this->slug]);
-        if (! $image) {
+        if (!$image) {
             $res = [
-          'type'  => 'text',
+          'type'       => 'text',
           'custom_res' => $customRes,
           'comment_id' => $this->id,
-          'content' => $content,
-          'ga_data' => [
+          'content'    => $content,
+          'ga_data'    => [
             'category' => 'album_post',
             'action'   => $albumId.'_'.$this->id,
           ],
         ];
         } else {
             $res = [
-          'type'  => 'news',
+          'type'       => 'news',
           'custom_res' => $customRes,
           'comment_id' => $this->id,
-          'content' => [
+          'content'    => [
             'title'       => $title,
             'description' => $excerpt,
             'url'         => $url,
@@ -284,7 +285,7 @@ class Post extends Model // implements HasMedia
         $video['vtt']['cn'] = false;
         $video['crossorigin'] = false;
         if ($this->mp4_upyun_path) {
-            if (! isset($video['url'])) {
+            if (!isset($video['url'])) {
                 $video['url'] = Upyun::DOMAIN.$this->mp4_upyun_path;
             }
             if ($this->youtube_vid) {

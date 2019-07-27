@@ -10,7 +10,8 @@ trait ResolvesActions
     /**
      * Get the actions that are available for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function availableActions(NovaRequest $request)
@@ -21,7 +22,8 @@ trait ResolvesActions
     /**
      * Get the actions for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function resolveActions(NovaRequest $request)
@@ -32,7 +34,8 @@ trait ResolvesActions
     /**
      * Get the "pivot" actions that are available for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function availablePivotActions(NovaRequest $request)
@@ -43,7 +46,8 @@ trait ResolvesActions
     /**
      * Get the "pivot" actions for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function resolvePivotActions(NovaRequest $request)
@@ -58,7 +62,8 @@ trait ResolvesActions
     /**
      * Get the "pivot" actions for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     protected function getPivotActions(NovaRequest $request)
@@ -78,7 +83,8 @@ trait ResolvesActions
     /**
      * Get the actions available on the entity.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)

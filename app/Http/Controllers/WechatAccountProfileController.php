@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\WechatAccountProfile;
+use Illuminate\Http\Request;
 
 class WechatAccountProfileController extends Controller
 {
@@ -30,7 +30,8 @@ class WechatAccountProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +42,8 @@ class WechatAccountProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\WechatAccountProfile  $wechatAccountProfile
+     * @param \App\WechatAccountProfile $wechatAccountProfile
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(WechatAccountProfile $wechatAccountProfile)
@@ -52,7 +54,8 @@ class WechatAccountProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\WechatAccountProfile  $wechatAccountProfile
+     * @param \App\WechatAccountProfile $wechatAccountProfile
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(WechatAccountProfile $wechatAccountProfile)
@@ -63,8 +66,9 @@ class WechatAccountProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\WechatAccountProfile  $wechatAccountProfile
+     * @param \Illuminate\Http\Request  $request
+     * @param \App\WechatAccountProfile $wechatAccountProfile
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, WechatAccountProfile $wechatAccountProfile)
@@ -75,7 +79,8 @@ class WechatAccountProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\WechatAccountProfile  $wechatAccountProfile
+     * @param \App\WechatAccountProfile $wechatAccountProfile
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(WechatAccountProfile $wechatAccountProfile)

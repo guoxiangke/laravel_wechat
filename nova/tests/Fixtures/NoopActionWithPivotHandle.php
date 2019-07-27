@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 
 class NoopActionWithPivotHandle extends Action
@@ -16,8 +16,9 @@ class NoopActionWithPivotHandle extends Action
     /**
      * Perform the action on the given role assignment models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
+     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param \Illuminate\Support\Collection    $models
+     *
      * @return string|void
      */
     public function handleForRoleAssignments(ActionFields $fields, Collection $models)

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LyAudioDownloadQueue;
 use App\Models\LyMeta;
 use Illuminate\Console\Command;
-use App\Jobs\LyAudioDownloadQueue;
 use Illuminate\Support\Facades\Log;
 
 class LyAudioDownload extends Command

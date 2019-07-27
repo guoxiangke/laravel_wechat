@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LyAudioUpdateQueue;
 use App\Models\LyMeta;
 use Illuminate\Console\Command;
-use App\Jobs\LyAudioUpdateQueue;
 use Illuminate\Support\Facades\Log;
 
 class UpdateLyAudio extends Command

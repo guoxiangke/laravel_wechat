@@ -28,7 +28,7 @@ trait QueriesResources
      */
     public function newQuery()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return $this->model()->newQuery();
         }
 
@@ -45,7 +45,7 @@ trait QueriesResources
      */
     public function newQueryWithoutScopes()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return $this->model()->newQueryWithoutScopes();
         }
 
@@ -62,7 +62,7 @@ trait QueriesResources
      */
     public function orderings()
     {
-        return ! empty($this->orderBy)
+        return !empty($this->orderBy)
                         ? [$this->orderBy => $this->orderByDirection ?? 'asc']
                         : [];
     }

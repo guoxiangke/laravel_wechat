@@ -3,8 +3,8 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttachableController extends Controller
@@ -12,7 +12,8 @@ class AttachableController extends Controller
     /**
      * List the available related resources for a given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(NovaRequest $request)
@@ -47,8 +48,9 @@ class AttachableController extends Controller
     /**
      * Determine if the query should include trashed models.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $associatedResource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $associatedResource
+     *
      * @return bool
      */
     protected function shouldIncludeTrashed(NovaRequest $request, $associatedResource)

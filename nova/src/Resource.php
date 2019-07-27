@@ -3,17 +3,17 @@
 namespace Laravel\Nova;
 
 use ArrayAccess;
-use JsonSerializable;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Scout\Searchable;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\Resources\DelegatesToResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Illuminate\Http\Resources\DelegatesToResource;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use JsonSerializable;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Scout\Searchable;
 
 abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
 {
@@ -102,7 +102,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Create a new resource instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $resource
+     * @param \Illuminate\Database\Eloquent\Model $resource
+     *
      * @return void
      */
     public function __construct($resource)
@@ -113,7 +114,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     abstract public function fields(Request $request);
@@ -141,7 +143,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if this resource is available for navigation.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public static function availableForNavigation(Request $request)
@@ -172,7 +175,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public static function searchable()
     {
-        return ! empty(static::$search) || static::usesScout();
+        return !empty(static::$search) || static::usesScout();
     }
 
     /**
@@ -246,7 +249,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     {
         $model = static::$model;
 
-        return new $model;
+        return new $model();
     }
 
     /**
@@ -262,7 +265,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get meta information about this resource for client side comsumption.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public static function additionalInformation(Request $request)
@@ -273,8 +277,9 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Filter and authorize the given values.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  array  $values
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param array                                   $values
+     *
      * @return \Illuminate\Support\Collection
      */
     protected function filterAndAuthorize(NovaRequest $request, $values)
@@ -287,45 +292,48 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Support\Collection  $fields
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Support\Collection          $fields
+     *
      * @return array
      */
     public function serializeForIndex(NovaRequest $request, $fields = null)
     {
         return array_merge($this->serializeWithId($fields ?: $this->indexFields($request)), [
-            'authorizedToView' => $this->authorizedToView($request),
-            'authorizedToUpdate' => $this->authorizedToUpdateForSerialization($request),
-            'authorizedToDelete' => $this->authorizedToDeleteForSerialization($request),
-            'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
+            'authorizedToView'        => $this->authorizedToView($request),
+            'authorizedToUpdate'      => $this->authorizedToUpdateForSerialization($request),
+            'authorizedToDelete'      => $this->authorizedToDeleteForSerialization($request),
+            'authorizedToRestore'     => static::softDeletes() && $this->authorizedToRestore($request),
             'authorizedToForceDelete' => static::softDeletes() && $this->authorizedToForceDelete($request),
-            'softDeletes' => static::softDeletes(),
-            'softDeleted' => $this->isSoftDeleted(),
+            'softDeletes'             => static::softDeletes(),
+            'softDeleted'             => $this->isSoftDeleted(),
         ]);
     }
 
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function serializeForDetail(NovaRequest $request)
     {
         return array_merge($this->serializeWithId($this->detailFields($request)), [
-            'authorizedToUpdate' => $this->authorizedToUpdate($request),
-            'authorizedToDelete' => $this->authorizedToDelete($request),
-            'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
+            'authorizedToUpdate'      => $this->authorizedToUpdate($request),
+            'authorizedToDelete'      => $this->authorizedToDelete($request),
+            'authorizedToRestore'     => static::softDeletes() && $this->authorizedToRestore($request),
             'authorizedToForceDelete' => static::softDeletes() && $this->authorizedToForceDelete($request),
-            'softDeletes' => static::softDeletes(),
-            'softDeleted' => $this->isSoftDeleted(),
+            'softDeletes'             => static::softDeletes(),
+            'softDeleted'             => $this->isSoftDeleted(),
         ]);
     }
 
     /**
      * Determine if the resource may be updated, factoring in attachments.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return bool
      */
     protected function authorizedToUpdateForSerialization(NovaRequest $request)
@@ -342,7 +350,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if the resource may be deleted, factoring in detachments.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return bool
      */
     protected function authorizedToDeleteForSerialization(NovaRequest $request)
@@ -364,7 +373,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public function isSoftDeleted()
     {
         return static::softDeletes() &&
-               ! is_null($this->resource->{$this->resource->getDeletedAtColumn()});
+               !is_null($this->resource->{$this->resource->getDeletedAtColumn()});
     }
 
     /**
@@ -382,13 +391,14 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization using the given fields.
      *
-     * @param  \Illuminate\Support\Collection  $fields
+     * @param \Illuminate\Support\Collection $fields
+     *
      * @return array
      */
     protected function serializeWithId(Collection $fields)
     {
         return [
-            'id' => $fields->whereInstanceOf(ID::class)->first() ?: ID::forModel($this->resource),
+            'id'     => $fields->whereInstanceOf(ID::class)->first() ?: ID::forModel($this->resource),
             'fields' => $fields->all(),
         ];
     }
@@ -397,7 +407,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      * Return the location to redirect the user after creation.
      *
      * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \App\Nova\Resource $resource
+     * @param \App\Nova\Resource                      $resource
+     *
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
@@ -409,7 +420,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      * Return the location to redirect the user after update.
      *
      * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \App\Nova\Resource $resource
+     * @param \App\Nova\Resource                      $resource
+     *
      * @return string
      */
     public static function redirectAfterUpdate(NovaRequest $request, $resource)

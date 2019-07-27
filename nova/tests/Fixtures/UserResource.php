@@ -2,18 +2,18 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\ResourceToolElement;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserResource extends Resource
 {
@@ -46,8 +46,9 @@ class UserResource extends Resource
     /**
      * Determine if the user can add / associate models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest    $request
+     * @param \Illuminate\Database\Eloquent\Model|string $model
+     *
      * @return bool
      */
     public function authorizedToAdd(NovaRequest $request, $model)
@@ -58,7 +59,8 @@ class UserResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -115,7 +117,7 @@ class UserResource extends Resource
                 return 'Computed';
             }),
 
-            Text::make('InvokableComputed', new class {
+            Text::make('InvokableComputed', new class() {
                 public function __invoke()
                 {
                     return 'Computed';
@@ -140,66 +142,69 @@ class UserResource extends Resource
     /**
      * Get the lenses available on the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function lenses(Request $request)
     {
         return [
-            new UserLens,
-            new GroupingUserLens,
-            new PaginatingUserLens,
+            new UserLens(),
+            new GroupingUserLens(),
+            new PaginatingUserLens(),
         ];
     }
 
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function actions(Request $request)
     {
         return [
-            new OpensInNewTabAction,
-            new RedirectAction,
-            new DestructiveAction,
-            new EmptyAction,
-            new ExceptionAction,
-            new FailingAction,
-            new NoopAction,
-            new QueuedAction,
-            new QueuedResourceAction,
-            new QueuedUpdateStatusAction,
-            new RequiredFieldAction,
-            (new UnauthorizedAction)->canSee(function ($request) {
+            new OpensInNewTabAction(),
+            new RedirectAction(),
+            new DestructiveAction(),
+            new EmptyAction(),
+            new ExceptionAction(),
+            new FailingAction(),
+            new NoopAction(),
+            new QueuedAction(),
+            new QueuedResourceAction(),
+            new QueuedUpdateStatusAction(),
+            new RequiredFieldAction(),
+            (new UnauthorizedAction())->canSee(function ($request) {
                 return false;
             }),
-            (new UnrunnableAction)->canSee(function ($request) {
+            (new UnrunnableAction())->canSee(function ($request) {
                 return true;
             })->canRun(function ($request, $model) {
                 return false;
             }),
-            new UpdateStatusAction,
-            new NoopActionWithoutActionable,
-            new HandleResultAction,
+            new UpdateStatusAction(),
+            new NoopActionWithoutActionable(),
+            new HandleResultAction(),
         ];
     }
 
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function filters(Request $request)
     {
         return [
-            (new IdFilter)->canSee(function ($request) {
+            (new IdFilter())->canSee(function ($request) {
                 return $_SERVER['nova.idFilter.canSee'] ?? true;
             }),
 
-            (new CustomKeyFilter)->canSee(function ($request) {
+            (new CustomKeyFilter())->canSee(function ($request) {
                 return $_SERVER['nova.customKeyFilter.canSee'] ?? true;
             }),
 
@@ -207,7 +212,7 @@ class UserResource extends Resource
                 return $_SERVER['nova.columnFilter.canSee'] ?? true;
             }),
 
-            (new CreateDateFilter)->firstDayOfWeek(4)->canSee(function ($request) {
+            (new CreateDateFilter())->firstDayOfWeek(4)->canSee(function ($request) {
                 return $_SERVER['nova.dateFilter.canSee'] ?? true;
             }),
         ];
@@ -218,8 +223,9 @@ class UserResource extends Resource
      *
      * This query determines which instances of the model may be attached to other resources.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableQuery(NovaRequest $request, $query)
@@ -230,13 +236,14 @@ class UserResource extends Resource
     /**
      * Build a "relatable" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableRoles(NovaRequest $request, $query)
     {
-        if (! isset($_SERVER['nova.user.useCustomRelatableRoles'])) {
+        if (!isset($_SERVER['nova.user.useCustomRelatableRoles'])) {
             return RoleResource::relatableQuery($request, $query);
         }
 
@@ -248,18 +255,19 @@ class UserResource extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
     {
         return [
-            (new TotalUsers)->canSee(function ($request) {
+            (new TotalUsers())->canSee(function ($request) {
                 return $_SERVER['nova.totalUsers.canSee'] ?? true;
             }),
 
-            new UserGrowth,
-            (new CustomerRevenue)->onlyOnDetail(),
+            new UserGrowth(),
+            (new CustomerRevenue())->onlyOnDetail(),
         ];
     }
 

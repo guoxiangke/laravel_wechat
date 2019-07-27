@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use FroalaEditor\Image as FroalaEditor_Image;
+use Illuminate\Http\Request;
 
 class FroalaController extends Controller
 {

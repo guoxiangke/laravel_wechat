@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Page extends Model
 {
@@ -31,7 +31,7 @@ class Page extends Model
         //todo $newsItem->addMedia($pathToFile)->toMediaCollection('images');
 
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (! $this->user_id && Auth::user()) {
+        if (!$this->user_id && Auth::user()) {
             $this->user_id = Auth::user()->id;
         }
 

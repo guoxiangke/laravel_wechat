@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Events;
 
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Http\Request;
 
 class ServingNova
 {
@@ -19,7 +19,8 @@ class ServingNova
     /**
      * Create a new event instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return void
      */
     public function __construct(Request $request)

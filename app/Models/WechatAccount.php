@@ -15,7 +15,7 @@ class WechatAccount extends Model
 
     // todo 转换成数组
     protected $casts = [
-        'menu' => 'array',
+        'menu'      => 'array',
         'resources' => 'array',
     ];
 

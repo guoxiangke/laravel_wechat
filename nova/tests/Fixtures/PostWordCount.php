@@ -10,7 +10,8 @@ class PostWordCount extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function calculate(Request $request)
@@ -26,7 +27,7 @@ class PostWordCount extends Value
     public function ranges()
     {
         return [
-            30 => '30 Days',
+            30    => '30 Days',
             'MTD' => 'Month To Date',
             'QTD' => 'Quarter To Date',
             'YTD' => 'Year To Date',

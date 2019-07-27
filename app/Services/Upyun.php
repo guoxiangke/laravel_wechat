@@ -22,8 +22,9 @@ class Upyun
 
     /**
      * @param $path 图片相对路径
-     * @param int $time 授权1分钟后过期
+     * @param int    $time 授权1分钟后过期
      * @param string $key
+     *
      * @return string token 防盗链密钥
      */
     public static function sign($path, $time = self::TTL, $key = self::KEY)

@@ -2,18 +2,19 @@
 
 namespace App\Observers;
 
-use App\Models\User;
-use App\Services\Wechat;
-use App\Models\WechatPayOrder;
-use App\Models\AlbumSubscription;
 use App\Jobs\SubscribeNotifyQueue;
+use App\Models\AlbumSubscription;
+use App\Models\User;
+use App\Models\WechatPayOrder;
+use App\Services\Wechat;
 
 class WechatPayOrderObserver
 {
     /**
      * Handle the wechat pay order "created" event.
      *
-     * @param  \App\WechatPayOrder  $wechatPayOrder
+     * @param \App\WechatPayOrder $wechatPayOrder
+     *
      * @return void
      */
     public function created(WechatPayOrder $wechatPayOrder)
@@ -24,7 +25,9 @@ class WechatPayOrderObserver
     /**
      * Handle the wechat pay order "updated" event.
      * 支付成功后,更新订阅价格为正,即表示支付成功!
-     * @param  \App\WechatPayOrder  $wechatPayOrder
+     *
+     * @param \App\WechatPayOrder $wechatPayOrder
+     *
      * @return void
      */
     public function updated(WechatPayOrder $wechatPayOrder)
@@ -56,7 +59,8 @@ class WechatPayOrderObserver
     /**
      * Handle the wechat pay order "deleted" event.
      *
-     * @param  \App\WechatPayOrder  $wechatPayOrder
+     * @param \App\WechatPayOrder $wechatPayOrder
+     *
      * @return void
      */
     public function deleted(WechatPayOrder $wechatPayOrder)
@@ -67,7 +71,8 @@ class WechatPayOrderObserver
     /**
      * Handle the wechat pay order "restored" event.
      *
-     * @param  \App\WechatPayOrder  $wechatPayOrder
+     * @param \App\WechatPayOrder $wechatPayOrder
+     *
      * @return void
      */
     public function restored(WechatPayOrder $wechatPayOrder)
@@ -78,7 +83,8 @@ class WechatPayOrderObserver
     /**
      * Handle the wechat pay order "force deleted" event.
      *
-     * @param  \App\WechatPayOrder  $wechatPayOrder
+     * @param \App\WechatPayOrder $wechatPayOrder
+     *
      * @return void
      */
     public function forceDeleted(WechatPayOrder $wechatPayOrder)

@@ -40,7 +40,7 @@ class LyCcc extends Command
         for ($page = 0; $page < 1; $page++) {
             $url = "http://www.729lyprog.net//Common/Reader/Channel/ShowPage.jsp?Cid=1176&Pid=42&Version=0&Charset=gb2312&page={$page}";
             $html = get_html($url);
-            if (! $html) {
+            if (!$html) {
                 \Log::error(__LINE__, [$i, $j, $monthDay, $title, $detailLink]);
                 continue;
             }
@@ -52,7 +52,7 @@ class LyCcc extends Command
                 // $title = preg_replace('/每周辅导教室\d{4}年\d+月\d+日：/', '', $title);
                 preg_match('/(\d{4})年(\d+)月(\d+)日/', $title, $matches);
                 $title = explode('：', $title);
-                if (! isset($title[1])) {
+                if (!isset($title[1])) {
                     continue;
                 }
                 $title = trim($title[1]);
@@ -68,22 +68,22 @@ class LyCcc extends Command
                         ->whereIn('target_id', [29, 30])
                         ->where('category_id', 46)
                         ->first();
-                    if (! $post) {
+                    if (!$post) {
                         //todo create post!
                         $body = '';
                         $post = [
-                            'user_id' =>1,
-                            'modified_id'=>1,
-                            'author_id' =>619,
-                            'title'=> $title.' | 空中辅导-'.$playAt,
-                            'excerpt'=>'',
-                            'body'=>$body,
-                            'status'=>'PUBLISHED',
-                            'category_id'=>46,
+                            'user_id'    => 1,
+                            'modified_id'=> 1,
+                            'author_id'  => 619,
+                            'title'      => $title.' | 空中辅导-'.$playAt,
+                            'excerpt'    => '',
+                            'body'       => $body,
+                            'status'     => 'PUBLISHED',
+                            'category_id'=> 46,
                             'target_type'=> 'App\\Models\\Album',
-                            'target_id'=>29,
-                            'order'=>$playAt,
-                            'mp3_url'=>'txly2:/ly/audio/cc_counseling_/cc_counseling_'.$playAt.'.mp3',
+                            'target_id'  => 29,
+                            'order'      => $playAt,
+                            'mp3_url'    => 'txly2:/ly/audio/cc_counseling_/cc_counseling_'.$playAt.'.mp3',
                         ];
                         //http://txly2.net/get/file/cc-counseling-20141117
                         //http://txly2.net/single/sermon/2243
@@ -93,7 +93,7 @@ class LyCcc extends Command
                     if ($post) {
                         $detailLink = 'http://www.729lyprog.net'.$detailLink;
                         $html = get_html($detailLink);
-                        if (! $html) {
+                        if (!$html) {
                             \Log::error(__LINE__, [$i, $j, $monthDay, $title, $detailLink]);
                             continue;
                         }

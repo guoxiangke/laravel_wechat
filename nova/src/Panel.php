@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova;
 
-use JsonSerializable;
 use Illuminate\Http\Resources\MergeValue;
+use JsonSerializable;
 
 class Panel extends MergeValue implements JsonSerializable
 {
@@ -38,8 +38,9 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Create a new panel instance.
      *
-     * @param  string  $name
-     * @param  \Closure|array  $fields
+     * @param string         $name
+     * @param \Closure|array $fields
+     *
      * @return void
      */
     public function __construct($name, $fields = [])
@@ -52,7 +53,8 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Prepare the given fields.
      *
-     * @param  \Closure|array  $fields
+     * @param \Closure|array $fields
+     *
      * @return array
      */
     protected function prepareFields($fields)
@@ -65,7 +67,8 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Get the default panel name for the given resource.
      *
-     * @param  \Laravel\Nova\Resource  $resource
+     * @param \Laravel\Nova\Resource $resource
+     *
      * @return string
      */
     public static function defaultNameFor(Resource $resource)
@@ -89,6 +92,7 @@ class Panel extends MergeValue implements JsonSerializable
      * Set the Vue component key for the panel.
      *
      * @param string $component
+     *
      * @return $this
      */
     public function withComponent($component)
@@ -116,8 +120,8 @@ class Panel extends MergeValue implements JsonSerializable
     public function jsonSerialize()
     {
         return array_merge([
-            'component' => $this->component(),
-            'name' => $this->name,
+            'component'   => $this->component(),
+            'name'        => $this->name,
             'showToolbar' => $this->showToolbar,
         ], $this->meta());
     }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\LyLts;
 use App\Services\Upyun;
-use App\Http\Controllers\Controller;
 
 class LyLtsController extends Controller
 {
@@ -43,26 +43,26 @@ class LyLtsController extends Controller
             }
 
             return [
-                'type'=>'text',
+                'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lts33',
                     'action'   => 'menu_'.$index,
                 ],
                 'offset'   => $offset,
-                'content'=> $text,
+                'content'  => $text,
             ];
         }
 
         $mavs = array_pluck($lyLts, 'index');
-        if (! in_array($index, $mavs)) {
+        if (!in_array($index, $mavs)) {
             return [
-                'type'=>'text',
+                'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lts33',
                     'action'   => '编码超出范围',
                 ],
                 'offset'   => $offset,
-                'content'=> '[大哭]编码有误，回复【#100】查看目录！',
+                'content'  => '[大哭]编码有误，回复【#100】查看目录！',
             ];
         }
         $cdn = LyLts::CDN;
@@ -78,13 +78,13 @@ class LyLtsController extends Controller
             $text = "[大哭]编码有误，超出最大范围！\n回复【#".$index.'0】查看指引！';
 
             return [
-                'type'=>'text',
+                'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lts33',
                     'action'   => '编码不对',
                 ],
                 'offset'   => $offset,
-                'content'=> $text,
+                'content'  => $text,
             ];
         }
 
@@ -109,26 +109,26 @@ EOF;
                 $text = $mavSummary.PHP_EOL.'本课程暂无讲义[抱拳]';
 
                 return [
-                    'type'=>'text',
+                    'type'          => 'text',
                     'ga_data'       => [
                         'category' => 'lts33',
                         'action'   => '远程暂无',
                     ],
                     'offset'   => $offset,
-                    'content'=> $text,
+                    'content'  => $text,
                 ];
             }
             $mavSummaryLinks = "<a href='{$link}'>》讲义链接</a>";
             $text = $mavSummary.PHP_EOL.$mavSummaryLinks;
 
             return [
-                'type'=>'text',
+                'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lts33',
                     'action'   => '编码超出范围',
                 ],
                 'offset'   => $offset,
-                'content'=> $text,
+                'content'  => $text,
             ];
         }
         if ($offset == 0) {
@@ -144,18 +144,18 @@ EOF;
         // target_id = 1-22
         $commentDate = $mav['id'].','.$count; //$mav['id'],12
         $res = [
-            'type'=>'music',
+            'type'          => 'music',
             'ga_data'       => [
                 'category' => 'lts33',
                 'action'   => $mavTitle.'-'.$rep,
             ],
-            'subscribe_id' => $mav['id'],
-            'comment_id' => $commentDate,
+            'subscribe_id'   => $mav['id'],
+            'comment_id'     => $commentDate,
             'custom_message' => false, //todo 良友圣经学院pdf等资料
-            'offset' => $count,
-            'content'=>[
+            'offset'         => $count,
+            'content'        => [
                 'title'          => $mavTitle.'-'.$rep,
-                'description'    =>  '点击▶️收听'.' 良院-'.$mavLevel,
+                'description'    => '点击▶️收听'.' 良院-'.$mavLevel,
                 'url'            => $link,
                 'hq_url'         => $link,
                 'thumb_media_id' => null,

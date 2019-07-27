@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Services\Wechat;
-use App\Models\WechatAccount;
 use App\Jobs\WechatUserProfileQueue;
-use Illuminate\Support\Facades\Auth;
-use EasyWeChat\Kernel\Messages\Message;
-use App\Services\Wechat\MessageLogHandler;
+use App\Models\User;
+use App\Models\WechatAccount;
+use App\Services\Wechat;
 use App\Services\Wechat\LinkMessageHandler;
-use App\Services\Wechat\MessageReplyHandler;
 use App\Services\Wechat\LyMessageReplyHandler;
+use App\Services\Wechat\MessageLogHandler;
+use App\Services\Wechat\MessageReplyHandler;
+use EasyWeChat\Kernel\Messages\Message;
+use Illuminate\Support\Facades\Auth;
 
 class WechatController extends Controller
 {
@@ -69,7 +69,7 @@ class WechatController extends Controller
         $wechatUser = session('wechat.oauth_user.default');
         $openId = $wechatUser['id'];
         $user = User::where('name', $openId)->first();
-        if (! $user) {
+        if (!$user) {
             $user = User::newUser($openId);
             WechatUserProfileQueue::dispatch($user)->delay(now()->addSeconds(10));
         }

@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Tests\Fixtures\Tag;
 use Laravel\Nova\Tests\Fixtures\Post;
+use Laravel\Nova\Tests\Fixtures\Tag;
 use Laravel\Nova\Tests\IntegrationTest;
 
 class MorphableResourceAttachmentUpdateTest extends IntegrationTest
@@ -25,8 +25,8 @@ class MorphableResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/posts/'.$post->id.'/update-attached/tags/'.$tag->id, [
-                            'tags' => $tag->id,
-                            'admin' => 'N',
+                            'tags'            => $tag->id,
+                            'admin'           => 'N',
                             'viaRelationship' => 'tags',
                         ]);
 
@@ -51,8 +51,8 @@ class MorphableResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/posts/'.$post->id.'/update-attached/tags/'.$tag->id, [
-                            'tags' => $tag3->id,
-                            'admin' => 'N',
+                            'tags'            => $tag3->id,
+                            'admin'           => 'N',
                             'viaRelationship' => 'tags',
                         ]);
 
@@ -68,8 +68,8 @@ class MorphableResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/posts/'.$post->id.'/update-attached/tags/100', [
-                            'tags' => $tag->id,
-                            'admin' => 'N',
+                            'tags'            => $tag->id,
+                            'admin'           => 'N',
                             'viaRelationship' => 'tags',
                         ]);
 
@@ -84,7 +84,7 @@ class MorphableResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/posts/'.$post->id.'/update-attached/tags/'.$tag->id, [
-                            'tags' => $tag->id,
+                            'tags'            => $tag->id,
                             'viaRelationship' => 'tags',
                         ]);
 

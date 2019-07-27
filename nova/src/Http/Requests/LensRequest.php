@@ -11,7 +11,8 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified filters to the given query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function withFilters($query)
@@ -22,7 +23,8 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified filters to the given query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function filter($query)
@@ -35,12 +37,13 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified ordering to the given query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function withOrdering($query)
     {
-        if (! $this->orderBy || ! $this->orderByDirection) {
+        if (!$this->orderBy || !$this->orderByDirection) {
             return $query;
         }
 
@@ -67,7 +70,8 @@ class LensRequest extends NovaRequest
     /**
      * Map the given models to the appropriate resource for the request.
      *
-     * @param  \Illuminate\Support\Collection  $models
+     * @param \Illuminate\Support\Collection $models
+     *
      * @return \Illuminate\Support\Collection
      */
     public function toResources(Collection $models)

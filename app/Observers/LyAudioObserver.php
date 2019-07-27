@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use Hashids\Hashids;
 use App\Models\LyAudio;
+use Hashids\Hashids;
 use Illuminate\Support\Facades\Config;
 
 class LyAudioObserver
@@ -11,12 +11,13 @@ class LyAudioObserver
     /**
      * Handle the post "created" event.
      *
-     * @param  \App\Post  $post
+     * @param \App\Post $post
+     *
      * @return void
      */
     public function created(LyAudio $post)
     {
-        if (! $post->slug) {
+        if (!$post->slug) {
             $hashids = new Hashids(Config::get('app.name'), 11);
             $post->slug = $hashids->encode($post->id, time());
             $post->save();

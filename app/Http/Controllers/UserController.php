@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Album;
+use App\Models\User;
 use App\Models\WechatUserProfile;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -16,7 +16,7 @@ class UserController extends Controller
         $user = Auth::user();
         $countAll = $user->count_recommenders();
         $countVaule = $user->count_value_recommenders();
-        if (! $countAll) {
+        if (!$countAll) {
             $msg1 = '啊呜,您还没有成功分享!';
         } else {
             $msg1 = "迄今为止,您总共推荐了{$countAll}人!";
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $account = Auth::user();
         $canManageUsers = $account->hasRoleWithPermission('manageUsers');
-        if (! $canManageUsers) {
+        if (!$canManageUsers) {
             return redirect('/')->with('status', 'Not Authorized!');
         }
         // $sql = "select user_id, count(*) as count from users where subscribe=1 group by user_id order by count";
@@ -69,13 +69,13 @@ class UserController extends Controller
     {
         $account = Auth::user();
         $canManageUsers = $account->hasRoleWithPermission('manageUsers');
-        if (! $canManageUsers) {
+        if (!$canManageUsers) {
             return redirect('/')->with('status', 'Not Authorized!');
         }
 
         $countAll = $user->count_recommenders();
         $countVaule = $user->count_value_recommenders();
-        if (! $countAll) {
+        if (!$countAll) {
             $msg1 = '啊呜,Ta还没有成功分享!';
         }
         if ($countAll - $countVaule > 0) {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Session;
-use Redirect;
-use Illuminate\Http\Request;
-use App\Models\AlbumSubscription;
-use Illuminate\Support\Facades\Auth;
 use App\Forms\SubscriptionUpdateForm;
+use App\Models\AlbumSubscription;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
+use Redirect;
+use Session;
 
 class AlbumSubscriptionController extends Controller
 {
@@ -41,7 +41,8 @@ class AlbumSubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -52,7 +53,8 @@ class AlbumSubscriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -63,7 +65,8 @@ class AlbumSubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(AlbumSubscription $subscription)
@@ -74,7 +77,7 @@ class AlbumSubscriptionController extends Controller
         }
         $form = $this->form(SubscriptionUpdateForm::class, [
             'method' => 'POST',
-            'url' => route('subscriptions.update', $subscription->id),
+            'url'    => route('subscriptions.update', $subscription->id),
         ], ['send_at'=> $subscription->send_at]);
 
         return view('subscriptions.edit', compact('form'));
@@ -83,8 +86,9 @@ class AlbumSubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AlbumSubscription $subscription)
@@ -95,7 +99,7 @@ class AlbumSubscriptionController extends Controller
 
         $form = $this->form(SubscriptionUpdateForm::class);
         // It will automatically use current request, get the rules, and do the validation
-        if (! $form->isValid()) {
+        if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
         // Or automatically redirect on error. This will throw an HttpResponseException with redirect
@@ -116,7 +120,8 @@ class AlbumSubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

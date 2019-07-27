@@ -44,7 +44,8 @@ class TrendResult implements JsonSerializable
     /**
      * Create a new trend result instance.
      *
-     * @param  string|null  $value
+     * @param string|null $value
+     *
      * @return void
      */
     public function __construct($value = null)
@@ -55,7 +56,8 @@ class TrendResult implements JsonSerializable
     /**
      * Set the primary result amount for the trend.
      *
-     * @param  string|null  $value
+     * @param string|null $value
+     *
      * @return $this
      */
     public function result($value = null)
@@ -82,7 +84,8 @@ class TrendResult implements JsonSerializable
     /**
      * Set the trend of data for the metric.
      *
-     * @param  array  $trend
+     * @param array $trend
+     *
      * @return $this
      */
     public function trend(array $trend)
@@ -95,7 +98,8 @@ class TrendResult implements JsonSerializable
     /**
      * Indicate that the metric represents a dollar value.
      *
-     * @param  string  $symbol
+     * @param string $symbol
+     *
      * @return $this
      */
     public function dollars($symbol = '$')
@@ -106,7 +110,8 @@ class TrendResult implements JsonSerializable
     /**
      * Indicate that the metric represents a euro value.
      *
-     * @param  string  $symbol
+     * @param string $symbol
+     *
      * @return $this
      */
     public function euros($symbol = '€')
@@ -117,7 +122,8 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value prefix.
      *
-     * @param  string  $prefix
+     * @param string $prefix
+     *
      * @return $this
      */
     public function prefix($prefix)
@@ -130,7 +136,8 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value suffix.
      *
-     * @param  string  $suffix
+     * @param string $suffix
+     *
      * @return $this
      */
     public function suffix($suffix)
@@ -143,7 +150,8 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value formatting.
      *
-     * @param  string  $format
+     * @param string $format
+     *
      * @return $this
      */
     public function format($format)
@@ -161,8 +169,8 @@ class TrendResult implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'value' => $this->value,
-            'trend' => $this->trend,
+            'value'  => $this->value,
+            'trend'  => $this->trend,
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,
             'format' => $this->format,

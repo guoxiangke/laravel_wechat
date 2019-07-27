@@ -11,12 +11,13 @@ trait FormatsRelatableDisplayValues
     /**
      * Format the associatable display value.
      *
-     * @param  mixed  $resource
+     * @param mixed $resource
+     *
      * @return string
      */
     protected function formatDisplayValue($resource)
     {
-        if (! $resource instanceof Resource) {
+        if (!$resource instanceof Resource) {
             $resource = Nova::newResourceFromModel($resource);
         }
 
@@ -30,7 +31,8 @@ trait FormatsRelatableDisplayValues
     /**
      * Set the column that should be displayed for the field.
      *
-     * @param  \Closure|string  $display
+     * @param \Closure|string $display
+     *
      * @return $this
      */
     public function display($display)

@@ -16,7 +16,8 @@ class MorphToActionTarget extends MorphTo
     /**
      * Determine if the field is not redundant.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function isNotRedundant(Request $request)

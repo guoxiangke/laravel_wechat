@@ -26,13 +26,13 @@ class WechatUserProfileHelper
             ->first();
         $app = Wechat::init($wechatAccount);
         $wxProfile = $app->user->get($openId);
-        if (! is_array($wxProfile)) {
+        if (!is_array($wxProfile)) {
             return;
         }
-        if (! isset($wxProfile['nickname'])) {
+        if (!isset($wxProfile['nickname'])) {
             return;
         }
-        if (! isset($wxProfile['headimgurl'])) {
+        if (!isset($wxProfile['headimgurl'])) {
             return;
         }
 
@@ -47,7 +47,7 @@ class WechatUserProfileHelper
         } else {
             //新建用户信息
             $wxProfile['user_id'] = $userId;
-            $wechatProfile = new WechatUserProfile;
+            $wechatProfile = new WechatUserProfile();
             $wechatProfile->fill($wxProfile);
             $wechatProfile->save();
         }

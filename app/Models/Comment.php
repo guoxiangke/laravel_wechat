@@ -19,7 +19,7 @@ class Comment // extends LaravelComment
 
     public function replies()
     {
-        return $this->hasMany(Comment::class, 'commentable_id');
+        return $this->hasMany(self::class, 'commentable_id');
     }
 
     //N minutes ago

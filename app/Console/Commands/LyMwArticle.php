@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\LyMeta;
 use App\Models\LyAudio;
+use App\Models\LyMeta;
 use Illuminate\Console\Command;
 
 class LyMwArticle extends Command
@@ -62,13 +62,13 @@ class LyMwArticle extends Command
                 [
                     'target_id'    => 25,
                     'target_type'  => LyMeta::class,
-                    'play_at' => $date,
+                    'play_at'      => $date,
                 ]
             );
 
             $detailLink = 'https://r.729ly.net/'.$detailLink;
             // // $title = '2019年2月2日：仰望神，靠祂得胜（诗19:7-14）';
-            if (! $audio->excerpt) {
+            if (!$audio->excerpt) {
                 $title = explode('：', $title);
                 $title = $title[1];
                 $audio->excerpt = trim($title);

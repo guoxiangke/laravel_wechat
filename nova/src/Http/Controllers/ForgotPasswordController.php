@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Routing\Controller;
 
 class ForgotPasswordController extends Controller
 {
@@ -34,7 +34,7 @@ class ForgotPasswordController extends Controller
         $this->middleware('guest');
 
         ResetPassword::toMailUsing(function ($notifiable, $token) {
-            return (new MailMessage)
+            return (new MailMessage())
                 ->subject(__('Reset Password Notification'))
                 ->line(__('You are receiving this email because we received a password reset request for your account.'))
                 ->action(__('Reset Password'), url(config('nova.url').route('nova.password.reset', $token, false)))

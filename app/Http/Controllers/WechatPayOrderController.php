@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use EasyWeChat;
-use Carbon\Carbon;
 use App\Models\Page;
-use App\Services\Wechat;
-use Illuminate\Http\Request;
 use App\Models\WechatPayOrder;
-use Illuminate\Support\Facades\Log;
+use App\Services\Wechat;
+use Carbon\Carbon;
+use EasyWeChat;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class WechatPayOrderController extends Controller
 {
@@ -34,7 +34,7 @@ class WechatPayOrderController extends Controller
         $app = EasyWeChat::payment(); // 微信支付
         //prepay_id有效时间：2小时
         $prepayId = $order->prepay_id;
-        if (! $prepayId || Carbon::now()->diffInMinutes($order->updated_at) >= 120) {
+        if (!$prepayId || Carbon::now()->diffInMinutes($order->updated_at) >= 120) {
             $result = $app->order->unify($orderData);
             if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS') {
                 $prepayId = $result['prepay_id'];
@@ -60,13 +60,13 @@ class WechatPayOrderController extends Controller
         $app = EasyWeChat::payment(); // 微信支付
         $response = $app->handlePaidNotify(function ($message, $fail) {
             $success = ($message['result_code'] == 'SUCCESS' && $message['return_code'] == 'SUCCESS') ?: false;
-            if (! $success) {
+            if (!$success) {
                 Log::error(__LINE__, [__FUNCTION__, __CLASS__, 'Order not Success.']);
                 //$fail('Order not Success.');
                 return true;
             }
             $order = WechatPayOrder::where('out_trade_no', $message['out_trade_no'])->first();
-            if (! $order) {
+            if (!$order) {
                 Log::error(__LINE__, [__FUNCTION__, __CLASS__, 'Order not Exsits.']);
                 //$fail('Order not Exsits.');
                 return true;
@@ -96,13 +96,13 @@ class WechatPayOrderController extends Controller
             $outTradeNo = config('wechat.payment.default.mch_id').'|'.date('YmdHis').'|'.$user->id; //32  mch_id|20180917103315|1
             //$openId = $user->name;
             $order = WechatPayOrder::Create([
-                'user_id'   => $user->id,
-                'target_type' => Page::class,
-                'target_id'  => 1,
-                'body'  => '赞助支持', //.$requestUri,
+                'user_id'       => $user->id,
+                'target_type'   => Page::class,
+                'target_id'     => 1,
+                'body'          => '赞助支持', //.$requestUri,
                 'out_trade_no'  => $outTradeNo,
-                'total_fee' => $fee,
-                'trade_type' => 'JSAPI',
+                'total_fee'     => $fee,
+                'trade_type'    => 'JSAPI',
             ]);
 
             return redirect()->route('order', ['id' => $order->id]);

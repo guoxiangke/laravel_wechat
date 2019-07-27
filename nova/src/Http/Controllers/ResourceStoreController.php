@@ -12,7 +12,8 @@ class ResourceStoreController extends Controller
     /**
      * Create a new resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\CreateResourceRequest  $request
+     * @param \Laravel\Nova\Http\Requests\CreateResourceRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function handle(CreateResourceRequest $request)
@@ -44,7 +45,7 @@ class ResourceStoreController extends Controller
         });
 
         return response()->json([
-            'id' => $model->getKey(),
+            'id'       => $model->getKey(),
             'resource' => $model->attributesToArray(),
             'redirect' => $resource::redirectAfterCreate($request, $request->newResourceWith($model)),
         ], 201);

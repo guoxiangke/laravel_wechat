@@ -9,23 +9,25 @@ class CategoryObserver
     /**
      * Handle the category "created" event.
      *
-     * @param  \App\Category  $category
+     * @param \App\Category $category
+     *
      * @return void
      */
     public function created(Category $category)
     {
         $CategoryApp = app('rinvex.categories.category')->find($category->id);
         $CategoryApp->update([
-            'name'=>$category->name,
-            'description'=>$category->description,
-            'slug'=>$category->slug,
+            'name'       => $category->name,
+            'description'=> $category->description,
+            'slug'       => $category->slug,
         ]);
     }
 
     /**
      * Handle the category "updated" event.
      *
-     * @param  \App\Category  $category
+     * @param \App\Category $category
+     *
      * @return void
      */
     public function updated(Category $category)
@@ -36,7 +38,8 @@ class CategoryObserver
     /**
      * Handle the category "deleted" event.
      *
-     * @param  \App\Category  $category
+     * @param \App\Category $category
+     *
      * @return void
      */
     public function deleted(Category $category)
@@ -47,7 +50,8 @@ class CategoryObserver
     /**
      * Handle the category "restored" event.
      *
-     * @param  \App\Category  $category
+     * @param \App\Category $category
+     *
      * @return void
      */
     public function restored(Category $category)
@@ -58,7 +62,8 @@ class CategoryObserver
     /**
      * Handle the category "force deleted" event.
      *
-     * @param  \App\Category  $category
+     * @param \App\Category $category
+     *
      * @return void
      */
     public function forceDeleted(Category $category)

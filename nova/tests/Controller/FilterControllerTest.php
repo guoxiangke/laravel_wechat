@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\IdFilter;
-use Laravel\Nova\Tests\Fixtures\CreateDateFilter;
 use Laravel\Nova\Tests\Fixtures\AdditionalOptionsFilter;
+use Laravel\Nova\Tests\Fixtures\CreateDateFilter;
+use Laravel\Nova\Tests\Fixtures\IdFilter;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class FilterControllerTest extends IntegrationTest
 {
@@ -67,25 +67,25 @@ class FilterControllerTest extends IntegrationTest
         $filter = new AdditionalOptionsFilter();
         $json = json_encode($filter);
         $expected = json_encode([
-            'class' => AdditionalOptionsFilter::class,
-            'name' => $filter->name(),
+            'class'     => AdditionalOptionsFilter::class,
+            'name'      => $filter->name(),
             'component' => $filter->component(),
-            'options' => [
+            'options'   => [
                 [
-                    'name' => 'label 1',
+                    'name'  => 'label 1',
                     'value' => 'value 1',
                 ],
                 [
-                    'name' => 'label 2',
+                    'name'  => 'label 2',
                     'value' => 'value 2',
                 ],
                 [
                     'value' => 'value 3',
-                    'name' => 'label 3',
+                    'name'  => 'label 3',
                 ],
                 [
                     'value' => 'value 4',
-                    'name' => 'label 4',
+                    'name'  => 'label 4',
                     'group' => 'group 1',
                 ],
             ],

@@ -3,10 +3,10 @@
 namespace Laravel\Nova\Http\Requests;
 
 use Closure;
-use Illuminate\Support\Fluent;
 use Illuminate\Http\UploadedFile;
-use Laravel\Nova\Fields\ActionFields;
+use Illuminate\Support\Fluent;
 use Laravel\Nova\Actions\ActionModelCollection;
+use Laravel\Nova\Fields\ActionFields;
 
 class ActionRequest extends NovaRequest
 {
@@ -73,15 +73,16 @@ class ActionRequest extends NovaRequest
     /**
      * Get the selected models for the action in chunks.
      *
-     * @param  int  $count
-     * @param  \Closure  $callback
+     * @param int      $count
+     * @param \Closure $callback
+     *
      * @return mixed
      */
     public function chunks($count, Closure $callback)
     {
         $output = [];
 
-        $this->toSelectedResourceQuery()->when(! $this->forAllMatchingResources(), function ($query) {
+        $this->toSelectedResourceQuery()->when(!$this->forAllMatchingResources(), function ($query) {
             $query->whereKey(explode(',', $this->resources));
         })->latest($this->model()->getKeyName())->chunk($count, function ($chunk) use ($callback, &$output) {
             $output[] = $callback($this->mapChunk($chunk));
@@ -121,7 +122,8 @@ class ActionRequest extends NovaRequest
     /**
      * Map the chunk of models into an appropriate state.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $chunk
+     * @param \Illuminate\Database\Eloquent\Collection $chunk
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function mapChunk($chunk)
@@ -163,7 +165,7 @@ class ActionRequest extends NovaRequest
     public function resolveFields()
     {
         return once(function () {
-            $fields = new Fluent;
+            $fields = new Fluent();
 
             $results = collect($this->action()->fields())->mapWithKeys(function ($field) use ($fields) {
                 return [$field->attribute => $field->fillForAction($this, $fields)];
@@ -181,6 +183,7 @@ class ActionRequest extends NovaRequest
      * When running pivot actions, this is the key of the owning model.
      *
      * @param  \Illuminate\Database\Eloquent\Model
+     *
      * @return int
      */
     public function actionableKey($model)
@@ -210,6 +213,7 @@ class ActionRequest extends NovaRequest
      * When running pivot actions, this is the key of the target model.
      *
      * @param  \Illuminate\Database\Eloquent\Model
+     *
      * @return int
      */
     public function targetKey($model)

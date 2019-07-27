@@ -16,7 +16,8 @@ class DeleteAttachments
     /**
      * Create a new class instance.
      *
-     * @param  \Laravel\Nova\Fields\Trix  $field
+     * @param \Laravel\Nova\Fields\Trix $field
+     *
      * @return void
      */
     public function __construct($field)
@@ -27,8 +28,9 @@ class DeleteAttachments
     /**
      * Delete the attachments associated with the field.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $model
+     * @param \Illuminate\Http\Request $request
+     * @param mixed                    $model
+     *
      * @return void
      */
     public function __invoke(Request $request, $model)
