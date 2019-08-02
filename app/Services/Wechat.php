@@ -29,6 +29,7 @@ use EasyWeChat\Kernel\Messages\Transfer;
 class Wechat
 {
     const MAIN_APP = 'gh_c2138e687da3'; //认证服务号
+    const LY_MP_ID = 'gh_9ce01a064bb6'; // 良朋益友
     const TEST_OPEN_ID = 'oTjEws-8eAAUqgR4q_ns7pbd0zN8'; //小永
     const THUMB_MEDIA_ID = '0EiLlKqUqHoIZkYcahv0yy10zHDdyfGOvzTIlUtiJHE';
 
