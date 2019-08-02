@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Wechat;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Services\Wechat;
 
 class GampController extends Controller
 {
@@ -37,7 +37,7 @@ class GampController extends Controller
     public function LyCategory($byMonth = null)
     {
         $statistics = DB::table('gamps')->select('category as type', DB::raw('count(*) as total'))->where('client_id', Wechat::LY_MP_ID)->groupBy('type')->orderBy('total', 'desc');
-        if (! is_null($byMonth)) {
+        if (!is_null($byMonth)) {
             // 本月 he 上X个月
             $start = Carbon::now()->subMonths($byMonth)->startOfMonth();
             $end = Carbon::now()->subMonths($byMonth)->endOfMonth();

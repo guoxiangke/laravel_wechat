@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\Gamp;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CampClean extends Command
