@@ -9,4 +9,5 @@ yarn-error.log
 .idea/
 cert/
 bootstrap/cache/*.php
-storage/
+storage/app
+storage/framework
