@@ -2,18 +2,19 @@
 
 namespace Laravel\Nova\Metrics;
 
-use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
+use InvalidArgumentException;
 
 class TrendDateExpressionFactory
 {
     /**
      * Create a new trend expression instance.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $column
-     * @param  string  $unit
-     * @param  string  $timezone
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $column
+     * @param string                                $unit
+     * @param string                                $timezone
+     *
      * @return \Laravel\Nova\Metrics\TrendDateExpression
      */
     public static function make(Builder $query, $column, $unit, $timezone)

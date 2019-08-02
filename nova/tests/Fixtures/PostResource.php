@@ -2,15 +2,14 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 
 class PostResource extends Resource
 {
@@ -33,7 +32,8 @@ class PostResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -46,7 +46,7 @@ class PostResource extends Resource
             Text::make('Description', 'description')->rules('string', 'max:255')
                 ->nullable()
                 ->canSee(function () {
-                    return ! empty($_SERVER['nova.post.nullableDescription']);
+                    return !empty($_SERVER['nova.post.nullableDescription']);
                 }),
             MorphMany::make('Comments', 'comments', CommentResource::class),
             MorphToMany::make('Tags', 'tags', TagResource::class)->display(function ($tag) {
@@ -73,8 +73,9 @@ class PostResource extends Resource
      *
      * This query determines which instances of the model may be attached to other resources.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableQuery(NovaRequest $request, $query)
@@ -85,13 +86,14 @@ class PostResource extends Resource
     /**
      * Build a "relatable" query for the users.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableUsers(NovaRequest $request, $query)
     {
-        if (! isset($_SERVER['nova.post.useCustomRelatableUsers'])) {
+        if (!isset($_SERVER['nova.post.useCustomRelatableUsers'])) {
             return UserResource::relatableQuery($request, $query);
         }
 
@@ -103,13 +105,14 @@ class PostResource extends Resource
     /**
      * Build a "relatable" query for the tags.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableTags(NovaRequest $request, $query)
     {
-        if (! isset($_SERVER['nova.post.useCustomRelatableTags'])) {
+        if (!isset($_SERVER['nova.post.useCustomRelatableTags'])) {
             return TagResource::relatableQuery($request, $query);
         }
 
@@ -121,20 +124,21 @@ class PostResource extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function cards(Request $request)
     {
         return [
-            new PostWordCount,
-            new PostCountTrend,
-            new PostAverageTrend,
-            new PostSumTrend,
-            new PostMaxTrend,
-            new PostMinTrend,
-            new PostsByUserPartition,
-            new WordCountByUserPartition,
+            new PostWordCount(),
+            new PostCountTrend(),
+            new PostAverageTrend(),
+            new PostSumTrend(),
+            new PostMaxTrend(),
+            new PostMinTrend(),
+            new PostsByUserPartition(),
+            new WordCountByUserPartition(),
         ];
     }
 

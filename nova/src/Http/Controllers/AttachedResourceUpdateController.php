@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Laravel\Nova\Actions\ActionEvent;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttachedResourceUpdateController extends Controller
@@ -14,7 +14,8 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Update an attached resource pivot record.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function handle(NovaRequest $request)
@@ -47,9 +48,10 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Validate the attachment request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $resource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     * @param string                                  $resource
+     *
      * @return void
      */
     protected function validate(NovaRequest $request, $model, $resource)
@@ -69,8 +71,9 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Find the pivot model for the operation.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     protected function findPivot(NovaRequest $request, $model)
@@ -86,15 +89,16 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Determine if the model has been updated since it was retrieved.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return void
      */
     protected function modelHasBeenUpdatedSinceRetrieval(NovaRequest $request, $model)
     {
         $column = $model->getUpdatedAtColumn();
 
-        if (! $model->{$column}) {
+        if (!$model->{$column}) {
             return false;
         }
 

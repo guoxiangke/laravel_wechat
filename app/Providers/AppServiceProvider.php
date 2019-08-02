@@ -2,19 +2,19 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
-use App\Models\Post;
-use App\Models\LyAudio;
 use App\Models\Category;
-use Laravel\Horizon\Horizon;
+use App\Models\LyAudio;
+use App\Models\Post;
 use App\Models\WechatPayOrder;
-use App\Observers\PostObserver;
-use App\Observers\LyAudioObserver;
 use App\Observers\CategoryObserver;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\ServiceProvider;
+use App\Observers\LyAudioObserver;
+use App\Observers\PostObserver;
 use App\Observers\WechatPayOrderObserver;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Horizon\Horizon;
 
 class AppServiceProvider extends ServiceProvider
 {

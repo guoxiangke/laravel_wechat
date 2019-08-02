@@ -7,7 +7,7 @@ return [
     // Categories Database Tables
     'tables' => [
 
-        'categories' => 'categories',
+        'categories'     => 'categories',
         'categorizables' => 'categorizables',
 
     ],

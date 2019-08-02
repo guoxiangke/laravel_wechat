@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Rules;
 
-use Laravel\Nova\Nova;
+use Illuminate\Contracts\Validation\Rule;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\MorphOne;
-use Illuminate\Contracts\Validation\Rule;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class Relatable implements Rule
 {
@@ -27,8 +27,9 @@ class Relatable implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return void
      */
     public function __construct(NovaRequest $request, $query)
@@ -40,15 +41,16 @@ class Relatable implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
     {
         $model = $this->query->select('*')->whereKey($value)->first();
 
-        if (! $model) {
+        if (!$model) {
             return false;
         }
 
@@ -66,9 +68,10 @@ class Relatable implements Rule
     /**
      * Determine if the relationship is "full".
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string                              $attribute
+     * @param mixed                               $value
+     *
      * @return bool
      */
     protected function relationshipIsFull($model, $attribute, $value)
@@ -93,8 +96,9 @@ class Relatable implements Rule
     /**
      * Authorize that the user is allowed to relate this resource.
      *
-     * @param  string  $resource
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param string                              $resource
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return bool
      */
     protected function authorize($resource, $model)

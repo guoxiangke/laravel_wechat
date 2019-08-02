@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class CardCommand extends Command
 {
@@ -33,11 +33,11 @@ class CardCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(
+        (new Filesystem())->copyDirectory(
             __DIR__.'/card-stubs',
             $this->cardPath()
         );
@@ -51,7 +51,7 @@ class CardCommand extends Command
         $this->replace('{{ class }}', $this->cardClass(), $this->cardPath().'/src/Card.stub');
         $this->replace('{{ component }}', $this->cardName(), $this->cardPath().'/src/Card.stub');
 
-        (new Filesystem)->move(
+        (new Filesystem())->move(
             $this->cardPath().'/src/Card.stub',
             $this->cardPath().'/src/'.$this->cardClass().'.php'
         );
@@ -114,7 +114,7 @@ class CardCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeCardPath(),
+            'url'  => './'.$this->relativeCardPath(),
         ];
 
         file_put_contents(
@@ -191,8 +191,9 @@ class CardCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
+     *
      * @return void
      */
     protected function runCommand($command, $path)
@@ -211,9 +212,10 @@ class CardCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
+     *
      * @return void
      */
     protected function replace($search, $replace, $path)

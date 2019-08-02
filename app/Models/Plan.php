@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslatedDescriptionField;
 use App\Traits\HasTranslatedNameField;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslatedDescriptionField;
 
 class Plan extends Model
 {

@@ -10,7 +10,8 @@ class CreationFieldController extends Controller
     /**
      * List the creation fields for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(NovaRequest $request)

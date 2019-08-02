@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Actions;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Database\Eloquent\Collection;
 
 class CallQueuedAction
 {
@@ -20,11 +20,12 @@ class CallQueuedAction
     /**
      * Create a new job instance.
      *
-     * @param  \Laravel\Nova\Actions\Action  $action
-     * @param  string  $method
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Database\Eloquent\Collection  $models
-     * @param  string  $batchId
+     * @param \Laravel\Nova\Actions\Action             $action
+     * @param string                                   $method
+     * @param \Laravel\Nova\Fields\ActionFields        $fields
+     * @param \Illuminate\Database\Eloquent\Collection $models
+     * @param string                                   $batchId
+     *
      * @return void
      */
     public function __construct(Action $action, $method, ActionFields $fields, Collection $models, $batchId)
@@ -51,7 +52,8 @@ class CallQueuedAction
     /**
      * Call the failed method on the job instance.
      *
-     * @param  \Exception  $e
+     * @param \Exception $e
+     *
      * @return void
      */
     public function failed($e)

@@ -43,7 +43,7 @@ class BadgeTest extends IntegrationTest
     public function test_badge_with_custom_class_map_returns_correct_class()
     {
         $field = Badge::make('Status')->map([
-            'draft' => 'info',
+            'draft'     => 'info',
             'published' => 'success',
         ]);
 
@@ -61,7 +61,7 @@ class BadgeTest extends IntegrationTest
         $field = Badge::make('Status', function () {
             return 'draft';
         })->map([
-            'draft' => 'warning',
+            'draft'     => 'warning',
             'published' => 'success',
         ]);
 
@@ -109,7 +109,7 @@ class BadgeTest extends IntegrationTest
     public function test_badge_can_set_custom_labels()
     {
         $field = Badge::make('Status')->labels([
-            'info' => 'Active',
+            'info'   => 'Active',
             'danger' => 'Refunded',
         ]);
 
@@ -123,10 +123,10 @@ class BadgeTest extends IntegrationTest
     public function test_badge_with_custom_mapping_and_labels()
     {
         $field = Badge::make('Status')->map([
-            true => 'success',
+            true  => 'success',
             false => 'danger',
         ])->labels([
-            true => 'Yes',
+            true  => 'Yes',
             false => 'No',
         ]);
 

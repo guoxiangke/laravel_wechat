@@ -59,7 +59,7 @@ class WechatJSSDK
         // wxjsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
 
         $ticket = $this->get_cache('wxjsapi_ticket');
-        if (! $ticket) {
+        if (!$ticket) {
             $accessToken = $this->getAccessToken();
             // 如果是企业号用以下 URL 获取 ticket
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
@@ -79,7 +79,7 @@ class WechatJSSDK
     {
         // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
         $access_token = $this->get_cache('wxjsapi_access_token');
-        if (! $access_token) {
+        if (!$access_token) {
             // 如果是企业号用以下URL获取access_token
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";

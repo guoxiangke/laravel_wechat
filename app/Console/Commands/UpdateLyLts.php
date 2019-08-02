@@ -47,7 +47,7 @@ class UpdateLyLts extends Command
             'http://www.729ly.net/Template/Shared/images/programs/lts_dp_prog_banner.png',
             'http://www.729ly.net/Template/Shared/images/programs/lts_hdp_prog_banner.png',
         ];
-        if (! count($apiData)) {
+        if (!count($apiData)) {
             Log::error(__FILE__, [__FUNCTION__, __LINE__, $apiData, 'wechat.edu.pl error']);
 
             return false;

@@ -2,12 +2,12 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Tests\Fixtures\Role;
+use Laravel\Nova\Tests\Fixtures\RoleAssignment;
 use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\RoleAssignment;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ResourceAttachmentUpdateTest extends IntegrationTest
 {
@@ -28,9 +28,9 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'roles'           => $role->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -61,10 +61,10 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
-                            'restricted' => 'No',
+                            'roles'           => $role->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
+                            'restricted'      => 'No',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -85,10 +85,10 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/roles/'.$role->id.'/update-attached/users/'.$user->id, [
-                            'users' => $user->id,
-                            'users_trashed' => 'true',
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'users'           => $user->id,
+                            'users_trashed'   => 'true',
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'users',
                         ]);
 
@@ -115,9 +115,9 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role3->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'roles'           => $role3->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -142,9 +142,9 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role3->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'roles'           => $role3->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -164,9 +164,9 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/100', [
-                            'roles' => $role->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'roles'           => $role->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -181,7 +181,7 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role->id,
+                            'roles'           => $role->id,
                             'viaRelationship' => 'roles',
                         ]);
 
@@ -192,8 +192,8 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
     public function test_action_event_should_honor_custom_polymorphic_type_for_attached_resource_update()
     {
         Relation::morphMap([
-            'user' => User::class,
-            'role' => Role::class,
+            'user'      => User::class,
+            'role'      => Role::class,
             'role_user' => RoleAssignment::class,
         ]);
 
@@ -203,9 +203,9 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
-                            'roles' => $role->id,
-                            'admin' => 'N',
-                            'pivot-update' => 'N',
+                            'roles'           => $role->id,
+                            'admin'           => 'N',
+                            'pivot-update'    => 'N',
                             'viaRelationship' => 'roles',
                         ]);
 

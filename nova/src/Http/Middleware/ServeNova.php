@@ -2,17 +2,18 @@
 
 namespace Laravel\Nova\Http\Middleware;
 
+use Laravel\Nova\Events\NovaServiceProviderRegistered;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaServiceProvider;
-use Laravel\Nova\Events\NovaServiceProviderRegistered;
 
 class ServeNova
 {
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return \Illuminate\Http\Response
      */
     public function handle($request, $next)
@@ -29,7 +30,8 @@ class ServeNova
     /**
      * Determine if the given request is intended for Nova.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     protected function isNovaRequest($request)

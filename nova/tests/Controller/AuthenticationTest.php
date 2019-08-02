@@ -2,9 +2,8 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Tool;
 use Illuminate\Support\Facades\DB;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\IntegrationTest;
 
@@ -41,13 +40,13 @@ class AuthenticationTest extends IntegrationTest
         config(['auth.providers.users.model' => User::class]);
 
         $user = factory(User::class)->create([
-            'email' => 'taylor@laravel.com',
+            'email'    => 'taylor@laravel.com',
             'password' => bcrypt('secret'),
         ]);
 
         $response = $this->withExceptionHandling()
                         ->post('/nova/login', [
-                            'email' => 'taylor@laravel.com',
+                            'email'    => 'taylor@laravel.com',
                             'password' => 'secret',
                         ]);
 

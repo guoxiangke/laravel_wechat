@@ -2,18 +2,18 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Tests\IntegrationTest;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Tests\Fixtures\UserResource;
+use Laravel\Nova\Tests\IntegrationTest;
+use stdClass;
 
 class FieldTest extends IntegrationTest
 {
@@ -90,7 +90,7 @@ class FieldTest extends IntegrationTest
         $request = Request::create('/', 'GET');
 
         $request->setUserResolver(function () {
-            return new class {
+            return new class() {
                 public function can($ability, $arguments = [])
                 {
                     $_SERVER['__nova.ability'] = $ability;
@@ -146,15 +146,15 @@ class FieldTest extends IntegrationTest
         $field = Text::make('Name');
 
         $this->assertContains([
-            'component' => 'text-field',
+            'component'       => 'text-field',
             'prefixComponent' => true,
-            'indexName' => 'Name',
-            'name' => 'Name',
-            'attribute' => 'name',
-            'value' => null,
-            'panel' => null,
-            'sortable' => false,
-            'textAlign' => 'left',
+            'indexName'       => 'Name',
+            'name'            => 'Name',
+            'attribute'       => 'name',
+            'value'           => null,
+            'panel'           => null,
+            'sortable'        => false,
+            'textAlign'       => 'left',
         ], $field->jsonSerialize());
     }
 
@@ -178,8 +178,8 @@ class FieldTest extends IntegrationTest
             ['label' => 'D', 'value' => 'd', 'group' => 'E'],
         ];
         $field = Select::make('Name')->options([
-            'a' => 'A',
-            'b' => ['label' => 'B'],
+            'a'      => 'A',
+            'b'      => ['label' => 'B'],
             ['value' => 'c', 'label' => 'C'],
             ['value' => 'd', 'label' => 'D', 'group' => 'E'],
         ]);
@@ -218,7 +218,7 @@ class FieldTest extends IntegrationTest
     public function test_collision_of_request_properties()
     {
         $request = new NovaRequest([], [
-            'query' => '',
+            'query'    => '',
             'resource' => 'resource',
         ]);
 

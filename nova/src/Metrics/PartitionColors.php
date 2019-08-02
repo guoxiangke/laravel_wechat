@@ -32,6 +32,7 @@ class PartitionColors
      * Get the color found at the given label key.
      *
      * @param string|int $label
+     *
      * @return void
      */
     public function get($label)

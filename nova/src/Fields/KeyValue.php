@@ -44,10 +44,11 @@ class KeyValue extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $requestAttribute
+     * @param object                                  $model
+     * @param string                                  $attribute
+     *
      * @return void
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -61,6 +62,7 @@ class KeyValue extends Field
      * The label that should be used for the key table heading.
      *
      * @param string $label
+     *
      * @return $this
      */
     public function keyLabel($label)
@@ -74,6 +76,7 @@ class KeyValue extends Field
      * The label that should be used for the value table heading.
      *
      * @param string $label
+     *
      * @return $this
      */
     public function valueLabel($label)
@@ -87,6 +90,7 @@ class KeyValue extends Field
      * The label that should be used for the add row button.
      *
      * @param string $label
+     *
      * @return $this
      */
     public function actionText($label)
@@ -104,7 +108,7 @@ class KeyValue extends Field
     public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
-            'keyLabel' => $this->keyLabel ?? __('Key'),
+            'keyLabel'   => $this->keyLabel ?? __('Key'),
             'valueLabel' => $this->valueLabel ?? __('Value'),
             'actionText' => $this->actionText ?? __('Add row'),
         ]);

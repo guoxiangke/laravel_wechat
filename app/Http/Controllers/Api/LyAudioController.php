@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\LyMeta;
+use App\Http\Controllers\Controller;
 use App\Models\LyAudio;
+use App\Models\LyMeta;
 use App\Services\Upyun;
 use App\Services\Wechat;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 
 class LyAudioController extends Controller
@@ -47,8 +47,8 @@ class LyAudioController extends Controller
         $signPackage = Wechat::getSignPackage($link);
         $title = "【{$lyMeta->index}】{$lyMeta->name}-{$audio->play_at}";
         $shareData = [
-            'title' =>  $title,
-            'link' => $link,
+            'title'  => $title,
+            'link'   => $link,
             'imgUrl' => $imgUrl,
         ];
 

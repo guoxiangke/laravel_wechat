@@ -1,9 +1,11 @@
 <?php
 
-if (! function_exists('fast_headers')) {
+if (!function_exists('fast_headers')) {
     /**
      * [fast_headers faster get_headers with curl.].
-     * @param  [string] $url [description]
+     *
+     * @param [string] $url [description]
+     *
      * @return [array or false]      [description]
      */
     function fast_headers($url)
@@ -35,7 +37,7 @@ if (! function_exists('fast_headers')) {
     }
 }
 
-if (! function_exists('semiangle_texts')) {
+if (!function_exists('semiangle_texts')) {
     // 全角半角转．
     function semiangle_texts($str)
     {
@@ -74,7 +76,7 @@ if (! function_exists('semiangle_texts')) {
     }
 }
 
-if (! function_exists('get_html')) {
+if (!function_exists('get_html')) {
     /* gets the data from a URL */
     function get_html($url)
     {
@@ -87,7 +89,7 @@ if (! function_exists('get_html')) {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         $data = curl_exec($ch);
-        if (! $data) {
+        if (!$data) {
             Log::error(__FUNCTION__, [__LINE__, $url, curl_error($ch)]);
             $data = file_get_contents($url) or die('curl die $url');
         }

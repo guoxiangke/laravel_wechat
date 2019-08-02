@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Requests;
 
-use Laravel\Nova\Nova;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Nova;
 
 class PivotFieldDestroyRequest extends NovaRequest
 {
@@ -14,7 +14,7 @@ class PivotFieldDestroyRequest extends NovaRequest
      */
     public function authorizeForAttachment()
     {
-        if (! $this->newResourceWith($this->findModelOrFail())->authorizedToAttach(
+        if (!$this->newResourceWith($this->findModelOrFail())->authorizedToAttach(
             $this, $this->findRelatedModel()
         )) {
             abort(403);

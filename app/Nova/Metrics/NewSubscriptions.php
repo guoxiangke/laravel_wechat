@@ -2,16 +2,17 @@
 
 namespace App\Nova\Metrics;
 
+use App\Models\AlbumSubscription;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
-use App\Models\AlbumSubscription;
 
 class NewSubscriptions extends Value
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function calculate(Request $request)
@@ -27,10 +28,10 @@ class NewSubscriptions extends Value
     public function ranges()
     {
         return [
-            7 => '7 Days',
-            30 => '30 Days',
-            60 => '60 Days',
-            365 => '365 Days',
+            7     => '7 Days',
+            30    => '30 Days',
+            60    => '60 Days',
+            365   => '365 Days',
             'MTD' => 'Month To Date',
             'QTD' => 'Quarter To Date',
             'YTD' => 'Year To Date',
@@ -40,7 +41,7 @@ class NewSubscriptions extends Value
     /**
      * Determine for how many minutes the metric should be cached.
      *
-     * @return  \DateTimeInterface|\DateInterval|float|int
+     * @return \DateTimeInterface|\DateInterval|float|int
      */
     public function cacheFor()
     {

@@ -4,14 +4,14 @@ namespace App\Jobs;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\WechatAccountProfile;
 use App\Services\ZhConvert;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use App\Models\WechatAccountProfile;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class WechatLinkSaveQueue implements ShouldQueue
 {
@@ -50,7 +50,7 @@ class WechatLinkSaveQueue implements ShouldQueue
         preg_match('/ori_head_img_url = "(.+)"/', $html, $matchs);
         $head_img_url = $matchs[1];
         preg_match('/var hd_head_img = ""\|\|"(.+)"/', $html, $matchs);
-        if (! isset($matchs[1])) {
+        if (!isset($matchs[1])) {
             preg_match('/var hd_head_img = "([^"]+)"/', $html, $matchs);
             if (isset($matchs[1])) {
                 $head_img_url = $matchs[1];
@@ -63,7 +63,7 @@ class WechatLinkSaveQueue implements ShouldQueue
         $selector = '.profile_meta_value:last';
         $description = $pq->find($selector)->text();
         $author = User::where('name', $to_user_name)->first();
-        if (! $author) {
+        if (!$author) {
             $author = User::newUser($to_user_name, User::MP_ROLE);
             Log::notice(__CLASS__, ['new an mp account while collect mp article', $author->id]);
             WechatAccountProfile::updateOrCreate(compact('nickname', 'to_user_name', 'head_img_url', 'app_id', 'description'));

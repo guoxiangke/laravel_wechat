@@ -2,26 +2,26 @@
 
 namespace App\Jobs;
 
-use App\Models\Post;
-use App\Models\User;
-use App\Models\Album;
-use App\Models\LyLts;
-use App\Models\LyMeta;
-use App\Models\LyAudio;
-use App\Services\Wechat;
-use App\Models\WechatAccount;
-use Illuminate\Bus\Queueable;
-use App\Models\AlbumSubscription;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Wechat\MessageReplyHandler;
 use App\Http\Controllers\Api\LyLtsController;
 use App\Http\Controllers\Api\LyMetaController;
+use App\Models\Album;
+use App\Models\AlbumSubscription;
+use App\Models\LyAudio;
+use App\Models\LyLts;
+use App\Models\LyMeta;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\WechatAccount;
+use App\Services\Wechat;
+use App\Services\Wechat\MessageReplyHandler;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class SubscribeNotifyQueue implements ShouldQueue
 {
@@ -52,7 +52,7 @@ class SubscribeNotifyQueue implements ShouldQueue
         // $this->openId = $user['profile']['openid'];
         //用户名必须为 open ID
         $user = User::find($subscription->user_id);
-        if (! $user) {
+        if (!$user) {
             Log::error(__FILE__, [__LINE__, $subscription->toArray(), 'subscription not found']);
 
             return;
@@ -126,7 +126,7 @@ class SubscribeNotifyQueue implements ShouldQueue
                 $commentCacheType = LyAudio::class;
                 $posts = LyAudio::where('album_id', $albumId)->orderBy('play_at')->pluck('id')->all();
                 $post = LyAudio::find($posts[$subscription->count - 1]);
-                if (! $post) {
+                if (!$post) {
                     Log::error(__FILE__, [__FUNCTION__, __LINE__, $this->subscribeType, 'no post return']);
 
                     return;
@@ -136,7 +136,7 @@ class SubscribeNotifyQueue implements ShouldQueue
                 $commentCacheType = Post::class;
                 $posts = Post::where('target_type', Album::class)->where('target_id', $albumId)->orderBy('order')->pluck('id')->all();
                 $post = Post::find($posts[$subscription->count - 1]);
-                if (! $post) {
+                if (!$post) {
                     Log::error(__FILE__, [__FUNCTION__, __LINE__, $this->subscribeType, 'no post return']);
 
                     return;
@@ -178,8 +178,10 @@ class SubscribeNotifyQueue implements ShouldQueue
 
     /**
      * @see MessageReplyHandler::finalReply()
+     *
      * @param $keyword
      * @param $res
+     *
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
      */
@@ -200,7 +202,7 @@ class SubscribeNotifyQueue implements ShouldQueue
         }
         if ($type == 'music') {
             $subscription = $this->subscription;
-            if (! isset($res['offset'])
+            if (!isset($res['offset'])
                 || $res['offset'] == 0
                 || $subscription->target_type == LyLts::class
             ) {
@@ -233,14 +235,14 @@ class SubscribeNotifyQueue implements ShouldQueue
                 $remark = '👇点此查看今日推送';
             }
             $result = $app->template_message->send([
-                'touser' => $openId,
+                'touser'      => $openId,
                 'template_id' => 'BXQvCd7W_jE83WXR6nMNMXxoEM0Mgz0EUwqBGQ_ebKI',
-                'url' => $this->limitLink,
-                'data' => [
-                    'first' => '👉点击右下角菜单[爱不止息]->[一键续订],明天可继续接收',
+                'url'         => $this->limitLink,
+                'data'        => [
+                    'first'    => '👉点击右下角菜单[爱不止息]->[一键续订],明天可继续接收',
                     'keyword1' => isset($res['content']['title']) ? $res['content']['title'] : '谢谢使用',
                     'keyword2' => '或回复【续订】,明日即可继续接收推送',
-                    'remark' => [$remark, '#173177'],
+                    'remark'   => [$remark, '#173177'],
                 ],
             ]);
             if ($result['errcode'] != 0) {

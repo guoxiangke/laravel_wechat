@@ -10,9 +10,10 @@ class AdditionalOptionsFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  mixed $value
+     * @param \Illuminate\Http\Request              $request
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed                                 $value
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(Request $request, $query, $value)
@@ -22,7 +23,8 @@ class AdditionalOptionsFilter extends Filter
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function options(Request $request)
@@ -30,8 +32,8 @@ class AdditionalOptionsFilter extends Filter
         return [
             'label 1' => 'value 1',
             'value 2' => ['name' => 'label 2'],
-            ['value' => 'value 3', 'name' => 'label 3'],
-            ['value' => 'value 4', 'name' => 'label 4', 'group' => 'group 1'],
+            ['value'  => 'value 3', 'name' => 'label 3'],
+            ['value'  => 'value 4', 'name' => 'label 4', 'group' => 'group 1'],
         ];
     }
 }

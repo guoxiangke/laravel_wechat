@@ -68,7 +68,8 @@ class ResourceTool extends Panel
     /**
      * Set the callback to be run to authorize viewing the card.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
+     *
      * @return $this
      */
     public function canSee(Closure $callback)
@@ -81,7 +82,8 @@ class ResourceTool extends Panel
     /**
      * Set additional meta information for the resource tool.
      *
-     * @param  array  $meta
+     * @param array $meta
+     *
      * @return $this
      */
     public function withMeta(array $meta)
@@ -94,8 +96,9 @@ class ResourceTool extends Panel
     /**
      * Dynamically proxy method calls to meta information.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return $this
      */
     public function __call($method, $parameters)

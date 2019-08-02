@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Overtrue\Pinyin\Pinyin;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Overtrue\Pinyin\Pinyin;
 
 class Album extends Model
 {
@@ -35,9 +35,9 @@ class Album extends Model
     ];
     public const ModelName = '自建专辑';
     protected $attributes = [
-      'price' => 1900,
+      'price'     => 1900,
       'ori_price' => 5900,
-      'count' => 0,
+      'count'     => 0,
     ];
 
     public function getPriceAttribute($value)
@@ -73,10 +73,10 @@ class Album extends Model
             $pinyins = $pinyin->convert($name);
             $slug = str_slug(implode('-', $pinyins));
             $newCategory = $category->create([
-          'name'=>$name,
-          'description'=>$name,
-          'slug'=>$slug,
-          'parent_id'=>$category_id,
+          'name'       => $name,
+          'description'=> $name,
+          'slug'       => $slug,
+          'parent_id'  => $category_id,
         ]);
             $category_id = $newCategory->id;
         }
@@ -91,10 +91,10 @@ class Album extends Model
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (! $this->user_id && Auth::user()) {
+        if (!$this->user_id && Auth::user()) {
             $this->user_id = Auth::user()->id;
         }
-        if (! $this->modified_id && Auth::user()) {
+        if (!$this->modified_id && Auth::user()) {
             $this->modified_id = Auth::user()->id;
         }
 
@@ -131,11 +131,11 @@ class Album extends Model
     public function toWechat()
     {
         $album = $this;
-        $subscribeType = Album::class;
+        $subscribeType = self::class;
         $subscribeId = $this->id;
         $commentId = null;
-        $excerpt = ! empty($album->excerpt) ? $album->excerpt : null;
-        if (! $excerpt) {
+        $excerpt = !empty($album->excerpt) ? $album->excerpt : null;
+        if (!$excerpt) {
             $excerpt = str_limit(strip_tags($album->body), '120');
         }
         $image = config('app.url').'/storage/'.$album->image;
@@ -183,11 +183,11 @@ class Album extends Model
         }
 
         $res = [
-          'type'  => 'news',
-          'custom_res' => $customRes,
+          'type'         => 'news',
+          'custom_res'   => $customRes,
           'comment_type' => $commentType,
-          'comment_id' => $commentId,
-          'content' => [
+          'comment_id'   => $commentId,
+          'content'      => [
               'title'       => $title,
               'description' => $description,
               'url'         => $url,
@@ -217,6 +217,7 @@ class Album extends Model
      * Scope a query to only include active users.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
@@ -226,13 +227,13 @@ class Album extends Model
 
     public function toogleActive()
     {
-        $this->active = ! $this->active;
+        $this->active = !$this->active;
         $this->save();
     }
 
     public function toogleAudioOnly()
     {
-        $this->audio_only = ! $this->audio_only;
+        $this->audio_only = !$this->audio_only;
         $this->save();
     }
 }

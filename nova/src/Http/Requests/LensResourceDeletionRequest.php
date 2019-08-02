@@ -3,8 +3,8 @@
 namespace Laravel\Nova\Http\Requests;
 
 use Closure;
-use LogicException;
 use Illuminate\Database\Eloquent\Builder;
+use LogicException;
 
 class LensResourceDeletionRequest extends NovaRequest
 {
@@ -13,14 +13,15 @@ class LensResourceDeletionRequest extends NovaRequest
     /**
      * Get the selected models for the action in chunks.
      *
-     * @param  int  $count
-     * @param  \Closure  $callback
-     * @param  \Closure  $authCallback
+     * @param int      $count
+     * @param \Closure $callback
+     * @param \Closure $authCallback
+     *
      * @return mixed
      */
     protected function chunkWithAuthorization($count, Closure $callback, Closure $authCallback)
     {
-        $this->toSelectedResourceQuery()->when(! $this->forAllMatchingResources(), function ($query) {
+        $this->toSelectedResourceQuery()->when(!$this->forAllMatchingResources(), function ($query) {
             $query->whereKey($this->resources);
         })->tap(function ($query) {
             $query->getQuery()->orders = [];
@@ -53,7 +54,7 @@ class LensResourceDeletionRequest extends NovaRequest
     public function toQuery()
     {
         return tap($this->lens()->query(LensRequest::createFrom($this), $this->newQuery()), function ($query) {
-            if (! $query instanceof Builder) {
+            if (!$query instanceof Builder) {
                 throw new LogicException('Lens must return an Eloquent query instance in order to perform this action.');
             }
         });

@@ -53,7 +53,7 @@ class DailyMessageGet extends Command
                 }
                 //get title expert & detailLink
                 $html = get_html($listUrl);
-                if (! $html) {
+                if (!$html) {
                     \Log::error(__LINE__, [$i, $j, $listUrl, $html]);
                     continue;
                 }
@@ -89,24 +89,24 @@ class DailyMessageGet extends Command
                     $detailLink = pq($selected)->find('h3 a:first')->attr('href');
                     $excerpt = $zhConvert->convert(pq($selected)->find('.the-content p:first')->text());
                     $post = [
-                        'author_id' =>732,
-                        'user_id' =>1,
-                        'modified_id'=>1,
-                        'title'=> $title,
-                        'excerpt'=>$excerpt,
+                        'author_id'  => 732,
+                        'user_id'    => 1,
+                        'modified_id'=> 1,
+                        'title'      => $title,
+                        'excerpt'    => $excerpt,
                         // 'body'=>$body,
-                        'status'=>'PUBLISHED',
-                        'category_id'=>45,
-                        'target_type'=>'App\\Models\\Album',
-                        'target_id'=>28, //28 =》2019
-                        'order'=> $monthDay,
-                        'mp3_url'=>'1path:'.$onePath,
+                        'status'     => 'PUBLISHED',
+                        'category_id'=> 45,
+                        'target_type'=> 'App\\Models\\Album',
+                        'target_id'  => 28, //28 =》2019
+                        'order'      => $monthDay,
+                        'mp3_url'    => '1path:'.$onePath,
                     ];
                     $post = Post::firstOrNew($post);
 
                     $html = get_html($detailLink);
 
-                    if (! $html) {
+                    if (!$html) {
                         \Log::error(__LINE__, [$i, $j, $monthDay, $title, $detailLink]);
                         continue;
                     }

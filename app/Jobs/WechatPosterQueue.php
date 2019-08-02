@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use App\Models\Album;
 use App\Services\Wechat;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class WechatPosterQueue implements ShouldQueue
@@ -105,12 +105,12 @@ class WechatPosterQueue implements ShouldQueue
         $cacheKey = $this->cacheKey;
         $mediaId = $cache->get($cacheKey);
 
-        if (! $mediaId) {
+        if (!$mediaId) {
             $avatarPath = $this->avatarPath;
             $qrImagePath = $this->qrImagePath;
             $destImagePath = $this->destImagePath;
             //else do blow!
-            if (! file_exists($avatarPath) || ! file_exists($qrImagePath)) {
+            if (!file_exists($avatarPath) || !file_exists($qrImagePath)) {
                 $this->genQr($app);
             }
             if ($this->keyword == '推荐') {
@@ -149,7 +149,7 @@ class WechatPosterQueue implements ShouldQueue
         $qrImagePath = $this->qrImagePath;
         $isTemporary = $this->isTemporary;
 
-        if (! file_exists($avatarPath)) {
+        if (!file_exists($avatarPath)) {
             //download user avatars.
             $image = file_get_contents($this->user->profile->headimgurl);
             file_put_contents($avatarPath, $image);

@@ -8,15 +8,15 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Http\Controllers\Api\LyMetaController;
 use App\Models\LyMeta;
+use App\Models\User;
 use App\Models\WechatAccount;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
-use App\Http\Controllers\Api\LyMetaController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class Helper
 {
@@ -51,7 +51,7 @@ class Helper
         $url = 'http://upcdnlts.yongbuzhixi.com/?/lts/new/%E6%9C%AC%E7%A7%91%E8%AF%BE%E7%A8%8B/%E4%BF%9D%E7%BD%97%E4%B9%A6%E4%BF%A1I/mavpa001.mp3';
         $music = [
             'title'          => '51oneindex2',
-            'description'    =>  '点击▶️收听',
+            'description'    => '点击▶️收听',
             'url'            => $url,
             'hq_url'         => $url,
             'thumb_media_id' => $mediaId,
@@ -110,6 +110,7 @@ class Helper
 
     /**
      * [sendRedPack 红包积分发送].
+     *
      * @return [type] [description]
      */
     public static function sendRedPack()
@@ -119,7 +120,7 @@ class Helper
         });
 
         foreach ($recommenderIds as $recommender) {
-            if (! in_array($recommender->user_id, [1, 3, 687])) {
+            if (!in_array($recommender->user_id, [1, 3, 687])) {
                 $user = \App\Models\User::find($recommender->user_id);
                 $openId = $user->name;
                 $points = $user->currentPoints();
@@ -171,16 +172,16 @@ class Helper
             // https://lywx2018.yongbuzhixi.com/ly/audio/
             //https://txly2.net/ly/audio/2019/devotionals-psalm/devotionals-psalm190202.mp3
             $post = \App\Models\Post::firstOrcreate([
-                'author_id' =>1,
-                'title'=> $monthDay,
-                'excerpt'=>'',
-                'body'=>'',
-                'status'=>'PUBLISHED',
-                'category_id'=>$categoryId,
-                'target_type'=>'App\\Models\\Album',
-                'target_id'=>$AlbumId,
-                'order'=>$order,
-                'mp3_url'=>$mp3Url,
+                'author_id'  => 1,
+                'title'      => $monthDay,
+                'excerpt'    => '',
+                'body'       => '',
+                'status'     => 'PUBLISHED',
+                'category_id'=> $categoryId,
+                'target_type'=> 'App\\Models\\Album',
+                'target_id'  => $AlbumId,
+                'order'      => $order,
+                'mp3_url'    => $mp3Url,
             ]);
             $path = storage_path("app/public/albums_{$AlbumId}.txt");
             file_put_contents($path, $post->id.';'.$order.';'.$post->slug.PHP_EOL, FILE_APPEND);
@@ -212,16 +213,16 @@ class Helper
                 $mp3Url = '1path:'."/share/resources/ximalaya/{$albumID}/".basename($src);
 
                 $post = \App\Models\Post::firstOrcreate([
-                    'author_id' =>1,
-                    'title'=> $title,
-                    'excerpt'=>'',
-                    'body'=>'',
-                    'status'=>'PUBLISHED',
-                    'category_id'=>$categoryId,
-                    'target_type'=>'App\\Models\\Album',
-                    'target_id'=>$AlbumId,
-                    'order'=>$index,
-                    'mp3_url'=>$mp3Url,
+                    'author_id'  => 1,
+                    'title'      => $title,
+                    'excerpt'    => '',
+                    'body'       => '',
+                    'status'     => 'PUBLISHED',
+                    'category_id'=> $categoryId,
+                    'target_type'=> 'App\\Models\\Album',
+                    'target_id'  => $AlbumId,
+                    'order'      => $index,
+                    'mp3_url'    => $mp3Url,
                 ]);
             }
             // dd($data);
@@ -245,16 +246,16 @@ class Helper
             $title = str_replace('.mp4', '', $title);
             // echo $title .'    '. $mp4Url .PHP_EOL;
             $post = \App\Models\Post::firstOrcreate([
-                    'author_id' =>1,
-                    'title'=> $title,
-                    'excerpt'=>'',
-                    'body'=>'',
-                    'status'=>'PUBLISHED',
-                    'category_id'=>$categoryId,
-                    'target_type'=>'App\\Models\\Album',
-                    'target_id'=>$AlbumId,
-                    'order'=>$index,
-                    'mp4_one_path'=>$mp4Url,
+                    'author_id'   => 1,
+                    'title'       => $title,
+                    'excerpt'     => '',
+                    'body'        => '',
+                    'status'      => 'PUBLISHED',
+                    'category_id' => $categoryId,
+                    'target_type' => 'App\\Models\\Album',
+                    'target_id'   => $AlbumId,
+                    'order'       => $index,
+                    'mp4_one_path'=> $mp4Url,
                 ]);
         }
     }
@@ -267,17 +268,17 @@ class Helper
               [
                 'type' => 'click',
                 'name' => '一键续订',
-                'key' => '续订',
+                'key'  => '续订',
               ],
               [
                 'type' => 'view',
                 'name' => '常见问题',
-                'url' => 'https://wechat.yongbuzhixi.com/docs?from=yczsmenu',
+                'url'  => 'https://wechat.yongbuzhixi.com/docs?from=yczsmenu',
               ],
               [
                 'type' => 'view',
                 'name' => '如何订阅',
-                'url' => 'https://ybzx2018.yongbuzhixi.com/videos/2019/faq/订阅功能好处.mp4?from=yczsmenu',
+                'url'  => 'https://ybzx2018.yongbuzhixi.com/videos/2019/faq/订阅功能好处.mp4?from=yczsmenu',
               ],
 
         ];

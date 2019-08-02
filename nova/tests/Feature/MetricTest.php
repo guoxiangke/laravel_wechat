@@ -3,13 +3,13 @@
 namespace Laravel\Nova\Tests\Feature;
 
 use Cake\Chronos\Chronos;
-use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\PostCountTrend;
 use Laravel\Nova\Tests\Fixtures\PostWithCustomCreatedAt;
+use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricTest extends IntegrationTest
 {
@@ -22,7 +22,7 @@ class MetricTest extends IntegrationTest
     {
         factory(User::class, 2)->create();
 
-        $this->assertEquals(2, (new TotalUsers)->calculate(NovaRequest::create('/'))->value);
+        $this->assertEquals(2, (new TotalUsers())->calculate(NovaRequest::create('/'))->value);
     }
 
     public function test_trend_with_custom_created_at()
@@ -37,6 +37,6 @@ class MetricTest extends IntegrationTest
         $post->published_at = Chronos::now()->subDay(1);
         $post->save();
 
-        $this->assertEquals([1, 1], array_values((new PostCountTrend())->countByDays(NovaRequest::create('/?range=2'), new PostWithCustomCreatedAt)->trend));
+        $this->assertEquals([1, 1], array_values((new PostCountTrend())->countByDays(NovaRequest::create('/?range=2'), new PostWithCustomCreatedAt())->trend));
     }
 }

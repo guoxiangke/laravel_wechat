@@ -54,11 +54,11 @@ return [
     */
 
     'settings' => [
-        'auth'  => false,
+        'auth'       => false,
         'auth_links' => [
             [
                 'name' => '',
-                'url' => '',
+                'url'  => '',
             ],
         ],
         'ga_id' => '',

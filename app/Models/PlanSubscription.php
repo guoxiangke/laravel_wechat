@@ -9,8 +9,8 @@ class PlanSubscription extends Model
     // protected $table = 'plan_subscriptions';
 
     protected $casts = [
-        'starts_at' => 'datetime',
-        'ends_at' => 'datetime',
+        'starts_at'  => 'datetime',
+        'ends_at'    => 'datetime',
         'updated_at' => 'datetime',
     ];
 

@@ -2,14 +2,14 @@
 
 namespace Laravel\Nova\Fields;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Laravel\Nova\TrashedStatus;
-use Laravel\Nova\Rules\NotAttached;
+use Illuminate\Support\Str;
+use Laravel\Nova\Contracts\Deletable as DeletableContract;
 use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Rules\NotAttached;
 use Laravel\Nova\Rules\RelatableAttachment;
-use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\TrashedStatus;
 
 class BelongsToMany extends Field implements DeletableContract, ListableField
 {
@@ -88,9 +88,10 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  string|null  $resource
+     * @param string      $name
+     * @param string|null $attribute
+     * @param string|null $resource
+     *
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -116,7 +117,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     public function authorize(Request $request)
@@ -129,8 +131,9 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed       $resource
+     * @param string|null $attribute
+     *
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -141,7 +144,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Get the validation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function getRules(NovaRequest $request)
@@ -158,7 +162,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Get the creation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function getCreationRules(NovaRequest $request)
@@ -173,8 +178,9 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Build an attachable query for the field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  bool  $withTrashed
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param bool                                    $withTrashed
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function buildAttachableQuery(NovaRequest $request, $withTrashed = false)
@@ -196,8 +202,9 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Get the attachable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return array
      */
     protected function attachableQueryCallable(NovaRequest $request, $model)
@@ -210,8 +217,9 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Get the attachable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model     $model
+     *
      * @return string
      */
     protected function attachableQueryMethod(NovaRequest $request, $model)
@@ -226,23 +234,25 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Format the given attachable resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param mixed                                   $resource
+     *
      * @return array
      */
     public function formatAttachableResource(NovaRequest $request, $resource)
     {
         return array_filter([
-            'avatar' => $resource->resolveAvatarUrl($request),
+            'avatar'  => $resource->resolveAvatarUrl($request),
             'display' => $this->formatDisplayValue($resource),
-            'value' => $resource->getKey(),
+            'value'   => $resource->getKey(),
         ]);
     }
 
     /**
      * Specify the callback to be executed to retrieve the pivot fields.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function fields($callback)
@@ -255,7 +265,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Specify the callback to be executed to retrieve the pivot actions.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function actions($callback)
@@ -268,7 +279,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Set the displayable name that should be used to refer to the pivot class.
      *
-     * @param  string  $pivotName
+     * @param string $pivotName
+     *
      * @return $this
      */
     public function referToPivotAs($pivotName)
@@ -281,7 +293,8 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     /**
      * Specify if the relationship should be searchable.
      *
-     * @param  bool  $value
+     * @param bool $value
+     *
      * @return $this
      */
     public function searchable($value = true)
@@ -311,12 +324,12 @@ class BelongsToMany extends Field implements DeletableContract, ListableField
     public function meta()
     {
         return array_merge([
-            'resourceName' => $this->resourceName,
+            'resourceName'              => $this->resourceName,
             'belongsToManyRelationship' => $this->manyToManyRelationship,
-            'searchable' => $this->searchable,
-            'listable' => true,
-            'singularLabel' => $this->singularLabel ?? Str::singular($this->name),
-            'perPage'=> $this->resourceClass::$perPageViaRelationship,
+            'searchable'                => $this->searchable,
+            'listable'                  => true,
+            'singularLabel'             => $this->singularLabel ?? Str::singular($this->name),
+            'perPage'                   => $this->resourceClass::$perPageViaRelationship,
         ], $this->meta);
     }
 }

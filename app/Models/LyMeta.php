@@ -22,7 +22,7 @@ class LyMeta extends Model
 
     protected $casts = [
         'stop_play_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'updated_at'   => 'datetime',
     ];
 
     public function album()

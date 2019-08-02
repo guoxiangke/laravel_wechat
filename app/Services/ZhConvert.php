@@ -101,7 +101,7 @@ class ZhConvert
                     $uni_code = $uni_code * 64 + $ch;
                 }
 
-                if (! isset($chg_utf[$uni_code]) || ! $chg_utf[$uni_code]) {
+                if (!isset($chg_utf[$uni_code]) || !$chg_utf[$uni_code]) {
                     $outstr .= $ch1;
                 } else {
                     $outstr .= $this->uni2utf($chg_utf[$uni_code]);

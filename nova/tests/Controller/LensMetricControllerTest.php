@@ -3,10 +3,10 @@
 namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Support\Carbon;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\Fixtures\UserGrowth;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class LensMetricControllerTest extends IntegrationTest
 {
@@ -25,7 +25,7 @@ class LensMetricControllerTest extends IntegrationTest
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
         $this->assertEquals(TotalUsers::class, $response->original[0]->jsonSerialize()['class']);
-        $this->assertEquals((new TotalUsers)->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
+        $this->assertEquals((new TotalUsers())->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
         $this->assertFalse($response->original[0]->jsonSerialize()['onlyOnDetail']);
     }
 
@@ -37,7 +37,7 @@ class LensMetricControllerTest extends IntegrationTest
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
         $this->assertEquals(TotalUsers::class, $response->original[0]->jsonSerialize()['class']);
-        $this->assertEquals((new TotalUsers)->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
+        $this->assertEquals((new TotalUsers())->uriKey(), $response->original[0]->jsonSerialize()['uriKey']);
         $this->assertFalse($response->original[0]->jsonSerialize()['onlyOnDetail']);
     }
 

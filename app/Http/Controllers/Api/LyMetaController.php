@@ -8,11 +8,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\LyMeta;
+use App\Http\Controllers\Controller;
 use App\Models\LyAudio;
+use App\Models\LyMeta;
 use App\Services\Upyun;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 
 class LyMetaController extends Controller
 {
@@ -21,7 +21,7 @@ class LyMetaController extends Controller
         $lyMetas = LyMeta::active()->orderBy('category')->get();
 
         return view('lymeta.index', [
-            'lymetas'  =>  $lyMetas,
+            'lymetas'   => $lyMetas,
             'categorys' => LyMeta::CATEGORY,
             // 'shareData' => $shareData,
             // 'signPackage' => $signPackage
@@ -36,6 +36,7 @@ class LyMetaController extends Controller
     /**
      * @param $code
      * @param int $offset
+     *
      * @return array|string
      */
     public static function get($code, $offset = 0)
@@ -58,20 +59,20 @@ class LyMetaController extends Controller
             $html = file_get_contents($programUrl);
             preg_match_all('/((?<=setup\(\{)|(?<=,\{))[^}]*(?=\})/', $html, $matches);
             //TODO 10天内节目
-            if (! isset($matches[0]) || count($matches[0]) < 15) {
+            if (!isset($matches[0]) || count($matches[0]) < 15) {
                 Log::error(__CLASS__, [__FUNCTION__, __LINE__, '没有抓去到lts这么多节目', $index, $code, $matches[0]]);
 
                 return false;
             }
             if ($offset > 20) {
                 return [
-                    'type'=>'text',
+                    'type'          => 'text',
                     'ga_data'       => [
                         'category' => 'lyapi_error',
                         'action'   => '您无权限,超出范围',
                     ],
                     'offset'   => $offset,
-                    'content'=> '您无权限,超出范围',
+                    'content'  => '您无权限,超出范围',
                 ];
             }
             $mp3Files = [];
@@ -99,16 +100,16 @@ class LyMetaController extends Controller
             $hqUrl = $ltsUrl.$mp3Files[$offset];
 
             return [
-                'type'=>'music',
-                'comment_id' => 0,
-                'subscribe_id' => $lyMeta->id,
+                'type'          => 'music',
+                'comment_id'    => 0,
+                'subscribe_id'  => $lyMeta->id,
                 'ga_data'       => [
                     'category' => 'lyapi_audio',
                     'action'   => $title,
                 ],
-                'offset'   => $offset,
+                'offset'         => $offset,
                 'custom_message' => $descriptions[$offset],
-                'content'=>[
+                'content'        => [
                     'title'          => $titles[$offset].' '.str_replace('良友圣经学院', '', $title),
                     'description'    => $default_desc,
                     'url'            => $hqUrl,
@@ -144,7 +145,7 @@ class LyMetaController extends Controller
                     }
                     if ($lyAudio->body) {
                         $customRes = [
-                            'type'  => 'news',
+                            'type'    => 'news',
                             'content' => [
                                 'title'       => $title.' '.$titleDate,
                                 'description' => $lyAudio->excerpt,
@@ -164,17 +165,17 @@ class LyMetaController extends Controller
                 $offset++;
                 $tmp_offset++;
             }
-        } while (! $has_program && $tmp_offset < 7); //上下范围7天
+        } while (!$has_program && $tmp_offset < 7); //上下范围7天
 
-        if (! $has_program) {
+        if (!$has_program) {
             return [
-                 'type'=>'text',
+                 'type'          => 'text',
                  'ga_data'       => [
                      'category' => 'lyapi_error',
                      'action'   => '上下范围7天内无节目',
                  ],
                  'offset'   => $offset,
-                 'content'=> '上下范围7天内无节目',
+                 'content'  => '上下范围7天内无节目',
              ];
         }
 
@@ -186,17 +187,17 @@ class LyMetaController extends Controller
         $commentDate = $lyMeta->id.','.$commentDate;
 
         return [
-            'type'=>'music',
-            'comment_id' => $commentDate,
-            'subscribe_id' => $lyMeta->id,
+            'type'          => 'music',
+            'comment_id'    => $commentDate,
+            'subscribe_id'  => $lyMeta->id,
             'ga_data'       => [
                 'category' => 'lyapi_audio',
                 'action'   => $lyMeta->name,
             ],
-            'custom_res' => $customRes,
+            'custom_res'     => $customRes,
             'custom_message' => $customMessage,
-            'offset'   => $offset,
-            'content'=>[
+            'offset'         => $offset,
+            'content'        => [
                 'title'          => $title,
                 'description'    => $default_desc,
                 'url'            => $musicUrl,

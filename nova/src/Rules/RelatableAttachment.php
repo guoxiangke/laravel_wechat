@@ -9,8 +9,9 @@ class RelatableAttachment extends Relatable
     /**
      * Authorize that the user is allowed to relate this resource.
      *
-     * @param  string  $resource
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param string                              $resource
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return bool
      */
     protected function authorize($resource, $model)

@@ -15,9 +15,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Laravel\Nova\Tests\Fixtures\Comment::class, function (Faker $faker) {
     return [
-        'commentable_id' => factory(Laravel\Nova\Tests\Fixtures\Post::class),
+        'commentable_id'   => factory(Laravel\Nova\Tests\Fixtures\Post::class),
         'commentable_type' => Laravel\Nova\Tests\Fixtures\Post::class,
-        'author_id' => factory(Laravel\Nova\Tests\Fixtures\User::class),
-        'body' => $faker->word,
+        'author_id'        => factory(Laravel\Nova\Tests\Fixtures\User::class),
+        'body'             => $faker->word,
     ];
 });

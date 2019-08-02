@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class FieldCommand extends Command
 {
@@ -33,11 +33,11 @@ class FieldCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(
+        (new Filesystem())->copyDirectory(
             __DIR__.'/field-stubs',
             $this->fieldPath()
         );
@@ -50,7 +50,7 @@ class FieldCommand extends Command
         $this->replace('{{ class }}', $this->fieldClass(), $this->fieldPath().'/src/Field.stub');
         $this->replace('{{ component }}', $this->fieldName(), $this->fieldPath().'/src/Field.stub');
 
-        (new Filesystem)->move(
+        (new Filesystem())->move(
             $this->fieldPath().'/src/Field.stub',
             $this->fieldPath().'/src/'.$this->fieldClass().'.php'
         );
@@ -59,7 +59,7 @@ class FieldCommand extends Command
         $this->replace('{{ namespace }}', $this->fieldNamespace(), $this->fieldPath().'/src/FieldServiceProvider.stub');
         $this->replace('{{ component }}', $this->fieldName(), $this->fieldPath().'/src/FieldServiceProvider.stub');
 
-        (new Filesystem)->move(
+        (new Filesystem())->move(
             $this->fieldPath().'/src/FieldServiceProvider.stub',
             $this->fieldPath().'/src/FieldServiceProvider.php'
         );
@@ -101,7 +101,7 @@ class FieldCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeFieldPath(),
+            'url'  => './'.$this->relativeFieldPath(),
         ];
 
         file_put_contents(
@@ -178,8 +178,9 @@ class FieldCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
+     *
      * @return void
      */
     protected function runCommand($command, $path)
@@ -198,9 +199,10 @@ class FieldCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
+     *
      * @return void
      */
     protected function replace($search, $replace, $path)

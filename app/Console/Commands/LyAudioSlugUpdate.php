@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Hashids\Hashids;
 use App\Models\LyAudio;
+use Hashids\Hashids;
 use Illuminate\Console\Command;
-
 use Illuminate\Support\Facades\Config;
 
 class LyAudioSlugUpdate extends Command

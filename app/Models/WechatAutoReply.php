@@ -14,11 +14,11 @@ class WechatAutoReply extends Model
     const ALL_ACCOUNTS = 'gh_all';
     //自动回复类型
     const MESSAGE_TYPE_MAPPING = [
-        'Text' => '文本',
-        'Image' => '图片',
-        'Voice' => '声音',
-        'Video' => '视频',
-        'News' => '图文',
+        'Text'     => '文本',
+        'Image'    => '图片',
+        'Voice'    => '声音',
+        'Video'    => '视频',
+        'News'     => '图文',
         'Transfer' => '转接客服',
     ];
     protected $fillable = ['name', 'to_user_name', 'type', 'patten', 'content'];

@@ -37,8 +37,9 @@ class Boolean extends Field
     /**
      * Resolve the given attribute from the given resource.
      *
-     * @param  mixed  $resource
-     * @param  string  $attribute
+     * @param mixed  $resource
+     * @param string $attribute
+     *
      * @return mixed
      */
     protected function resolveAttribute($resource, $attribute)
@@ -49,10 +50,11 @@ class Boolean extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string                                  $requestAttribute
+     * @param object                                  $model
+     * @param string                                  $attribute
+     *
      * @return void
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -66,8 +68,9 @@ class Boolean extends Field
     /**
      * Specify the values to store for the field.
      *
-     * @param  mixed  $trueValue
-     * @param  mixed  $falseValue
+     * @param mixed $trueValue
+     * @param mixed $falseValue
+     *
      * @return $this
      */
     public function values($trueValue, $falseValue)
@@ -78,7 +81,8 @@ class Boolean extends Field
     /**
      * Specify the value to store when the field is "true".
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return $this
      */
     public function trueValue($value)
@@ -91,7 +95,8 @@ class Boolean extends Field
     /**
      * Specify the value to store when the field is "false".
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return $this
      */
     public function falseValue($value)

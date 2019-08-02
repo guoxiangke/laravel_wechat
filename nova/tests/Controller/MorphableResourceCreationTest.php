@@ -3,10 +3,10 @@
 namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\Comment;
 use Laravel\Nova\Tests\Fixtures\CommentPolicy;
+use Laravel\Nova\Tests\Fixtures\Post;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MorphableResourceCreationTest extends IntegrationTest
 {
@@ -23,10 +23,10 @@ class MorphableResourceCreationTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => $post->id,
+                            'commentable'      => $post->id,
                             'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
+                            'author'           => 1,
+                            'body'             => 'Comment Body',
                         ]);
 
         $response->assertStatus(201);
@@ -44,10 +44,10 @@ class MorphableResourceCreationTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => $post->id,
+                            'commentable'      => $post->id,
                             'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
+                            'author'           => 1,
+                            'body'             => 'Comment Body',
                         ]);
 
         unset($_SERVER['nova.comment.authorizable']);
@@ -64,10 +64,10 @@ class MorphableResourceCreationTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => $post3->id,
+                            'commentable'      => $post3->id,
                             'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
+                            'author'           => 1,
+                            'body'             => 'Comment Body',
                         ]);
 
         $response->assertStatus(422);
@@ -85,10 +85,10 @@ class MorphableResourceCreationTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => $post3->id,
+                            'commentable'      => $post3->id,
                             'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
+                            'author'           => 1,
+                            'body'             => 'Comment Body',
                         ]);
 
         unset($_SERVER['nova.comment.useCustomRelatablePosts']);
@@ -105,9 +105,9 @@ class MorphableResourceCreationTest extends IntegrationTest
 
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => 100,
+                            'commentable'      => 100,
                             'commentable_type' => 'posts',
-                            'body' => 'Comment Body',
+                            'body'             => 'Comment Body',
                         ]);
 
         $response->assertStatus(422);
@@ -118,9 +118,9 @@ class MorphableResourceCreationTest extends IntegrationTest
     {
         $response = $this->withExceptionHandling()
                         ->postJson('/nova-api/comments', [
-                            'commentable' => 100,
+                            'commentable'      => 100,
                             'commentable_type' => 'videos',
-                            'body' => 'Comment Body',
+                            'body'             => 'Comment Body',
                         ]);
 
         $response->assertStatus(422);

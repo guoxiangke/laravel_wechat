@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Services\Upyun;
-use Illuminate\Support\Facades\URL;
 use App\Traits\HasMorphsTargetField;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-// use Actuallymab\LaravelComment\Commentable;
-use Rinvex\Categories\Traits\Categorizable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+// use Actuallymab\LaravelComment\Commentable;
+use Illuminate\Support\Facades\URL;
+use Rinvex\Categories\Traits\Categorizable;
 
 class LyAudio extends Model
 {
@@ -80,11 +80,11 @@ class LyAudio extends Model
             }
         }
 
-        if (! $image && $this->album_id) {
+        if (!$image && $this->album_id) {
             $album = $this->album()->first();
             $image = config('app.url').'/storage/'.$album->image;
         }
-        if (! $image) {
+        if (!$image) {
             $image = URL::asset('public/images/ybzx01.jpg');
         }
 
@@ -95,7 +95,7 @@ class LyAudio extends Model
     public function getIndex()
     {
         if ($this->album_id) {
-            return LyAudio::where('album_id', $this->album_id)
+            return self::where('album_id', $this->album_id)
           ->where('play_at', '<=', $this->play_at)
           ->count();
         } else {
@@ -125,10 +125,10 @@ class LyAudio extends Model
             $url = $this->getUrl();
             $image = $this->getImageUrl();
             $customRes = [
-              'type'  => 'news',
-              'comment_id' => $this->id,
-              'comment_type' => LyAudio::class,
-              'content' => [
+              'type'         => 'news',
+              'comment_id'   => $this->id,
+              'comment_type' => self::class,
+              'content'      => [
                 'title'       => $title,
                 'description' => $description,
                 'url'         => $url,
@@ -142,14 +142,14 @@ class LyAudio extends Model
         }
 
         $res = [
-          'type'=>'music',
-          'custom_res' => $customRes,
-          'comment_id' => $this->id,
+          'type'          => 'music',
+          'custom_res'    => $customRes,
+          'comment_id'    => $this->id,
           'ga_data'       => [
               'category' => 'album_lyaudio',
               'action'   => $this->album_id.'_'.$this->id,
           ],
-          'content'=>[
+          'content'=> [
               'title'          => $title,
               'description'    => $description,
               'url'            => $audioUrl,

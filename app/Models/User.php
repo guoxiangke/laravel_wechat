@@ -3,22 +3,22 @@
 namespace App\Models;
 
 // use Actuallymab\LaravelComment\CanComment;
-use Illuminate\Support\Carbon;
-use Silvanite\Brandenburg\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Notifications\Notifiable;
-// use Spatie\Permission\Traits\HasRoles;
-use Overtrue\LaravelFollow\Traits\CanLike;
-use Overtrue\LaravelFollow\Traits\CanVote;
-use Silvanite\Brandenburg\Traits\HasRoles;
-use Overtrue\LaravelFollow\Traits\CanFollow;
-use Trexology\Pointable\Contracts\Pointable;
-//use Overtrue\LaravelFollow\Traits\CanSubscribe;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Overtrue\LaravelFollow\Traits\CanBookmark;
-use Overtrue\LaravelFollow\Traits\CanBeFollowed;
-use Rinvex\Subscriptions\Traits\HasSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+// use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
+use Overtrue\LaravelFollow\Traits\CanBeFollowed;
+use Overtrue\LaravelFollow\Traits\CanBookmark;
+use Overtrue\LaravelFollow\Traits\CanFollow;
+use Overtrue\LaravelFollow\Traits\CanLike;
+//use Overtrue\LaravelFollow\Traits\CanSubscribe;
+use Overtrue\LaravelFollow\Traits\CanVote;
+use Rinvex\Subscriptions\Traits\HasSubscriptions;
+use Silvanite\Brandenburg\Role;
+use Silvanite\Brandenburg\Traits\HasRoles;
+use Trexology\Pointable\Contracts\Pointable;
 use Trexology\Pointable\Traits\Pointable as PointableTrait;
 
 class User extends Authenticatable implements Pointable
@@ -76,6 +76,7 @@ class User extends Authenticatable implements Pointable
 
     /**
      * for Horizon::auth.
+     *
      * @return bool [description]
      */
     public function isSuperuser()
@@ -136,7 +137,7 @@ class User extends Authenticatable implements Pointable
 
     public function toggleSubscribe()
     {
-        $this->subscribe = ! $this->subscribe;
+        $this->subscribe = !$this->subscribe;
         $this->save();
     }
 
@@ -175,38 +176,40 @@ class User extends Authenticatable implements Pointable
 
     /**
      * [saveUser with role wx or mp].
-     * @param  [type]  $userName    [description]
-     * @param  [type]  $role        [description]
-     * @param  int $recommendId [description]
-     * @return [type]               [description]
+     *
+     * @param [type] $userName    [description]
+     * @param [type] $role        [description]
+     * @param int    $recommendId [description]
+     *
+     * @return [type] [description]
      */
-    public static function newUser($userName, $role = User::DEFAULT_ROLE, $recommendId = 0)
+    public static function newUser($userName, $role = self::DEFAULT_ROLE, $recommendId = 0)
     {
-        $user = User::firstOrNew(
+        $user = self::firstOrNew(
             [
                 'name'  => $userName,
                 'email' => $userName.'@'.$role,
             ]
         );
-        if (! $user->id) {
+        if (!$user->id) {
             $password = Hash::make(str_random(6));
             $user->password = $password;
             // $user->remember_token = str_random(32);
             $user->save();
         }
-        if ($role == User::DEFAULT_ROLE) {
+        if ($role == self::DEFAULT_ROLE) {
             if ($user->user_id != $recommendId) {
                 $user->user_id = $recommendId;
                 $user->save();
             }
         }
-        if ($role == User::MP_ROLE) {
+        if ($role == self::MP_ROLE) {
             $user->user_id = 0;
             $user->subscribe = 0;
             $user->save();
         }
         $currentRoles = $user->roles()->get()->pluck('slug')->toArray();
-        if (! in_array($role, $currentRoles)) {
+        if (!in_array($role, $currentRoles)) {
             $user->assignRole($role);
         }
 
