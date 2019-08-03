@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Gamp;
 use Illuminate\Foundation\Inspiring;
 
 /*
@@ -16,3 +18,9 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('gamp-clean', function () {
+    $start = Carbon::now()->subMonths(2)->startOfMonth();
+    Gamp::where('created_at', '<', $start)->forceDelete();
+    $this->comment('Cleaned');
+})->describe('Clean gamp 2 months ago');

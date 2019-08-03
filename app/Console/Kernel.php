@@ -2,9 +2,9 @@
 
 namespace App\Console;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -40,6 +40,9 @@ class Kernel extends ConsoleKernel
         //诗篇导读 每日更新 //todo delete on 2010!!
         $schedule->command('ly:psalm')
             ->dailyAt('0:10');
+
+        $schedule->command('gamp-clean')
+            ->monthly();
         // ->everyMinute();
         // $schedule->command('horizon:snapshot')->daily();
     }
