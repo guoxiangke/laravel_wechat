@@ -75,8 +75,8 @@ return [
       ],
       [
         'type' => 'view',
-        'name' => '下载APP',
-        'url'  => 'https://r.729ly.net/ly-platforms/platforms-apps',
+        'name' => '表情下载',
+        'url'  => 'https://mp.weixin.qq.com/s/LtDMrzojzuJEIdWYciscnA',
       ],
       [
         'type' => 'view',
