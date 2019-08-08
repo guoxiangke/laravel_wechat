@@ -961,7 +961,7 @@ class MessageReplyHandler implements EventHandlerInterface
 
         if (in_array($this->keyword, ['一键退订', '取消订阅', '取消定阅'])) {
             $this->user->unSubscribeAll();
-            $content = "[抱拳]您已取消所有订阅，再见👋\n永不止息，感恩有你！";
+            $content = "[抱拳]您已取消所有订阅，再见\n👋永不止息，感恩有你！";
 
             return [
                 'type'    => 'text',
