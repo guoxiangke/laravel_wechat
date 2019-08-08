@@ -8,12 +8,12 @@ return [
   ],
   [
     'type' => 'click',
-    'name' => '一键退订',
-    'url'  => '退订',
+    'name' => '一键订阅',
+    'key'  => '订阅',
   ],
   [
-    'type' => 'view',
-    'name' => '赞助支持',
-    'url'  => 'https://wechat.yongbuzhixi.com/donate?from=yczsmenu',
+    'type' => 'click',
+    'name' => '一键退订',
+    'url'  => '退订',
   ],
 ];
