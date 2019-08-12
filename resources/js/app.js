@@ -12,9 +12,6 @@ window.Vue = require('vue');
 // Vue.use(VueRouter)
 
 import App from './components/App'
-import iView from 'iview';
-// import 'iview/dist/styles/iview.css';
-Vue.use(iView)
 
 import VuePlyr from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css';

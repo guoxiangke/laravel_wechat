@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129889764-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-129889764-1');
-    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -27,12 +19,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- import Vue.js -->
-    <!-- <script src="//cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
     <!-- import stylesheet -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/iview/3.0.1/styles/iview.css">
     <!-- import iView -->
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/iview/3.0.1/iview.min.js"></script> -->
 
     <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 
