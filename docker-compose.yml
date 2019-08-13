@@ -3,7 +3,7 @@ services:
   # https://www.digitalocean.com/community/tutorials/how-to-set-up-laravel-nginx-and-mysql-with-docker-compose
   #PHP Service
   app:
-    image: laravel-wechat
+    image: guoxiangke/wechat
     links:
       - db:mysql
       - redis
@@ -23,6 +23,7 @@ services:
     # working_dir: /var/www/html
     volumes:
       - code:/var/www/html/
+      - .env:/var/www/html/.env
       - ./docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./storage/app:/var/www/html/storage/app
     networks:
@@ -35,6 +36,7 @@ services:
     restart: unless-stopped
     volumes:
       - code:/var/www/html/
+      - .env:/var/www/html/.env
       - ./docker/nginx/conf.d/app.conf:/etc/nginx/conf.d/default.conf:ro
       - ./storage/app:/var/www/html/storage/app
     environment:
@@ -70,7 +72,7 @@ services:
       - backend
 
   scheduler:
-    image: laravel-wechat
+    image: guoxiangke/wechat
     restart: always
     depends_on:
       - app
@@ -89,7 +91,7 @@ services:
       QUEUE_DRIVER: redis
       REDIS_HOST: redis
   queue:
-    image: laravel-wechat
+    image: guoxiangke/wechat
     restart: always
     depends_on:
       - app
