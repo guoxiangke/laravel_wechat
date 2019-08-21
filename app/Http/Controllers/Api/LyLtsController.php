@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\LyLts;
 use App\Services\Upyun;
-use App\Http\Controllers\Controller;
 
 class LyLtsController extends Controller
 {
@@ -54,7 +54,7 @@ class LyLtsController extends Controller
         }
 
         $mavs = array_pluck($lyLts, 'index');
-        if (! in_array($index, $mavs)) {
+        if (!in_array($index, $mavs)) {
             return [
                 'type'          => 'text',
                 'ga_data'       => [
