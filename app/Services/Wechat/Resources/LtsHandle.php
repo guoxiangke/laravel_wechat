@@ -8,24 +8,31 @@
 
 namespace App\Services\Wechat\Resources;
 
-use App\Http\Controllers\Api\LyLtsController;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Api\LyLtsController;
 
 class LtsHandle
 {
     public static function process($oriKeyword)
     {
         $keyword = substr($oriKeyword, 0, 3);
-        $offset = 0;
-        if (strlen($oriKeyword) > 3) {
-            $offset = substr($oriKeyword, 3);
-        }//1-24-30
+        // #108 == #1080 bug！
+        // $cacheKey = $keyword.'_'.$offset;
+        $cacheKey = $keyword;
 
-        $cacheKey = $keyword.'_'.$offset;
+        //给$offset设置默认值
+        if (strlen($oriKeyword) > 3) {
+            //1-24-30
+            $offset = substr($oriKeyword, 3);
+            $cacheKey = $cacheKey.'_'.$offset;
+        } else {
+            $offset = 0;
+        }
+
         $cache = Cache::tags('lts');
         $res = $cache->get($cacheKey);
-        if (!$res) {
+        if (! $res) {
             $res = LyLtsController::get($keyword, $offset);
             //添加订阅id
             // if(isset($res['subscribe_id']) && isset( $res['offset']) ){

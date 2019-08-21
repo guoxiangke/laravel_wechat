@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\LyLts;
 use App\Services\Upyun;
+use App\Http\Controllers\Controller;
 
 class LyLtsController extends Controller
 {
@@ -54,7 +54,7 @@ class LyLtsController extends Controller
         }
 
         $mavs = array_pluck($lyLts, 'index');
-        if (!in_array($index, $mavs)) {
+        if (! in_array($index, $mavs)) {
             return [
                 'type'          => 'text',
                 'ga_data'       => [
@@ -112,7 +112,7 @@ EOF;
                     'type'          => 'text',
                     'ga_data'       => [
                         'category' => 'lts33',
-                        'action'   => '远程暂无',
+                        'action'   => '暂无讲义',
                     ],
                     'offset'   => $offset,
                     'content'  => $text,
@@ -125,7 +125,7 @@ EOF;
                 'type'          => 'text',
                 'ga_data'       => [
                     'category' => 'lts33',
-                    'action'   => '编码超出范围',
+                    'action'   => '讲义链接',
                 ],
                 'offset'   => $offset,
                 'content'  => $text,
