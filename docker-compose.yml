@@ -82,6 +82,7 @@ services:
     networks:
       - backend
     volumes:
+      - .env:/var/www/html/.env
       - ./storage/app:/var/www/html/storage/app
     environment:
       REDIS_PORT: 6379
@@ -101,6 +102,7 @@ services:
     networks:
       - backend
     volumes:
+      - .env:/var/www/html/.env
       - ./storage/app:/var/www/html/storage/app
     environment:
       REDIS_PORT: 6379
