@@ -31,8 +31,7 @@ class Kernel extends ConsoleKernel
             });
         $schedule->command('lymw:get')
             ->dailyAt('0:55');
-        $schedule->command('lylts:update')
-            ->weekly();
+        // $schedule->command('lylts:update')->weekly();
         $schedule->command('lyccc:get')
             ->weekly(); //每周更新每周辅导教室
         $schedule->command('subscribe:notify')
