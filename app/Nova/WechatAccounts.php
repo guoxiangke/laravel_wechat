@@ -2,13 +2,12 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Password;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Textarea;
 
 class WechatAccounts extends Resource
@@ -52,17 +51,22 @@ class WechatAccounts extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')
-                ->creationRules('required', 'string', 'min:6'),
-            Textarea::make('description')
-                ->creationRules('required', 'string', 'min:6'),
-            Password::make('secret')
+                ->creationRules('required', 'string', 'min:2'),
+            Textarea::make('description'),
+            Text::make('secret')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:32')
                 ->updateRules('nullable', 'string', 'min:32'),
+            Text::make('app_id')
+                ->creationRules('required', 'string', 'min:6'),
             Text::make('token')
+                ->creationRules('required', 'string', 'min:6'),
+            Text::make('to_user_name')
+                ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6'),
             Boolean::make('Is_Certified'),
             Image::make('image_qr')
+                ->onlyOnForms()
                 ->path(static::get_path('image_qr', $className))
                 ->help('可为空'),
             Code::make('Menu')->json(),
