@@ -76,7 +76,7 @@ return [
       [
         'type' => 'view',
         'name' => '表情下载',
-        'url'  => 'https://mp.weixin.qq.com/s/LtDMrzojzuJEIdWYciscnA',
+        'url'  => 'https://mp.weixin.qq.com/s?__biz=MzA5MzQyMDA4Mw==&mid=2247484664&idx=1&sn=5ad59d24e16b04fa36fce752934bbdd5&chksm=905f6ba4a728e2b2f6c8b048093aaaf82c0753f9db1b88a131a5c53566ba2cbf86e6991d5b23&token=201762418&lang=zh_CN#rd',
       ],
       [
         'type' => 'view',
