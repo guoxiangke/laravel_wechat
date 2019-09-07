@@ -8,9 +8,10 @@
 
 namespace App\Services\Wechat\Resources;
 
-use App\Http\Controllers\Api\LyLtsController;
-use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Api\LyLtsController;
 
 class LtsHandle
 {
@@ -32,13 +33,15 @@ class LtsHandle
 
         $cache = Cache::tags('lts');
         $res = $cache->get($cacheKey);
-        if (!$res) {
+        if (! $res) {
             $res = LyLtsController::get($keyword, $offset);
             //添加订阅id
             // if(isset($res['subscribe_id']) && isset( $res['offset']) ){
             //     $res['subscribe_id']  = $res['subscribe_id'] . ',' . $res['offset']; //1-125,24
             // }
-            $cache->add($cacheKey, $res, now()->addMinutes(720));
+            $now = Carbon::now();
+            $ttl = $now->diffInMinutes($now->copy()->endOfDay());
+            $cache->add($cacheKey, $res, now()->addMinutes($ttl));
             Log::notice(__CLASS__, ['Cached item', $cacheKey]);
         }
 

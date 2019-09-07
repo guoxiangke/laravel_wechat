@@ -8,32 +8,33 @@
 
 namespace App\Services\Wechat;
 
-use App\Jobs\WechatLinkSaveQueue;
-use App\Jobs\WechatPosterQueue;
-use App\Jobs\WechatUserAvatarQueue;
-use App\Jobs\WechatUserProfileQueue;
-use App\Jobs\WechatUserRecommendQueue;
-use App\Models\Album;
-use App\Models\AlbumSubscription;
-use App\Models\LyAudio;
-use App\Models\LyLts;
-use App\Models\LyMeta;
+use Carbon\Carbon;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\WechatAccount;
-use App\Models\WechatAutoReply;
-use App\Models\WechatPayOrder;
+use ReflectionClass;
+use App\Models\Album;
+use App\Models\LyLts;
+use App\Models\LyMeta;
+use App\Models\LyAudio;
 use App\Services\Upyun;
 use App\Services\Wechat;
-use App\Services\Wechat\Resources\LtsHandle;
-use App\Services\Wechat\Resources\LyHandle;
-use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
-use EasyWeChat\Kernel\Messages\Transfer;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
+use App\Models\WechatAccount;
+use App\Models\WechatPayOrder;
+use App\Jobs\WechatPosterQueue;
+use App\Models\WechatAutoReply;
+use App\Jobs\WechatLinkSaveQueue;
+use App\Models\AlbumSubscription;
+use App\Jobs\WechatUserAvatarQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use ReflectionClass;
+use App\Jobs\WechatUserProfileQueue;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\WechatUserRecommendQueue;
+use Illuminate\Support\Facades\Config;
+use EasyWeChat\Kernel\Messages\Transfer;
+use App\Services\Wechat\Resources\LyHandle;
+use App\Services\Wechat\Resources\LtsHandle;
+use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 
 class MessageReplyHandler implements EventHandlerInterface
 {
@@ -92,17 +93,17 @@ class MessageReplyHandler implements EventHandlerInterface
             $user = User::with('profile')->where('name', $this->openId)->first();
             $this->user = $user;
             if ($this->isMainApp) {
-                if (!$user) {
+                if (! $user) {
                     //如果是扫描关注,在event环节创建新用户
                     $this->user = User::newUser($this->openId);
                     $this->userIsNew = true;
                     WechatUserProfileQueue::dispatch($this->user)->delay(now()->addSeconds(5));
                 } else {
-                    if (is_null($user->profile) || !isset($user->profile->headimgurl)) {
+                    if (is_null($user->profile) || ! isset($user->profile->headimgurl)) {
                         WechatUserProfileQueue::dispatch($user)->delay(now()->addSeconds(5));
                     }
                     $avatarPath = storage_path('app/avatars/wechat/'.$this->openId.'.png');
-                    if (!file_exists($avatarPath) && isset($user->profile->headimgurl)) {
+                    if (! file_exists($avatarPath) && isset($user->profile->headimgurl)) {
                         WechatUserAvatarQueue::dispatch($user)->delay(now()->addSeconds(10));
                     }
                 }
@@ -150,7 +151,7 @@ class MessageReplyHandler implements EventHandlerInterface
         $lyEnabled = isset($resourcesEnabled['lymeta']) ? $resourcesEnabled['lymeta'] : false;
         $ltsEnabled = isset($resourcesEnabled['lylts']) ? $resourcesEnabled['lylts'] : false;
         //region ly & lts
-        if (!$res && ($lyEnabled || $ltsEnabled) && preg_match('/\d{3,}/', $keyword)) {
+        if (! $res && ($lyEnabled || $ltsEnabled) && preg_match('/\d{3,}/', $keyword)) {
             // region 以#开头的 #101XXX-#909XXX
             if ($keyword[0] == '#') {
                 // $keyword = str_replace('#', '', $keyword);
@@ -169,7 +170,7 @@ class MessageReplyHandler implements EventHandlerInterface
             // endregion lts
 
             // region lymeta
-            if (!$res) {
+            if (! $res) {
                 //todo 汉字关键词：旷野吗哪 语音识别 昨天的，今天的
                 $res = LyHandle::process($keyword, $this->isLyApp);
                 //cache last subscribe type
@@ -194,7 +195,7 @@ class MessageReplyHandler implements EventHandlerInterface
                         ->first();
                     //每个用户只能订阅1个免费的LY
                     //订阅会员可以有3个! todo
-                    if (!$isSubscribe && $this->user->get_free_subscription_counts() < AlbumSubscription::FREE_COUNT_LIMIT) {
+                    if (! $isSubscribe && $this->user->get_free_subscription_counts() < AlbumSubscription::FREE_COUNT_LIMIT) {
                         $res['custom_messages'][] = '🎉回复【订阅】即可订阅本节目哦';
                         $domain = Upyun::DOMAIN.'/videos/2019/faq';
                         $res['custom_messages'][] = "<a href='{$domain}/如何订阅和退订.mp4'>====>订阅帮助</a>";
@@ -230,7 +231,7 @@ class MessageReplyHandler implements EventHandlerInterface
         //endregion
 
         // region P1~P123 post article!
-        if (!$res && $this->keyword[0] == 'p' && preg_match('/\d{1,}/', $this->keyword)) {
+        if (! $res && $this->keyword[0] == 'p' && preg_match('/\d{1,}/', $this->keyword)) {
             preg_match('/(\d{1,})/', $this->keyword, $matches);
             if ($matches && isset($matches[1])) {
                 //todo 对不起,这是付费专辑的内容! or only for admin
@@ -244,7 +245,7 @@ class MessageReplyHandler implements EventHandlerInterface
         // endregion
 
         // region L1~L123 lyaudio article!
-        if (!$res && $this->keyword[0] == 'l' && preg_match('/\d{1,}/', $this->keyword)) {
+        if (! $res && $this->keyword[0] == 'l' && preg_match('/\d{1,}/', $this->keyword)) {
             preg_match('/(\d{1,})/', $this->keyword, $matches);
             if ($matches && isset($matches[1])) {
                 //todo 对不起,这是付费专辑的内容! or only for admin
@@ -258,7 +259,7 @@ class MessageReplyHandler implements EventHandlerInterface
         // endregion
 
         //region 7XX 订阅 + 退订88
-        if (!$res && $this->isMainApp) {
+        if (! $res && $this->isMainApp) {
             $res = $this->_subscribe();
             if (isset($res['comment_type'])) {
                 //Post::class; or LyAudio::class;
@@ -267,12 +268,12 @@ class MessageReplyHandler implements EventHandlerInterface
                 \Log::error('NO_$commentType', [$res]);
             }
             // 推荐二维码!
-            if (!$res) {
+            if (! $res) {
                 if ($this->keyword == '活动' || $this->keyword == '推荐') {
                     $res = $this->_recommend();
                 }
             }
-            if (!$res) {
+            if (! $res) {
                 if (starts_with($keyword, 'http') && strpos($keyword, 'mp.weixin.qq.com/') !== false) {
                     // 1.check user permisson
                     WechatLinkSaveQueue::dispatch($keyword, $this->user->id)->delay(now()->addSeconds(5));
@@ -288,7 +289,7 @@ class MessageReplyHandler implements EventHandlerInterface
         //endregion
 
         // region ly文字识别
-        if (!$res && $lyEnabled) {
+        if (! $res && $lyEnabled) {
             $lyMeta = LyMeta::active()->where('name', $this->keyword)->first();
             if ($lyMeta) {
                 //todo 汉字关键词：旷野吗哪 语音识别 昨天的，今天的
@@ -308,7 +309,7 @@ class MessageReplyHandler implements EventHandlerInterface
         // endregion
 
         //region for simai //77001 771 77002 77583 77999
-        if (!$res
+        if (! $res
             // && $wechatAccount->name == '思麦团契'
             && preg_match('/77(\d{1,})/', $keyword, $matches)) {
             if ($matches && isset($matches[1])) {
@@ -317,13 +318,15 @@ class MessageReplyHandler implements EventHandlerInterface
                 $cache = Cache::tags('lts');
                 $cacheKey = 'simai77';
                 $reversed = $cache->get($cacheKey);
-                if (!$reversed) {
+                if (! $reversed) {
                     //todo cache all str!!
                     $url = 'https://raw.githubusercontent.com/simai2019/vuepress/master/docs/audio/list.md';
                     $str = file_get_contents($url);
                     preg_match_all('/\- \[【\d+】(.+)/', $str, $matches2);
                     $reversed = array_reverse($matches2[1]);
-                    $cache->add($cacheKey, $reversed, now()->addMinutes(720));
+                    $now = Carbon::now();
+                    $ttl = $now->diffInMinutes($now->copy()->endOfDay());
+                    $cache->add($cacheKey, $reversed, now()->addMinutes($ttl));
                 }
                 $match = $reversed[$offset - 1];
                 $match = explode('](', $match);
@@ -351,11 +354,11 @@ class MessageReplyHandler implements EventHandlerInterface
         //endregion
 
         // region
-        if (!$res) {
+        if (! $res) {
             // 自动回复 for specific account
             $res = $this->autoReply($toUserName, $keyword);
             // 自动回复 for All account
-            if (!$res) {
+            if (! $res) {
                 $res = $this->autoReply(WechatAutoReply::ALL_ACCOUNTS, $keyword);
             }
         }
@@ -376,7 +379,7 @@ class MessageReplyHandler implements EventHandlerInterface
     {
         $app = $this->app;
         $openId = $this->openId;
-        if (!isset($res['type'])) {
+        if (! isset($res['type'])) {
             //debug todo delete!!!
             Log::error(__CLASS__, [__FUNCTION__, __LINE__, $keyword, $res]);
         }
@@ -385,7 +388,7 @@ class MessageReplyHandler implements EventHandlerInterface
         if ($type == 'music') {
             $res['content']['title'] = "【{$keyword}】".$res['content']['title'];
             $res['content']['description'] .= ' '.$appCopyName;
-            if (!isset($res['offset']) || $res['offset'] == 0) {
+            if (! isset($res['offset']) || $res['offset'] == 0) {
                 $res['content']['description'] .= ' 每日更新';
             }
             if (isset($res['custom_message'])) {
@@ -550,14 +553,14 @@ class MessageReplyHandler implements EventHandlerInterface
         }
 
         if ($event == 'subscribe') {
-            if (isset($message['EventKey']) && !is_null($message['EventKey'])) {
+            if (isset($message['EventKey']) && ! is_null($message['EventKey'])) {
                 // 扫推荐码关注
                 //"Event":"subscribe","EventKey":"qrscene_sharefrom_9"
                 //sharefromAlbum
                 // $message['EventKey'] = 'qrscene_sharefrom_9_45';
                 // $message['EventKey'] = 'qrscene_sharefrom_9';
                 //(int)filter_var($message['EventKey'], FILTER_SANITIZE_NUMBER_INT);//qrscene_sharefrom_2
-                if (!$this->userIsNew) {
+                if (! $this->userIsNew) {
                     $keyword = 'qrscene_resubscribe';
                     $content = "[撇嘴]欢迎老朋友回来\n[衰]重复扫码关注助力无效\n[抱拳]回复【600】获取节目菜单\n/:strong回复不带【中括号】";
                     if ($albumId) {
@@ -576,7 +579,7 @@ class MessageReplyHandler implements EventHandlerInterface
                         }
                         $user->save();
                         //积分+通知!
-                        if (!$albumId) {
+                        if (! $albumId) {
                             //活动推荐和永久推荐
                             WechatUserRecommendQueue::dispatch($recommenderId)->delay(now()->addSeconds(3));
                         } else {
@@ -628,8 +631,8 @@ class MessageReplyHandler implements EventHandlerInterface
             }
         }
 
-        if (!$res) {
-            if (!$content) {
+        if (! $res) {
+            if (! $content) {
                 $content = $event; //$message['Event'];
                 //TEMPLATESENDJOBFINISH
                 //MASSSENDJOBFINISH
@@ -800,7 +803,7 @@ class MessageReplyHandler implements EventHandlerInterface
                 $AlbumCache = Cache::tags('album701');
                 $res = $AlbumCache->get($subscribeId);
                 $subscribeType = Album::class;
-                if (!$res) {
+                if (! $res) {
                     $album = Album::find($subscribeId);
                     if ($album) {
                         $res = $album->toWechat();
@@ -821,7 +824,7 @@ class MessageReplyHandler implements EventHandlerInterface
                     }
                 }
 
-                if (!$res) {
+                if (! $res) {
                     //700菜单
                     $albums = Album::active()->inRandomOrder()->take(10)->get();
                     $content = '';
@@ -1023,7 +1026,7 @@ class MessageReplyHandler implements EventHandlerInterface
             ],
         ];
 
-        if (is_null($user->profile) || !isset($user->profile->headimgurl)) {
+        if (is_null($user->profile) || ! isset($user->profile->headimgurl)) {
             WechatUserProfileQueue::dispatch($user);
             $res['content'] = '活动火爆,请5秒后再试';
 
