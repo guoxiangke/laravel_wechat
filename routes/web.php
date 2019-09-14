@@ -81,6 +81,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// todo delete /statics/LyAction/0
+// use https://wechat.dev/statics/lyapi_audio/0
 Route::get('/statics/LyAction/{byMonth?}', 'GampController@LyAction')
     ->where('byMonth', '[0-6]');
 Route::get('/statics/LyCategory/{byMonth?}', 'GampController@LyCategory')
@@ -88,6 +90,10 @@ Route::get('/statics/LyCategory/{byMonth?}', 'GampController@LyCategory')
 Route::get('/statics/action/{byMonth?}', 'GampController@action')
     ->where('byMonth', '[0-6]');
 Route::get('/statics/category/{byMonth?}', 'GampController@category')
+    ->where('byMonth', '[0-6]');
+
+// https://wechat.dev/statics/lts33/0
+Route::get('/statics/{category}/{byMonth?}', 'GampController@byCategory')
     ->where('byMonth', '[0-6]');
 // Route::get('{any}', function(){
 //     return view('welcome',['title'=>'test']);
