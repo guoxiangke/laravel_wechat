@@ -81,7 +81,7 @@ class GampController extends Controller
         //'client_id','category','action','label'
         $statistics = DB::table('gamps')
             ->select('action as type', DB::raw('count(*) as total'))
-            ->where('category', 'lts33')
+            ->where('category', $category)
             ->groupBy('type')
             ->orderBy('total', 'desc');
 
