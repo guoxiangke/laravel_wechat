@@ -8,14 +8,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\LyAudio;
 use App\Models\LyMeta;
+use App\Models\LyAudio;
 use App\Services\Upyun;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class LyMetaController extends Controller
 {
+    //cache clear
+    public function cc()
+    {
+        return [
+            'success' => Cache::tags('lyaudio')->flush(),
+            'result' => 'Cache cleaned for lyaudio!',
+        ];
+    }
+
     public function index()
     {
         $lyMetas = LyMeta::active()->orderBy('category')->get();
@@ -59,7 +69,7 @@ class LyMetaController extends Controller
             $html = file_get_contents($programUrl);
             preg_match_all('/((?<=setup\(\{)|(?<=,\{))[^}]*(?=\})/', $html, $matches);
             //TODO 10天内节目
-            if (!isset($matches[0]) || count($matches[0]) < 15) {
+            if (! isset($matches[0]) || count($matches[0]) < 15) {
                 Log::error(__CLASS__, [__FUNCTION__, __LINE__, '没有抓去到lts这么多节目', $index, $code, $matches[0]]);
 
                 return false;
@@ -165,9 +175,9 @@ class LyMetaController extends Controller
                 $offset++;
                 $tmp_offset++;
             }
-        } while (!$has_program && $tmp_offset < 7); //上下范围7天
+        } while (! $has_program && $tmp_offset < 7); //上下范围7天
 
-        if (!$has_program) {
+        if (! $has_program) {
             return [
                  'type'          => 'text',
                  'ga_data'       => [

@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('LyAudio/{slug}', 'Api\LyAudioController@showSlug')->name('LyAudio.show');
 });
 Route::get('/ly', 'Api\LyMetaController@index')->name('lymeta.index');
+Route::get('/lyapi/cc', 'Api\LyMetaController@cc');
 Route::resource('subscriptions', 'AlbumSubscriptionController', ['only' => ['edit', 'update']])
     ->middleware('auth');
 
