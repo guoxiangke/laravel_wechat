@@ -73,8 +73,8 @@ class LyHandle
             if (! $res) {
                 $res = LyMetaController::get($code, $offset);
                 $now = Carbon::now();
-                $ttl = $now->diffInMinutes($now->copy()->endOfDay());
-                $cache->put($cacheKey, $res, now()->addMinutes($ttl));
+                $ttl = $now->diffInSeconds($now->copy()->endOfDay());
+                $cache->put($cacheKey, $res, now()->addSeconds($ttl));
                 Log::notice(__CLASS__, ['Cached LYitem', $cacheKey]);
             }
             // 不要620图文
