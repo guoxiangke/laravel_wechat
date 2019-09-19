@@ -8,11 +8,11 @@
 
 namespace App\Services\Wechat\Resources;
 
-use Carbon\Carbon;
-use App\Models\LyMeta;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Api\LyMetaController;
+use App\Models\LyMeta;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class LyHandle
 {
@@ -61,7 +61,7 @@ class LyHandle
         $LyMeta = $lyMetas[$key];
         $code = $LyMeta['code'];
         //region
-        if (! $code) {
+        if (!$code) {
             return;
         }
 
@@ -70,7 +70,7 @@ class LyHandle
             $cache = Cache::tags('lyaudio');
             $cacheKey = $keyword.'_'.$offset.($isLyApp ? '' : '_ly');
             $res = $cache->get($cacheKey);
-            if (! $res) {
+            if (!$res) {
                 $res = LyMetaController::get($code, $offset);
                 $now = Carbon::now();
                 $ttl = $now->diffInSeconds($now->copy()->endOfDay());
