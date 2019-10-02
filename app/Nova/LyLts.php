@@ -2,13 +2,13 @@
 
 namespace App\Nova;
 
-use App\Models\LyLts as LtsModel;
+use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Models\LyLts as LtsModel;
 
 class LyLts extends Resource
 {
@@ -61,6 +61,7 @@ class LyLts extends Resource
                 ->min(101)->max(999)->step(1)->sortable(),
             Text::make('名称', 'name'),
             Text::make('简介', 'description')->onlyOnForms(),
+            Text::make('封面', 'image')->onlyOnForms()->help('节目封面'),
             Text::make('老师', 'author')->help('授课老师、分割'),
             Text::make('前缀', 'code')->help('节目命名前缀vfe0'),
             Number::make('总数', 'count')->help('节目数量')->sortable(),
