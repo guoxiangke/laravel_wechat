@@ -2,13 +2,13 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
+use App\Models\LyLts as LtsModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use App\Models\LyLts as LtsModel;
+use Laravel\Nova\Fields\Text;
 
 class LyLts extends Resource
 {
