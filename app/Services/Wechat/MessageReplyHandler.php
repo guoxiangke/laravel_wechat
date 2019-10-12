@@ -331,7 +331,8 @@ class MessageReplyHandler implements EventHandlerInterface
                 $match = $reversed[$offset - 1];
                 $match = explode('](', $match);
                 $title = trim($match[0]);
-                $hqUrl = 'https://simai.cdn.yongbuzhixi.com'.str_replace(')', '', $match[1]);
+                $hqUrl = str_replace(')', '', $match[1]);
+                $hqUrl = 'https://simai.cdn.yongbuzhixi.com'.$hqUrl;
 
                 $default_desc = '点击▶️收听';
                 $res = [
