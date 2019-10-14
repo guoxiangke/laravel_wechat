@@ -357,7 +357,7 @@ class MessageReplyHandler implements EventHandlerInterface
         //region for 66
         if (! $res
             // && $wechatAccount->name == '思麦团契'
-            && preg_match('/66(\d{1,})/', $keyword, $matches)) {
+            && preg_match('/76(\d{1,})/', $keyword, $matches)) {
             if ($matches && isset($matches[1])) {
                 $offset = (int) $matches[1];
                 $cache = Cache::tags('lyaudio');
