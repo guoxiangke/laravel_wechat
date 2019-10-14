@@ -315,7 +315,7 @@ class MessageReplyHandler implements EventHandlerInterface
             if ($matches && isset($matches[1])) {
                 $offset = (int) $matches[1];
 
-                $cache = Cache::tags('lts');
+                $cache = Cache::tags('lyaudio');
                 $cacheKey = 'simai77';
                 $reversed = $cache->get($cacheKey);
                 if (! $reversed) {
@@ -342,6 +342,52 @@ class MessageReplyHandler implements EventHandlerInterface
                         'action'   => $title,
                     ],
                     'offset'   => $offset,
+                    'content'  => [
+                        'title'          => $title,
+                        'description'    => $default_desc,
+                        'url'            => $hqUrl,
+                        'hq_url'         => $hqUrl,
+                        'thumb_media_id' => null,
+                    ],
+                ];
+            }
+        }
+        //endregion
+
+        //region for 66
+        if (! $res
+            // && $wechatAccount->name == '思麦团契'
+            && preg_match('/66(\d{1,})/', $keyword, $matches)) {
+            if ($matches && isset($matches[1])) {
+                $offset = (int) $matches[1];
+                $cache = Cache::tags('lyaudio');
+                $cacheKey = 'fm66';
+                $reversed = $cache->get($cacheKey);
+                if (! $reversed) {
+                    //todo cache all str!!
+                    $url = 'https://raw.githubusercontent.com/flychat/vuepress/master/docs/Life/Praise.md';
+                    $str = file_get_contents($url);
+                    preg_match_all('/\- (.+)/', $str, $matches2);
+                    $reversed = array_reverse($matches2[1]);
+                    $now = Carbon::now();
+                    $ttl = $now->diffInMinutes($now->copy()->endOfDay());
+                    $cache->add($cacheKey, $reversed, now()->addMinutes($ttl));
+                }
+                $match = $reversed[$offset - 1];
+                $match = explode('|', $match);
+                $title = trim($match[2]);
+                $hqUrl = 'https://simai.cdn.yongbuzhixi.com/other/playlist/'.trim($match[1]).'.mp3';
+                $mp4 = 'https://simai.cdn.yongbuzhixi.com/other/playlist/'.trim($match[1]).'.mp4';
+
+                $default_desc = '点击▶️收听';
+                $res = [
+                    'type'          => 'music',
+                    'ga_data'       => [
+                        'category' => '66',
+                        'action'   => $title,
+                    ],
+                    'offset'   => $offset,
+                    'custom_message' => $mp4,
                     'content'  => [
                         'title'          => $title,
                         'description'    => $default_desc,
