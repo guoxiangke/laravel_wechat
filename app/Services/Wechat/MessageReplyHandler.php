@@ -310,7 +310,7 @@ class MessageReplyHandler implements EventHandlerInterface
 
         //region for simai //77001 771 77002 77583 77999
         if (! $res
-            // && $wechatAccount->name == '思麦团契'
+            && $wechatAccount->name == '思麦团契'
             && preg_match('/77(\d{1,})/', $keyword, $matches)) {
             if ($matches && isset($matches[1])) {
                 $offset = (int) $matches[1];
@@ -328,28 +328,52 @@ class MessageReplyHandler implements EventHandlerInterface
                     $ttl = $now->diffInMinutes($now->copy()->endOfDay());
                     $cache->add($cacheKey, $reversed, now()->addMinutes($ttl));
                 }
-                $match = $reversed[$offset - 1];
-                $match = explode('](', $match);
-                $title = trim($match[0]);
-                $hqUrl = str_replace(')', '', $match[1]);
-                $hqUrl = 'https://simai.cdn.yongbuzhixi.com'.$hqUrl;
+                //770
+                if ($offset == 0) {
+                    $url = 'https://raw.githubusercontent.com/simai2019/vuepress/master/docs/audio/list.md';
+                    $str = file_get_contents($url);
+                    preg_match_all('/\- \[(【\d+】.+)\]/', $str, $matches2);
+                    $content = '';
+                    $count = 0;
+                    foreach ($matches2[1] as $value) {
+                        if ($count >= 10) {
+                            break;
+                        }
+                        $content .= $value.PHP_EOL;
+                        $count++;
+                    }
+                    $res = [
+                        'type'          => 'text',
+                        'content' => $content,
+                        'ga_data'       => [
+                            'category' => '770',
+                            'action'   => 'list_menu',
+                        ],
+                    ];
+                } else {
+                    $match = $reversed[$offset - 1];
+                    $match = explode('](', $match);
+                    $title = trim($match[0]);
+                    $hqUrl = str_replace(')', '', $match[1]);
+                    $hqUrl = 'https://simai.cdn.yongbuzhixi.com'.$hqUrl;
 
-                $default_desc = '点击▶️收听';
-                $res = [
-                    'type'          => 'music',
-                    'ga_data'       => [
-                        'category' => '77',
-                        'action'   => $title,
-                    ],
-                    'offset'   => $offset,
-                    'content'  => [
-                        'title'          => $title,
-                        'description'    => $default_desc,
-                        'url'            => $hqUrl,
-                        'hq_url'         => $hqUrl,
-                        'thumb_media_id' => null,
-                    ],
-                ];
+                    $default_desc = '点击▶️收听';
+                    $res = [
+                        'type'          => 'music',
+                        'ga_data'       => [
+                            'category' => '77',
+                            'action'   => $title,
+                        ],
+                        'offset'   => $offset,
+                        'content'  => [
+                            'title'          => $title,
+                            'description'    => $default_desc,
+                            'url'            => $hqUrl,
+                            'hq_url'         => $hqUrl,
+                            'thumb_media_id' => null,
+                        ],
+                    ];
+                }
             }
         }
         //endregion
@@ -357,11 +381,11 @@ class MessageReplyHandler implements EventHandlerInterface
         //region for 66
         if (! $res
             // && $wechatAccount->name == '思麦团契'
-            && preg_match('/76(\d{1,})/', $keyword, $matches)) {
+            && preg_match('/88(\d{1,})/', $keyword, $matches)) {
             if ($matches && isset($matches[1])) {
                 $offset = (int) $matches[1];
                 $cache = Cache::tags('lyaudio');
-                $cacheKey = 'fm66';
+                $cacheKey = 'fm88';
                 $reversed = $cache->get($cacheKey);
                 if (! $reversed) {
                     //todo cache all str!!
@@ -383,7 +407,7 @@ class MessageReplyHandler implements EventHandlerInterface
                 $res = [
                     'type'          => 'music',
                     'ga_data'       => [
-                        'category' => '66',
+                        'category' => '88',
                         'action'   => $title,
                     ],
                     'offset'   => $offset,
