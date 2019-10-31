@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "781ae08870e2b6f80529609735b06298",
+    "content-hash": "4877d0151a3c8287d306c7b975eca61f",
     "packages": [
         {
             "name": "alfonsobries/nova-froala-editor",
@@ -2662,20 +2662,20 @@
         },
         {
             "name": "overtrue/laravel-wechat",
-            "version": "4.0.23",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/laravel-wechat.git",
-                "reference": "64d424a9cb8ce82321f1d6e5a053c53e82afcb32"
+                "reference": "348fba9fa966ad7cc3ceb08997723b6c59c031fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/laravel-wechat/zipball/64d424a9cb8ce82321f1d6e5a053c53e82afcb32",
-                "reference": "64d424a9cb8ce82321f1d6e5a053c53e82afcb32",
+                "url": "https://api.github.com/repos/overtrue/laravel-wechat/zipball/348fba9fa966ad7cc3ceb08997723b6c59c031fd",
+                "reference": "348fba9fa966ad7cc3ceb08997723b6c59c031fd",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "^5.1",
+                "illuminate/container": "^5.1||~6.0",
                 "overtrue/wechat": "^4.0"
             },
             "type": "library",
@@ -2711,7 +2711,7 @@
                 "wechat",
                 "weixin"
             ],
-            "time": "2019-03-01T10:43:18+00:00"
+            "time": "2019-09-09T01:48:44+00:00"
         },
         {
             "name": "overtrue/pinyin",
