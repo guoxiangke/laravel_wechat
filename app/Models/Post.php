@@ -175,7 +175,6 @@ class Post extends Model // implements HasMedia
     }
 
     //get wechat res
-    // $returnAudio=true
     public function toWechat()
     {
         $image = $this->getImageUrl();
@@ -222,8 +221,6 @@ class Post extends Model // implements HasMedia
             if ($returnCustomRes) {
                 return $customRes;
             }
-
-            return $customRes; //$returnAudio=true
         }
         $url = URL::route('Post.show', ['slug'=>$this->slug]);
         if (! $image) {
