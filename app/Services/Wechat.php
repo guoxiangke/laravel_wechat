@@ -8,29 +8,31 @@
 
 namespace App\Services;
 
-use App\Jobs\GampQueue;
-use App\Models\WechatAccount; //红包发送记录
-use App\Models\WechatRedpack;
 use EasyWeChat;
+use App\Jobs\GampQueue; //红包发送记录
 use EasyWeChat\Factory;
+use App\Models\WechatAccount;
+use App\Models\WechatRedpack;
+use Illuminate\Support\Facades\Log;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Music;
-use EasyWeChat\Kernel\Messages\News;
-use EasyWeChat\Kernel\Messages\NewsItem;
-use EasyWeChat\Kernel\Messages\Text;
-use EasyWeChat\Kernel\Messages\Transfer;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use EasyWeChat\Kernel\Messages\NewsItem;
 // use Overtrue\Pinyin\Pinyin;
 // use WechatDev\WechatJSSDK;
-use Illuminate\Support\Facades\Log;
+use EasyWeChat\Kernel\Messages\Transfer;
 
 class Wechat
 {
     const MAIN_APP = 'gh_c2138e687da3'; //认证服务号
     const LY_MP_ID = 'gh_9ce01a064bb6'; // 良朋益友
     const TEST_OPEN_ID = 'oTjEws-8eAAUqgR4q_ns7pbd0zN8'; //小永
-    const THUMB_MEDIA_ID = '0EiLlKqUqHoIZkYcahv0yy10zHDdyfGOvzTIlUtiJHE';
+    // file_put_contents('/tmp/thumb_media_id.png',file_get_contents('https://i.loli.net/2019/10/31/GSLXocaxuJPv4g6.png'))
+    // $result = $app->material->uploadThumb("/tmp/thumb_media_id.png");
+    const THUMB_MEDIA_ID = '0EiLlKqUqHoIZkYcahv0y0-L-gG7i2jJfmCL0OvqHC4';
 
     //小永微助理 二维码:
     // "media_id" => "0EiLlKqUqHoIZkYcahv0y-4RLUfoVdDo2gCKhCC-V7A"
@@ -216,7 +218,7 @@ class Wechat
         $cache = Cache::tags('wechat_qr');
         $cacheKey = 'wechat_qr_'.$userId;
         $res = $cache->get($cacheKey);
-        if (!$res) {
+        if (! $res) {
             /* @var $app \EasyWeChat\officialAccount\Application */
             $app = static::init(1);
             $result = $app->qrcode->temporary('sharefrom_'.$userId);
@@ -376,13 +378,13 @@ class Wechat
         // $app = Wechat::init($wechatAccount);
         $app = EasyWeChat::officialAccount();
         $wxProfile = $app->user->get($openId);
-        if (!is_array($wxProfile)) {
+        if (! is_array($wxProfile)) {
             return;
         }
-        if (!isset($wxProfile['nickname'])) {
+        if (! isset($wxProfile['nickname'])) {
             return;
         }
-        if (!isset($wxProfile['headimgurl'])) {
+        if (! isset($wxProfile['headimgurl'])) {
             return;
         }
 

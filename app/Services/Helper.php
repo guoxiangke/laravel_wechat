@@ -8,15 +8,15 @@
 
 namespace App\Services;
 
-use App\Http\Controllers\Api\LyMetaController;
-use App\Models\LyMeta;
 use App\Models\User;
+use App\Models\LyMeta;
 use App\Models\WechatAccount;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\Api\LyMetaController;
 
 class Helper
 {
@@ -39,7 +39,7 @@ class Helper
 
     public static function send_custom_music()
     {
-        $mediaId = '0EiLlKqUqHoIZkYcahv0yy10zHDdyfGOvzTIlUtiJHE';
+        $mediaId = '0EiLlKqUqHoIZkYcahv0y0-L-gG7i2jJfmCL0OvqHC4';
         $openid = 'oTjEws-8eAAUqgR4q_ns7pbd0zN8';
         $openid = Wechat::TEST_OPEN_ID;
         //$url = 'http://mp3.jdjys.net:81/mp3/4%E8%8B%B1%E6%96%87%E8%B5%9E%E7%BE%8E%E8%AF%97%E6%AD%8C/02/Track01.mp3';
@@ -59,7 +59,7 @@ class Helper
         $app = Wechat::init(1);
         // $music = LyMetaController::get('se')['content'];
         // $music['thumb_media_id'] = $mediaId;
-        $message = new \App\Services\Wechat\MusicCustom($music);
+        $message = new  \EasyWeChat\Kernel\Messages\Music($music);
         $re = $app->customer_service->message($message)->to($openid)->send();
         // $u = \App\Models\WechatUserProfile::pluck('openid')->all();
         // foreach ($u as $key => $openid) {
@@ -120,7 +120,7 @@ class Helper
         });
 
         foreach ($recommenderIds as $recommender) {
-            if (!in_array($recommender->user_id, [1, 3, 687])) {
+            if (! in_array($recommender->user_id, [1, 3, 687])) {
                 $user = \App\Models\User::find($recommender->user_id);
                 $openId = $user->name;
                 $points = $user->currentPoints();
