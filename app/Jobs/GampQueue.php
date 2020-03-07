@@ -25,12 +25,16 @@ class GampQueue implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($clientId, $category, $action, $label, $created_at = now())
+    public function __construct($clientId, $category, $action, $label, $created_at = null)
     {
         $this->clientId = $clientId;
         $this->category = $category;
         $this->action = $action;
         $this->label = $label;
+        if (is_null($created_at)) {
+            $created_at = now();
+        }
+        $this->created_at = $created_at;
     }
 
     /**
