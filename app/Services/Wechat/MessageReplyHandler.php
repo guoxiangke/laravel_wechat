@@ -123,6 +123,14 @@ class MessageReplyHandler implements EventHandlerInterface
         return $reply;
     }
 
+    public function handle_voice($message)
+    {
+        $keyword = 'voice_received';
+        $res = $this->autoReply($this->toUserName, $keyword);
+
+        return $this->finalReply($keyword, $res);
+    }
+
     /**
      * @param $message
      *
