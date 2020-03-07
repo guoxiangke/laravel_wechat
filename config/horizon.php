@@ -74,10 +74,10 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue'      => ['default'],
+                'queue'      => ['high', 'default', 'low'],
                 'balance'    => 'simple',
-                'processes'  => env('HORIZON_PROCESSES', 5),
-                'tries'      => env('HORIZON_TRIES', 3),
+                'processes'  => env('HORIZON_PROCESSES', 10),
+                'tries'      => env('HORIZON_TRIES', 1),
             ],
         ],
         'staging' => [

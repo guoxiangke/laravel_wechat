@@ -4,11 +4,11 @@ namespace App\Jobs;
 
 use App\Models\Gamp;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-// use Irazasyed\LaravelGAMP\Facades\GAMP;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+// use Irazasyed\LaravelGAMP\Facades\GAMP;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class GampQueue implements ShouldQueue
 {
@@ -18,13 +18,14 @@ class GampQueue implements ShouldQueue
     protected $category;
     protected $action;
     protected $label;
+    protected $created_at;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($clientId, $category, $action, $label)
+    public function __construct($clientId, $category, $action, $label, $created_at = now())
     {
         $this->clientId = $clientId;
         $this->category = $category;
@@ -44,6 +45,7 @@ class GampQueue implements ShouldQueue
         $event->category = $this->category;
         $event->action = $this->action;
         $event->label = $this->label;
+        $event->created_at = $this->created_at;
         $event->save();
         // GAMP::setClientId()
         //     ->setEventCategory($this->category)

@@ -171,7 +171,7 @@ class Wechat
         $category = $res['ga_data']['category'];
         $action = $res['ga_data']['action'];
         $label = $wechatAccount->name;
-        GampQueue::dispatch($clientId, $category, $action, $label)->delay(now()->addSeconds(5));
+        GampQueue::dispatch($clientId, $category, $action, $label, now())->delay(now()->addSeconds(5))->onQueue('low');
     }
 
     const jsApiList = [
