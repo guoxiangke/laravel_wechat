@@ -141,8 +141,8 @@ class MessageReplyHandler implements EventHandlerInterface
         $toUserName = $this->toUserName;
         $keyword = strip_tags(trim($message['Content']));
         $keyword = semiangle_texts($keyword);
-        $search = ['[', ']', "'", '"', '收听', '○', 'o', '〇', '|', '一'];
-        $replace = ['', '', '', '', '', '0', '0', '0', '', ''];
+        $search = ['[', ']', "'", '"', '收听', '○', 'o', '〇', '|'];
+        $replace = ['', '', '', '', '', '0', '0', '0', ''];
         $this->keyword = str_replace($search, $replace, $keyword);
 
         $res = null;
@@ -297,10 +297,8 @@ class MessageReplyHandler implements EventHandlerInterface
         //endregion
 
         // region ly文字识别
-        \Log::error(__CLASS__, [__FUNCTION__, __LINE__, $this->keyword]);
         if (! $res && $lyEnabled) {
             $lyMeta = LyMeta::active()->where('name', $this->keyword)->first();
-            \Log::error(__CLASS__, [__FUNCTION__, __LINE__, $lyMeta->toArray()]);
             if ($lyMeta) {
                 //todo 汉字关键词：旷野吗哪 语音识别 昨天的，今天的
                 if ($this->isLyApp) {
@@ -309,7 +307,6 @@ class MessageReplyHandler implements EventHandlerInterface
                     $keyword = $lyMeta->index;
                 }
                 $res = LyHandle::process($keyword, $this->isLyApp);
-                \Log::error(__CLASS__, [__FUNCTION__, __LINE__, $res]);
                 //cache last subscribe type
                 if ($res) {
                     $subscribeType = LyMeta::class;
