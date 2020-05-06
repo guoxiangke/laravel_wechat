@@ -118,6 +118,10 @@ class MessageReplyHandler implements EventHandlerInterface
         //  method_exists(__CLASS__, $handle)
         if (is_callable([__CLASS__, $handle])) {
             $reply = $this->$handle($message);
+        }else{
+            $keyword = 'unknown_type';
+            $res = $this->autoReply($this->toUserName, $keyword);
+            $reply = $this->finalReply($keyword, $res);
         }
 
         return $reply;
