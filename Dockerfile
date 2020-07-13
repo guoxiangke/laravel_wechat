@@ -47,7 +47,6 @@ RUN set -ex; \
     vim \
   ; \
   docker-php-ext-install -j "$(nproc)" \
-    mbstring \
     pcntl \
     bcmath \
   ; \
