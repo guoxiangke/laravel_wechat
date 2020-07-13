@@ -320,6 +320,35 @@ class MessageReplyHandler implements EventHandlerInterface
         }
         // endregion
 
+        // region for ly729
+        if (! $res && $lyEnabled && $this->isLyApp && $keyword=='729') {
+            $title = '灵修彩蛋';
+            $default_desc = '点击▶️收听';
+            //729-804
+            $from  = mktime(0, 0, 0, 7  , 29, date("Y"));
+            $offset = abs($from - time())/86400%7;
+            $dest = $from + $offset*86400;
+            $where = date('ymd', $dest);
+            $hqUrl = "https://ybzx2018.yongbuzhixi.com/tmp/$where.mp3";
+            $descriptions = "<a herf='https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf'>查看文档</a>";
+            $res = [
+                'type'          => 'music',
+                'ga_data'       => [
+                    'category' => '729',
+                    'action'   => $title,
+                ],
+                'offset'   => $offset,
+                'custom_message' => $descriptions,
+                'content'  => [
+                    'title'          => $title,
+                    'description'    => $default_desc,
+                    'url'            => $hqUrl,
+                    'hq_url'         => $hqUrl,
+                    'thumb_media_id' => null,
+                ],
+            ];
+        }
+
         //region for simai //77001 771 77002 77583 77999
         if (! $res
             && $wechatAccount->name == '思麦团契'
