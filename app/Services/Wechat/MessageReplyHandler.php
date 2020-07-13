@@ -322,8 +322,6 @@ class MessageReplyHandler implements EventHandlerInterface
 
         // region for ly729
         if (! $res && $lyEnabled && $this->isLyApp && $keyword=='729') {
-            $title = '灵修彩蛋';
-            $default_desc = '点击▶️收听';
             //729-804
             $from  = mktime(0, 0, 0, 7  , 29, date("Y"));
             $offset = abs($from - time())/86400%7;
@@ -331,6 +329,8 @@ class MessageReplyHandler implements EventHandlerInterface
             $where = date('ymd', $dest);
             $hqUrl = "https://ybzx2018.yongbuzhixi.com/tmp/$where.mp3";
             $descriptions = "<a herf=\"https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf\">查看文档</a>";
+            $title = '七天灵修札记('.date('md', $dest).')';
+            $default_desc = '点击▶️收听';
             $res = [
                 'type'          => 'music',
                 'ga_data'       => [
