@@ -37,7 +37,7 @@ RUN yarn install && yarn production
 # Application
 #
 
-FROM drupal:8-fpm
+FROM drupal:8.8-fpm
 # https://hub.docker.com/_/drupal
 
 # install the PHP extensions  pcntl & cron
@@ -81,5 +81,5 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
   && chmod u+x /usr/local/bin/start
 RUN touch /var/www/html/storage/logs/laravel.log \
   && chmod -R 777 /var/www/html/storage/logs/
-# mkdir -p /var/www/html/storage/app/avatars/wechat/ 
+# mkdir -p /var/www/html/storage/app/avatars/wechat/
 CMD ["/usr/local/bin/start"]
