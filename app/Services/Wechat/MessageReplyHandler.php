@@ -330,7 +330,7 @@ class MessageReplyHandler implements EventHandlerInterface
             $dest = $from + $offset*86400;
             $where = date('ymd', $dest);
             $hqUrl = "https://ybzx2018.yongbuzhixi.com/tmp/$where.mp3";
-            $descriptions = "<a herf='https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf'>查看文档</a>";
+            $descriptions = "<a herf=\"https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf\">查看文档</a>";
             $res = [
                 'type'          => 'music',
                 'ga_data'       => [
