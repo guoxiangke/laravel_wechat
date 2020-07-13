@@ -37,7 +37,7 @@ RUN yarn install && yarn production
 # Application
 #
 
-FROM drupal:8.8-fpm
+FROM drupal:8.9-fpm
 # https://hub.docker.com/_/drupal
 
 # install the PHP extensions  pcntl & cron
@@ -54,8 +54,8 @@ RUN set -ex; \
   ; \
   \
   docker-php-ext-configure gd \
-    --with-png-dir=/usr \
-    --with-jpeg-dir=/usr \
+    --with-png-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/ \
     --with-freetype-dir=/usr/include/freetype2 \
   ; \
   docker-php-ext-install -j "$(nproc)" \
