@@ -328,7 +328,7 @@ class MessageReplyHandler implements EventHandlerInterface
             $dest = $from + $offset*86400;
             $where = date('ymd', $dest);
             $hqUrl = "https://ybzx2018.yongbuzhixi.com/tmp/$where.mp3";
-            $descriptions = "<a herf=\"https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf\">查看文档</a>";
+            $descriptions = "<a href=\"https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf\">查看文档</a>";
             $title = '七天灵修札记('.date('md', $dest).')';
             $default_desc = '点击▶️收听';
             $res = [
