@@ -45,8 +45,10 @@ RUN set -ex; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
     vim \
+    libonig-dev \
   ; \
   docker-php-ext-install -j "$(nproc)" \
+    mbstring \
     pcntl \
     bcmath \
   ; \
