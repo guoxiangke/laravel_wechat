@@ -45,21 +45,8 @@ RUN set -ex; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
     vim \
-    libwebp-dev \
-    libjpeg62-turbo-dev \
-    libxpm-dev \
-    libmcrypt-dev \
-    libfreetype6-dev \
-    libmcrypt-dev \
-  ; \
-  \
-  docker-php-ext-configure gd \
-    --with-png-dir=/usr/include/ \
-    --with-jpeg-dir=/usr/include/ \
-    --with-freetype-dir=/usr/include/freetype2 \
   ; \
   docker-php-ext-install -j "$(nproc)" \
-    gd \
     mbstring \
     pcntl \
     bcmath \
