@@ -61,7 +61,7 @@ return [
       [
         'type' => 'view',
         'name' => '在线留言',
-        'url'  => 'https://729ly.net/lpyy729.html',
+        'url'  => 'https://support.qq.com/product/169483',
       ],
       [
         'type' => 'view',
