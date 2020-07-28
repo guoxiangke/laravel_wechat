@@ -323,7 +323,7 @@ class MessageReplyHandler implements EventHandlerInterface
         // region for ly729
         if (! $res && $lyEnabled && $this->isLyApp && $keyword=='729') {
             //729-804
-            $today = time()+7*86400;
+            $today = time();
             $end  = mktime(0, 0, 0, 8  , 5, date("Y"));
             if($today>$end) return;
             $where = date('ymd', $today);
