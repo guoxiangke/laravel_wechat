@@ -320,33 +320,6 @@ class MessageReplyHandler implements EventHandlerInterface
         }
         // endregion
 
-        // region for ly729
-        if (! $res && $lyEnabled && $this->isLyApp && $keyword=='729') {
-            //729-804
-            $today = time();
-            $end  = mktime(0, 0, 0, 8  , 5, date("Y"));
-            if($today>$end) return;
-            $where = date('ymd', $today);
-            $hqUrl = "https://ybzx2018.yongbuzhixi.com/tmp/$where.mp3";
-            $descriptions = "<a href=\"https://ybzx2018.yongbuzhixi.com/tmp/$where.pdf\">查看文档</a>";
-            $title = '七天灵修札记('.date('md', $today).')';
-            $default_desc = '点击▶️收听';
-            $res = [
-                'type'          => 'music',
-                'ga_data'       => [
-                    'category' => '729',
-                    'action'   => $title,
-                ],
-                'custom_message' => $descriptions,
-                'content'  => [
-                    'title'          => $title,
-                    'description'    => $default_desc,
-                    'url'            => $hqUrl,
-                    'hq_url'         => $hqUrl,
-                    'thumb_media_id' => null,
-                ],
-            ];
-        }
 
         //region for simai //77001 771 77002 77583 77999
         if (! $res
