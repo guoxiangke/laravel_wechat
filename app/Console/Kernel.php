@@ -34,8 +34,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('lylts:update')->weekly();
         $schedule->command('lyccc:get')
             ->weekly(); //每周更新每周辅导教室
-        $schedule->command('subscribe:notify')
-            ->hourly();
+        // $schedule->command('subscribe:notify')->hourly();
         //诗篇导读 每日更新 //todo delete on 2010!!
         $schedule->command('ly:psalm')
             ->dailyAt('0:10');
