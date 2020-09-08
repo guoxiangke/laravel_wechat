@@ -55,9 +55,11 @@ RUN set -ex; \
   \
   rm -rf /var/lib/apt/lists/* \
   && rm -rf /var/www/html \
+  && rm -rf /opt/drupal \
   && mkdir /var/www/html
 
 COPY . /var/www/html
+WORKDIR /var/www/html
 COPY --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --from=frontend /app/public/js/ /var/www/html/public/js/
 COPY --from=frontend /app/public/css/ /var/www/html/public/css/

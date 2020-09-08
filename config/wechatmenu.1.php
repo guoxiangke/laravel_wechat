@@ -62,7 +62,6 @@ return [
         ]
     ],
     [
-        'type' => 'click',
         'name' => '新出节目',
         'sub_button' => [
             [
