@@ -64,11 +64,11 @@ COPY --from=frontend /app/public/css/ /var/www/html/public/css/
 COPY --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
 
 COPY docker/start.sh /usr/local/bin/start
-RUN chown -R www-data:www-data storage bootstrap/cache \
-  && chmod -R ug+rwx storage bootstrap/cache \
-  && chmod u+x /usr/local/bin/start
 RUN mkdir -p /var/www/html/storage/logs/ \
-  && touch /var/www/html/storage/logs/laravel.log \
+  && chown -R www-data:www-data /var/www/html/storage/ /var/www/html/bootstrap/cache \
+  && chmod -R ug+rwx /var/www/html/storage/ /var/www/html/bootstrap/cache \
+  && chmod u+x /usr/local/bin/start
+RUN touch /var/www/html/storage/logs/laravel.log \
   && chmod -R 777 /var/www/html/storage/logs/
 # mkdir -p /var/www/html/storage/app/avatars/wechat/
 CMD ["/usr/local/bin/start"]
