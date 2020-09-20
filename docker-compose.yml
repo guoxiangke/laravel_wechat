@@ -22,10 +22,10 @@ services:
       REDIS_HOST: redis
     # working_dir: /var/www/html
     volumes:
-      - code:/var/www/html/
-      - .env:/var/www/html/.env
+      - .:/var/www/html/
+#      - .env:/var/www/html/.env
       - ./docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-      - ./storage/app:/var/www/html/storage/app
+#      - ./storage/app:/var/www/html/storage/app
     networks:
       - backend
 
@@ -35,10 +35,10 @@ services:
     container_name: wechat-webserver
     restart: unless-stopped
     volumes:
-      - code:/var/www/html/
-      - .env:/var/www/html/.env
+      - .:/var/www/html/
+#      - .env:/var/www/html/.env
       - ./docker/nginx/conf.d/app.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./storage/app:/var/www/html/storage/app
+#      - ./storage/app:/var/www/html/storage/app
     environment:
       VIRTUAL_HOST: wechat.yongbuzhixi.com
       LETSENCRYPT_HOST: wechat.yongbuzhixi.com
