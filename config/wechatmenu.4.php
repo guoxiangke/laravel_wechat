@@ -7,7 +7,7 @@ return [
       [
         'type' => 'view',
         'name' => '今日节目',
-        'url'  => 'https://729ly.net/today.html',
+        'url'  => 'https://ly.729ly.net',
       ],
       [
         'type' => 'view',
@@ -17,7 +17,7 @@ return [
       [
         'type' => 'view',
         'name' => '同行频道',
-        'url'  => 'https://t.729ly.net',
+        'url'  => 'https://729ly.net/tx-channel',
       ],
     ],
   ],
