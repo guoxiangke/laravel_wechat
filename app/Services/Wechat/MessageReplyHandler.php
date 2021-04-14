@@ -368,7 +368,7 @@ class MessageReplyHandler implements EventHandlerInterface
                     $match = explode('](', $match);
                     $title = trim($match[0]);
                     $hqUrl = str_replace(')', '', $match[1]);
-                    $hqUrl = 'https://file.simai.life'.$hqUrl;
+                    $hqUrl = 'http://file.simai.life'.$hqUrl;
 
                     $default_desc = '点击▶️收听';
                     $res = [
