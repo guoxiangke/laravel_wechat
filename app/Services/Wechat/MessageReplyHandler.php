@@ -413,8 +413,8 @@ class MessageReplyHandler implements EventHandlerInterface
                 $match = $reversed[$offset - 1];
                 $match = explode('|', $match);
                 $title = trim($match[2]);
-                $hqUrl = 'https://file.simai.life/other/playlist/'.trim($match[1]).'.mp3';
-                $mp4 = 'https://file.simai.life/other/playlist/'.trim($match[1]).'.mp4';
+                $hqUrl = 'http://file.simai.life/other/playlist/'.trim($match[1]).'.mp3';
+                $mp4 = 'http://file.simai.life/other/playlist/'.trim($match[1]).'.mp4';
 
                 $default_desc = '点击▶️收听';
                 $res = [
