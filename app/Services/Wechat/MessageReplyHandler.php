@@ -104,7 +104,7 @@ class MessageReplyHandler implements EventHandlerInterface
                     }
                     $avatarPath = storage_path('app/avatars/wechat/'.$this->openId.'.png');
                     if (! file_exists($avatarPath) && isset($user->profile->headimgurl)) {
-                        WechatUserAvatarQueue::dispatch($user)->delay(now()->addSeconds(10));
+                        // WechatUserAvatarQueue::dispatch($user)->delay(now()->addSeconds(10));
                     }
                 }
                 $this->pointsCache = Cache::tags('points');
