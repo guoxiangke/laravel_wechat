@@ -32,7 +32,7 @@ services:
       - ./routes:/var/www/html/routes
       - ./storage/app:/var/www/html/storage/app
     ports:
-      - "8006:80"
+      - "8005:80"
 
   #MySQL Service
   db:
