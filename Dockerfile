@@ -36,16 +36,14 @@ RUN yarn install && yarn production
 #
 # Application
 #
-
-FROM drupal:8.9-fpm
+FROM drupal:8.9-apache
 # https://hub.docker.com/_/drupal
 
-# install the PHP extensions  pcntl & cron
+# install the PHP extensions  pcntl
 RUN set -ex; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-    vim \
-    libonig-dev \
+    libonig-dev\
   ; \
   docker-php-ext-install -j "$(nproc)" \
     mbstring \
@@ -55,22 +53,21 @@ RUN set -ex; \
   \
   rm -rf /var/lib/apt/lists/* \
   && rm -rf /var/www/html \
-  && rm -rf /opt/drupal \
   && mkdir /var/www/html
 
 COPY . /var/www/html
-WORKDIR /var/www/html
 COPY --from=vendor /app/vendor/ /var/www/html/vendor/
-COPY --from=frontend /app/public/js/ /var/www/html/public/js/
-COPY --from=frontend /app/public/css/ /var/www/html/public/css/
-COPY --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
+COPY --from=frontend /app/public/ /var/www/html/public/
 
 COPY docker/start.sh /usr/local/bin/start
-RUN mkdir -p /var/www/html/storage/logs/ \
-  && chown -R www-data:www-data /var/www/html/storage/ /var/www/html/bootstrap/cache \
-  && chmod -R ug+rwx /var/www/html/storage/ /var/www/html/bootstrap/cache \
+WORKDIR /var/www/html
+
+RUN chown -R www-data:www-data storage bootstrap/cache \
+  && chmod -R ug+rwx storage bootstrap/cache \
   && chmod u+x /usr/local/bin/start
-RUN touch /var/www/html/storage/logs/laravel.log \
-  && chmod -R 777 /var/www/html/storage/logs/
-# mkdir -p /var/www/html/storage/app/avatars/wechat/
+
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public/
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
 CMD ["/usr/local/bin/start"]

@@ -14,7 +14,6 @@
         "coderello/laravel-proximage": "^0.5.0",
         "cybercog/laravel-love": "^5.1",
         "digitalazgroup/nova-plain-text-field": "^0.0.4",
-        "electrolinux/phpquery": "0.9.6",
         "fideloper/proxy": "^4.0",
         "froala/wysiwyg-editor-php-sdk": "^1.0",
         "hashids/hashids": "^3.0",
@@ -38,7 +37,8 @@
         "spatie/nova-tags-field": "^1.1",
         "titasgailius/search-relations": "^1.0",
         "torann/geoip": "^1.0",
-        "trexology/pointable": "^1.0"
+        "trexology/pointable": "^1.0",
+        "voku/simple_html_dom": "^4.7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

@@ -24,20 +24,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('lyaudio:update')
-            ->dailyAt('0:05')
-            ->after(function () {
-                Cache::tags(['lyaudio'])->flush();
-            });
-        $schedule->command('lymw:get')
-            ->dailyAt('0:55');
+        // $schedule->command('lyaudio:update')
+        //     ->dailyAt('0:05')
+        //     ->after(function () {
+        //         Cache::tags(['lyaudio'])->flush();
+        //     });
+        // $schedule->command('lymw:get')
+        //     ->dailyAt('0:55');
         // $schedule->command('lylts:update')->weekly();
-        $schedule->command('lyccc:get')
-            ->weekly(); //每周更新每周辅导教室
+        // $schedule->command('lyccc:get')
+        //     ->weekly(); //每周更新每周辅导教室
         // $schedule->command('subscribe:notify')->hourly();
         //诗篇导读 每日更新 //todo delete on 2010!!
-        $schedule->command('ly:psalm')
-            ->dailyAt('0:10');
+        // $schedule->command('ly:psalm')
+        //     ->dailyAt('0:10');
 
         $schedule->command('gamp-clean')
             ->monthly();

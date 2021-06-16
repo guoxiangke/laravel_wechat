@@ -13,6 +13,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
+use voku\helper\HtmlDomParser;
+use Illuminate\Support\Facades\Http;
+
 class WechatLinkSaveQueue implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -40,7 +43,9 @@ class WechatLinkSaveQueue implements ShouldQueue
     public function handle()
     {
         $link = $this->link;
+        $link = 'https://mp.weixin.qq.com/s/BxFSq_M9iPzRRDd8eIexHw';
         $html = file_get_contents($link);
+        $pq = HtmlDomParser::str_get_html($html);
 
         preg_match('/var nickname = "(.+)"/', $html, $matchs);
         $nickname = $matchs[1]; //生活无国界
@@ -57,11 +62,13 @@ class WechatLinkSaveQueue implements ShouldQueue
             }
         }
 
-        $pq = \phpQuery::newDocumentHTML($html);
-        $selector = '.profile_meta_value:first';
-        $app_id = $pq->find($selector)->text();
-        $selector = '.profile_meta_value:last';
-        $description = $pq->find($selector)->text();
+        // $pq = \phpQuery::newDocumentHTML($html);
+        $selector = '.profile_meta_value';
+        $app_id = $pq->find($selector, 0)->text();
+
+        $last =  $pq->find('.profile_inner', 0)->find('.profile_meta_value')->count()-1;
+        $description = $pq->find('.profile_inner', 0)->find('.profile_meta_value', $last)->text();
+
         $author = User::where('name', $to_user_name)->first();
         if (!$author) {
             $author = User::newUser($to_user_name, User::MP_ROLE);
@@ -71,7 +78,7 @@ class WechatLinkSaveQueue implements ShouldQueue
         //save the article!
         // $title = $nickname;
         $selector = '#activity-name';
-        $title = trim($pq->find($selector)->text());
+        $title = trim($pq->find($selector, 0)->text());
 
         $excerpt = '暂无摘要';
         preg_match('/var msg_desc = "(\S+)"/', $html, $matchs);
@@ -79,7 +86,7 @@ class WechatLinkSaveQueue implements ShouldQueue
             $excerpt = $matchs[1];
         }
 
-        $body = $pq->find('#js_content:first')->html();
+        $body = $pq->find('#js_content', 0)->html();
         $body = strip_tags($body, '<span><p><ul><li><ol><section><img><iframe><a><div>');
 
         $body = preg_replace('/powered-by="(.*?)"/', '', $body);
@@ -131,7 +138,7 @@ class WechatLinkSaveQueue implements ShouldQueue
             $qq_vid = $matchs[1];
             $compact[] = 'qq_vid';
         }
-        $voiceId = $pq->find('mpvoice:first')->attr('voice_encode_fileid');
+        $voiceId = $pq->find('mpvoice', 0)->getAttribute('voice_encode_fileid');
         if ($voiceId) {
             $mp3_url = 'https://res.wx.qq.com/voice/getvoice?mediaid='.$voiceId;
             $compact[] = 'mp3_url';
