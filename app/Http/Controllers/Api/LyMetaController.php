@@ -101,7 +101,9 @@ class LyMetaController extends Controller
                 $matches[0]
             );
 
-            $hqUrl = $ltsUrl.$mp3Files[$offset];
+            // https://729lyprog.net/ly/audio/mavtm/mavtm013.mp3
+            // https://lywx2018.yongbuzhixi.com/ly/audio/2021/mw/mw210605.mp3
+            $hqUrl = 'https://lywx2018.yongbuzhixi.com'.$mp3Files[$offset];
 
             return [
                 'type'          => 'music',
