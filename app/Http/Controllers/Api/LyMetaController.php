@@ -64,7 +64,7 @@ class LyMetaController extends Controller
         $index = $lyMeta->index;
         //dynamic get from http://txly2.net/
         if ($index >= 641 && $index <= 645) {
-            $ltsUrl = 'http://txly2.net'; //todo
+            $ltsUrl = 'https://729lyprog.net';
             $programUrl = $ltsUrl.'/'.$code;
             $html = file_get_contents($programUrl);
             preg_match_all('/((?<=setup\(\{)|(?<=,\{))[^}]*(?=\})/', $html, $matches);
@@ -100,13 +100,7 @@ class LyMetaController extends Controller
                 },
                 $matches[0]
             );
-            $pq = \phpQuery::newDocumentHTML($html);
-            $descriptions = [];
-            for ($no = 0; $no < 20; $no++) {
-                $selector = "#sermon{$no}:first p"; //'.cat-list-row'.$no.':first p';
-                $text = $pq->find($selector)->remove('span')->text();
-                $descriptions[] = $text;
-            }
+
             $hqUrl = $ltsUrl.$mp3Files[$offset];
 
             return [
@@ -118,7 +112,7 @@ class LyMetaController extends Controller
                     'action'   => $title,
                 ],
                 'offset'         => $offset,
-                'custom_message' => $descriptions[$offset],
+                // 'custom_message' => $descriptions[$offset],
                 'content'        => [
                     'title'          => $titles[$offset].' '.str_replace('良友圣经学院', '', $title),
                     'description'    => $default_desc,
