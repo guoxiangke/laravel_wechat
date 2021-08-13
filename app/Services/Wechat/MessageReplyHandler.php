@@ -489,7 +489,7 @@ class MessageReplyHandler implements EventHandlerInterface
         $reply = Wechat::replyByType($type, $content);
 
         // region custom_message
-        if (Config::get('app.env') != 'development' && $this->isCertified) {
+        if (0 && Config::get('app.env') != 'development' && $this->isCertified) {
             if (isset($res['custom_res']) && $res['custom_res']) {
                 $customRes = $res['custom_res'];
                 $customRes['content']['title'] = "【{$keyword}】".$customRes['content']['title'];
