@@ -42,7 +42,6 @@ class LyHandle
                 }
                 $menu_text .= "【{$lyMeta['index']}】{$lyMeta['name']}".PHP_EOL;
             }
-            $moreLyLink = route('lymeta.index');
 
             return [
                 'type'          => 'text',
@@ -51,7 +50,7 @@ class LyHandle
                     'action'   => '600',
                 ],
                 'offset'   => $offset,
-                'content'  => $menu_text."回复【】内编号获取相应资源\n不带【中括号】\n<a href='{$moreLyLink}'>更多节目介绍请点击</a>",
+                'content'  => $menu_text."回复【】内编号获取相应资源\n不带【中括号】",
             ];
         }
         // endregion
