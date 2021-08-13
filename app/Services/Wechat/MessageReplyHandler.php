@@ -73,7 +73,8 @@ class MessageReplyHandler implements EventHandlerInterface
         $this->wechatAccount = $wechatAccount;
         /* @var $app \EasyWeChat\officialAccount\Application */
         $this->app = Wechat::init($wechatAccount);
-        $this->appCopyName = '公众号:'.$wechatAccount->name;
+        // $this->appCopyName = '公众号:'.$wechatAccount->name;
+        $this->appCopyName = '';
         $this->isCertified = $wechatAccount->is_certified ? true : false;
         if ($wechatAccount->name == '良朋益友') {
             $this->isLyApp = true;
@@ -488,7 +489,7 @@ class MessageReplyHandler implements EventHandlerInterface
         $reply = Wechat::replyByType($type, $content);
 
         // region custom_message
-        if (false && Config::get('app.env') != 'development' && $this->isCertified) {
+        if (Config::get('app.env') != 'development' && $this->isCertified) {
             if (isset($res['custom_res']) && $res['custom_res']) {
                 $customRes = $res['custom_res'];
                 $customRes['content']['title'] = "【{$keyword}】".$customRes['content']['title'];
