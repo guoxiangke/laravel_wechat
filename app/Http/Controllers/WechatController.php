@@ -35,9 +35,9 @@ class WechatController extends Controller
         $server = $app->server;
 
         //默认回复！
-        $server->push(function ($message) {
-            return "[撇嘴]貌似哪里不对劲[衰] \n[Yeah!]评论时,内容不得少于8个字\n/:strong回复【】内编号即可,不带【】\n[抱拳]<a href='https://wechat.yongbuzhixi.com/docs'>常见问题,使用帮助</a>";
-        });
+        // $server->push(function ($message) {
+        //     return "[撇嘴]貌似哪里不对劲[衰] \n[Yeah!]评论时,内容不得少于8个字\n/:strong回复【】内编号即可,不带【】\n[抱拳]<a href='https://wechat.yongbuzhixi.com/docs'>常见问题,使用帮助</a>";
+        // });
 
         $message = $server->getMessage();
         //第一次微信验证token没有msg_id，不记录！

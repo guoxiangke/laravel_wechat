@@ -164,7 +164,7 @@ class MessageReplyHandler implements EventHandlerInterface
         $lyEnabled = isset($resourcesEnabled['lymeta']) ? $resourcesEnabled['lymeta'] : false;
         $ltsEnabled = isset($resourcesEnabled['lylts']) ? $resourcesEnabled['lylts'] : false;
         //region ly & lts
-        if (! $res && ($lyEnabled || $ltsEnabled) && preg_match('/\d{3,}/', $keyword)) {
+        if (($lyEnabled || $ltsEnabled) && preg_match('/\d{3,}/', $keyword)) {
             // region 以#开头的 #101XXX-#909XXX
             if ($keyword[0] == '#') {
                 // $keyword = str_replace('#', '', $keyword);
@@ -185,7 +185,42 @@ class MessageReplyHandler implements EventHandlerInterface
             // region lymeta
             if (! $res) {
                 //todo 汉字关键词：旷野吗哪 语音识别 昨天的，今天的
-                $res = LyHandle::process($keyword, $this->isLyApp);
+                // $res = LyHandle::process($keyword, $this->isLyApp);
+                $cache = Cache::tags('lyaudio');
+                $res = $cache->get($keyword);
+                if (!$res) {
+                    // https://resources.savefamily.net/resources/620
+                    $apiJson = file_get_contents("https://resources.savefamily.net/resources/$keyword");
+                    $apiData = json_decode($apiJson, 1);
+                    if(!$apiData) return;
+                    if($apiData['type'] == 'music'){
+                        $url = "https://go2024.simai.life/api?redirect={$apiData['data']['url']}?metric=LyAudio%26keyword={$apiData['statistics']['keyword']}%26bot=mp%26to=mp";
+                        $res = [
+                            'type'          => $apiData['type'],
+                            'content'        => [
+                                'title'          => $apiData['data']['title'],
+                                'description'    => $apiData['data']['description'],
+                                'url'            => $apiData['data']['url'],
+                                'hq_url'         => $apiData['data']['url'],
+                                'thumb_media_id' => null,
+                            ],
+                        ];
+                    }
+                    if($apiData['type'] == 'text')
+                        $res = [
+                            'type'          => 'text',
+                            'content'  => $apiData['data']['content'],
+                        ];
+                    if($apiData['type'] == 'link')
+                        $res = [
+                            'type'    => 'news',
+                            'content' => $apiData['data'],
+                        ];
+                    $now = Carbon::now();
+                    $ttl = $now->diffInSeconds($now->copy()->endOfDay());
+                    $cache->put($keyword, $res, now()->addSeconds($ttl));
+                }
+
                 //cache last subscribe type
                 if ($res) {
                     $subscribeType = LyMeta::class;
@@ -471,7 +506,7 @@ class MessageReplyHandler implements EventHandlerInterface
         $type = $res['type'];
         $appCopyName = $this->appCopyName;
         if ($type == 'music') {
-            $res['content']['title'] = "【{$keyword}】".$res['content']['title'];
+            $res['content']['title'] = $res['content']['title'];
             $res['content']['description'] .= ' '.$appCopyName;
             if (! isset($res['offset']) || $res['offset'] == 0) {
                 $res['content']['description'] .= ' 每日更新';
@@ -483,7 +518,7 @@ class MessageReplyHandler implements EventHandlerInterface
             //记录last reply 订阅专辑id放入cache！
         }
         if ($type == 'news') {
-            $res['content']['title'] = "【{$keyword}】".$res['content']['title'];
+            $res['content']['title'] = $res['content']['title'];
         }
         $content = $res['content'];
         $reply = Wechat::replyByType($type, $content);
